@@ -6,17 +6,14 @@ app.use(cors())
 
 const port = 3000
 const topics = [{name: 'NFL Draft', id: 1, playlist: [
-  {title: 'When will the season start?', audioUrl: 'http://fillmein.com/1', startTime: '12:34', endTime: '23:45'},
-  {title: 'I miss sports?', audioUrl: 'http://fillmein.com/2', startTime: '2:34', endTime: '3:45'},
-  {title: 'Give me some baseball plz', audioUrl: 'http://fillmein.com/3', startTime: '1:34', endTime: '2:45'}
+  {title: "We're back in the wasteland of Quarantine. XFL is gone and MLB has some weird way of coming back to life", audioUrl: 'https://dts.podtrac.com/redirect.mp3/landmark.barstoolsports.net/pardon-my-take/37655/pmt-4-13-20-podcast-condensed.5bddc30f.mp3', startTime: '9:42', endTime: '18:40'},
+  {title: 'I miss sports?', audioUrl: 'http://feeds.soundcloud.com/stream/795187915-scottiedeubler43-episode-127-dustin-paul-bryan-smith.mp3', startTime: '2:34', endTime: '3:45'}
 ]}, {name: 'MLB Players', id: 2, playlist: [
-  {title: 'When will the season start?', audioUrl: 'http://fillmein.com/1', startTime: '12:34', endTime: '23:45'},
-  {title: 'I miss sports?', audioUrl: 'http://fillmein.com/2', startTime: '2:34', endTime: '3:45'},
-  {title: 'Give me some baseball plz', audioUrl: 'http://fillmein.com/3', startTime: '1:34', endTime: '2:45'}
+  {title: "We're back in the wasteland of Quarantine. XFL is gone and MLB has some weird way of coming back to life", audioUrl: 'https://dts.podtrac.com/redirect.mp3/landmark.barstoolsports.net/pardon-my-take/37655/pmt-4-13-20-podcast-condensed.5bddc30f.mp3', startTime: '9:42', endTime: '18:40'},
+  {title: 'I miss sports?', audioUrl: 'http://fillmein.com/2', startTime: '2:34', endTime: '3:45'}
 ]}, {name: 'NBA Playoffs', id: 3, playlist: [
-  {title: 'When will the season start?', audioUrl: 'http://fillmein.com/1', startTime: '12:34', endTime: '23:45'},
-  {title: 'I miss sports?', audioUrl: 'http://fillmein.com/2', startTime: '2:34', endTime: '3:45'},
-  {title: 'Give me some baseball plz', audioUrl: 'http://fillmein.com/3', startTime: '1:34', endTime: '2:45'}
+  {title: "We're back in the wasteland of Quarantine. XFL is gone and MLB has some weird way of coming back to life", audioUrl: 'https://dts.podtrac.com/redirect.mp3/landmark.barstoolsports.net/pardon-my-take/37655/pmt-4-13-20-podcast-condensed.5bddc30f.mp3', startTime: '9:42', endTime: '18:40'},
+  {title: 'I miss sports?', audioUrl: 'http://fillmein.com/2', startTime: '2:34', endTime: '3:45'}
 ]}]
 app.get('/topics', (req, res) => res.send(topics))
 
