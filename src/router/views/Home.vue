@@ -1,6 +1,5 @@
 <template>
   <div class="main-content">
-    <h1>{{ msg }}</h1>
     <b-list-group class="topics-list">
       <b-list-group-item href="#" v-for="topic in topics" :key="topic.id">
         {{ topic.name }}
@@ -14,10 +13,6 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
-  props: {
-    msg: String,
-    info: Array
-  },
   methods: {
     ...mapActions(['fetchTopics'])
   },

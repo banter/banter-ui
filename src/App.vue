@@ -1,17 +1,13 @@
 <template>
   <div id="app">
-    <Home msg="Welcome to Banter"/>
+    <h1>Welcome to Banter</h1>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Home from './components/Home.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Home
-  }
+  name: 'App'
 }
 </script>
 
