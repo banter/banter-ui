@@ -1,13 +1,21 @@
 <template>
   <div id="app">
-    <h1>Welcome to Banter</h1>
+    <h1>
+      <router-link :to="'/'">
+        Welcome to Banter
+      </router-link>
+    </h1>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    this.$store.dispatch("fetchTopics");
+  }
 }
 </script>
 

@@ -1,10 +1,6 @@
 <template>
   <div class="main-content">
-    <b-list-group class="topics-list">
-      <b-list-group-item href="#" v-for="topic in topics" :key="topic.id">
-        <router-link :to="`/topics/${topic.id}`">{{ topic.name }}</router-link>
-      </b-list-group-item>
-    </b-list-group>
+    <h2>{{currentTopic}}</h2>
   </div>
 </template>
 
@@ -14,7 +10,10 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters({topics: 'getTopics'})
+    ...mapGetters(['getTopic']),
+    currentTopic: function() {
+      return this.getTopic(this.$route.params.topicId)
+    }
   }
 }
 </script>

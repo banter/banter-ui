@@ -48,6 +48,9 @@ export const TopicsModule = {
   getters: {
     getTopics(state) {
       return state.topics;
+    },
+    getTopic: (state, getters) => id => {
+      return getters.getTopics.find(topic => +topic.id === +id);
     }
   }
 };
