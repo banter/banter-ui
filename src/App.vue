@@ -2,9 +2,12 @@
   <div id="app">
     <h1>
       <router-link :to="'/'">
-        Welcome to Banter
+        Banter
       </router-link>
     </h1>
+    <h4>
+      We fixed podcasts for you.
+    </h4>
     <router-view></router-view>
   </div>
 </template>
