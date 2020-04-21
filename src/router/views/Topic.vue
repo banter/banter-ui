@@ -1,7 +1,10 @@
 <template>
   <div class="main-content">
     <h2>{{currentTopic.name}}</h2>
-    <a @click="playAudio">Play!</a>
+    <a @click="playAudio">Play!
+        <b-icon v-if="!isPlaying" class="discussion-icon" icon="play"></b-icon>
+        <b-icon v-if="isPlaying" class="discussion-icon" icon="pause"></b-icon>
+    </a>
     <b-list-group class="discussion-playlist">
       <b-list-group-item 
         href="#"
@@ -28,6 +31,11 @@ import { Howl } from 'howler';
 
 export default {
   name: 'Home',
+  data() {
+    return {
+      isPlaying: false,
+    }
+  },
   computed: {
     ...mapGetters(['getTopic']),
     currentTopic: function() {
@@ -36,14 +44,22 @@ export default {
   },
   methods: {
     playAudio() {
+      const playerStatus = this
       const sound = new Howl({
         html5: true,
         src: ['https://dts.podtrac.com/redirect.mp3/landmark.barstoolsports.net/pardon-my-take/37655/pmt-4-13-20-podcast-condensed.5bddc30f.mp3'],
-        sprite: {}
+        sprite: {
+          test: [1000,2000]
+        }
 
       });
 
-      sound.play();
+      playerStatus.isPlaying = true;
+      sound.on('end', function(){
+        playerStatus.isPlaying = false;
+      });
+
+      sound.play('test');
     }
   }
 }
