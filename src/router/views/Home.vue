@@ -1,9 +1,9 @@
 <template>
   <div class="main-content">
     <b-list-group class="topics-list">
-      <b-list-group-item href="#" v-for="topic in topics" :key="topic.id">
-        <router-link :to="`/topics/${topic.id}`">{{ topic.name }}</router-link>
-      </b-list-group-item>
+        <router-link v-for="topic in topics" :key="topic.id" :to="`/topics/${topic.id}`">
+          <b-list-group-item>{{ topic.name }}</b-list-group-item>
+        </router-link>
     </b-list-group>
   </div>
 </template>

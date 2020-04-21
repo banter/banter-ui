@@ -2,8 +2,7 @@
   <div class="main-content">
     <h2>{{currentTopic.name}}</h2>
     <a @click="playAudio">Play!
-        <b-icon v-if="!isPlaying" class="discussion-icon" icon="play"></b-icon>
-        <b-icon v-if="isPlaying" class="discussion-icon" icon="pause"></b-icon>
+        <AudioPlayer :isPlaying="isPlaying"/>
     </a>
     <b-list-group class="discussion-playlist">
       <b-list-group-item 
@@ -29,8 +28,13 @@
 import { mapGetters } from 'vuex'
 import { Howl } from 'howler';
 
+import AudioPlayer from "../../components/AudioPlayer";
+
 export default {
   name: 'Home',
+  components: {
+    AudioPlayer
+  },
   data() {
     return {
       isPlaying: false,
