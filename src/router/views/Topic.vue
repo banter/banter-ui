@@ -65,7 +65,13 @@ export default {
       });
 
       this.audioConfig.on('end', function(){
-        playerStatus.currentAudio = null;
+        const {playlist} = playerStatus.currentTopic
+
+        const nextItemIndex = playlist.findIndex(playlistItem => playlistItem.id === discussion.id) + 1
+        const nextDiscussion = playlist[nextItemIndex]
+
+        playerStatus.killAudio()
+        if (nextDiscussion) playerStatus.playAudio(nextDiscussion)
       });
 
       this.currentAudio = this.audioConfig.play('clip');
@@ -74,7 +80,11 @@ export default {
       this.audioConfig.pause(this.currentAudio)
     },
     killAudio() {
-      this.audioConfig && this.audioConfig.unload(this.currentAudio)
+      if (this.audioConfig) {
+        this.audioConfig.unload(this.currentAudio)
+        this.currentAudio = null
+        this.audioConfig = null
+      }
     }
   },
 }
