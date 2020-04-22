@@ -4,7 +4,7 @@
       <AudioPlayer :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :isPlaying="isPlaying"/>
     <b-list-group class="discussion-playlist">
       <b-list-group-item 
-        @click="() => playAudio(discussion)"
+        @click="() => createAudio(discussion)"
         class="discussion-playlist-item"
         v-for="(discussion, index) in currentTopic.playlist" 
         :key="`discussion-${index}`">
@@ -50,7 +50,16 @@ export default {
     }
   },
   methods: {
-    playAudio(discussion = this.currentTopic.playlist[0]) {
+    playAudio(discussion) {
+      if (discussion) { //if we pass a specific discussion, play it
+        this.createAudio(discussion)
+      } else if (!this.audioConfig) { // if we just trigger blindly, start from top
+        this.createAudio(this.currentTopic.playlist[0])
+      } else { 
+        this.audioConfig.play(this.currentAudio)
+      }
+    },
+    createAudio(discussion) {
       this.killAudio();
 
       const playerStatus = this
@@ -71,7 +80,7 @@ export default {
         const nextDiscussion = playlist[nextItemIndex]
 
         playerStatus.killAudio()
-        if (nextDiscussion) playerStatus.playAudio(nextDiscussion)
+        if (nextDiscussion) playerStatus.createAudio(nextDiscussion)
       });
 
       this.currentAudio = this.audioConfig.play('clip');
