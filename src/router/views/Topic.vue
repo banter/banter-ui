@@ -1,17 +1,15 @@
 <template>
   <div class="main-content">
     <h2>{{currentTopic.name}}</h2>
-    <a @click="playAudio">Play!
-        <AudioPlayer :isPlaying="isPlaying"/>
-    </a>
+      <AudioPlayer :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :isPlaying="isPlaying"/>
     <b-list-group class="discussion-playlist">
       <b-list-group-item 
-        href="#"
+        @click="() => playAudio(discussion)"
         class="discussion-playlist-item"
         v-for="(discussion, index) in currentTopic.playlist" 
         :key="`discussion-${index}`">
 
-        <b-icon class="discussion-icon" icon="play"></b-icon>
+        <b-icon font-scale="3" class="discussion-icon" icon="play"></b-icon>
         <router-link to="#">{{ discussion.title }}</router-link>
       </b-list-group-item>
     </b-list-group>
@@ -31,41 +29,54 @@ import { Howl } from 'howler';
 import AudioPlayer from "../../components/AudioPlayer";
 
 export default {
-  name: 'Home',
+  name: 'Topic',
   components: {
     AudioPlayer
   },
   data() {
     return {
-      isPlaying: false,
+      currentDiscussion: null,
+      currentAudio: null,
+      audioConfig: null,
     }
   },
   computed: {
     ...mapGetters(['getTopic']),
     currentTopic: function() {
       return this.getTopic(this.$route.params.topicId)
+    },
+    isPlaying: function() {
+      return !!(this.audioConfig && this.audioConfig.playing(this.currentAudio))
     }
   },
   methods: {
-    playAudio() {
+    playAudio(discussion = this.currentTopic.playlist[0]) {
+      this.killAudio();
+
       const playerStatus = this
-      const sound = new Howl({
+      this.currentDiscussion = discussion
+
+      this.audioConfig = new Howl({
         html5: true,
-        src: ['https://dts.podtrac.com/redirect.mp3/landmark.barstoolsports.net/pardon-my-take/37655/pmt-4-13-20-podcast-condensed.5bddc30f.mp3'],
+        src: discussion.audioUrl,
         sprite: {
-          test: [1000,2000]
+          clip: [discussion.startTime, discussion.endTime]
         }
-
       });
 
-      playerStatus.isPlaying = true;
-      sound.on('end', function(){
-        playerStatus.isPlaying = false;
+      this.audioConfig.on('end', function(){
+        playerStatus.currentAudio = null;
       });
 
-      sound.play('test');
+      this.currentAudio = this.audioConfig.play('clip');
+    },
+    pauseAudio() {
+      this.audioConfig.pause(this.currentAudio)
+    },
+    killAudio() {
+      this.audioConfig && this.audioConfig.unload(this.currentAudio)
     }
-  }
+  },
 }
 </script>
 
@@ -85,6 +96,7 @@ li {
 a {
   color: #42b983;
 }
+
 .main-content {
   margin: auto;
   width: 600px;
