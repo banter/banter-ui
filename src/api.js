@@ -1,7 +1,7 @@
 const API = {
-  BASE_DOMAIN: process.env.ROOT_API,
-  BASE_URL: 'http://localhost:3000/',
-  TOPICS: "topics/"
+  BASE_URL: 'http://localhost:8080/api/v1/',
+  TOPICS: "topics/",
+  GENRES: "genres/"
 };
 
 export default API;

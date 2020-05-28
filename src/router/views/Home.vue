@@ -1,9 +1,9 @@
 <template>
   <div class="main-content">
     <b-list-group class="topics-list">
-        <router-link v-for="topic in topics" :key="topic.id" :to="`/topics/${topic.id}`">
-          <b-list-group-item>{{ topic.name }}</b-list-group-item>
-        </router-link>
+        <b-list-group-item v-for="topic in topics" :key="topic.id">
+          <router-link :key="`topic-${topic.name}`" :to="`/topics/${topic.name}`">{{ topic.name }}</router-link>
+        </b-list-group-item>
     </b-list-group>
   </div>
 </template>
@@ -19,7 +19,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;

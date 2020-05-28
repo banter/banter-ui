@@ -8,7 +8,7 @@
     <h4>
       We fixed podcasts for you.
     </h4>
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 

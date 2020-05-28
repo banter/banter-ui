@@ -1,105 +1,117 @@
 <template>
   <div class="main-content">
-    <h2>{{currentTopic.name}}</h2>
-      <AudioPlayer :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :isPlaying="isPlaying"/>
-    <b-list-group class="discussion-playlist">
-      <b-list-group-item 
-        @click="() => createAudio(discussion)"
-        class="discussion-playlist-item"
-        v-for="(discussion, index) in currentTopic.playlist" 
-        :key="`discussion-${index}`">
+    <div v-if="!isLoading">
+      <h2>{{currentTopic.name}}</h2>
+        <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying"/>
+      <div class="playlist-toggle">
+        <input type="checkbox" id="description" v-model="displayDescription">
+        <label class="checkbox-label" for="description">Display Description</label>
+      </div>
+      <div class="playlist-toggle">
+        <input type="checkbox" id="ids" v-model="displayIds">
+        <label class="checkbox-label" for="ids">Display Ids</label>
+      </div>
+      <div class="playlist-toggle">
+        <input type="checkbox" id="json" v-model="displayJson">
+        <label class="checkbox-label" for="json">Display JSON</label>
+      </div>
+      <b-list-group class="discussion-playlist">
+        <b-list-group-item 
+          class="discussion-playlist-item"
+          v-for="(discussion, index) in currentTopic.playlist" 
+          :key="`discussion-${index}`">
 
-        <b-icon font-scale="3" class="discussion-icon" icon="play"></b-icon>
-        <router-link to="#">{{ discussion.title }}</router-link>
-      </b-list-group-item>
-    </b-list-group>
-    <br>
-    <br>
-    <br>
-    <h4>data dump:</h4>
-    <span>{{currentTopic}}</span>
-    
+          <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
+          <router-link to="#">
+            <div class="d-flex w-100 justify-content-between flex-column">
+              <h4 class="mb-1">{{discussion.podcastTitle}}</h4>
+              <h5 class="mb-1">{{discussion.episodeTitle}}</h5>
+              <h6 class="mb-1">{{discussion.startTime}}-{{discussion.endTime || 'End'}}</h6>
+            </div>
+          </router-link>
+          <p v-if="displayDescription" class="mb-1">
+            {{discussion.description}}
+          </p>
+          <div class="tag-display">
+            <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="primary">
+              <router-link :to="`/topics/${tag.value}`">
+                {{tag.value}}
+              </router-link>    
+            </b-badge>
+          </div>
+          <p v-if="displayIds" class="mb-1">
+            <ul class="id-list">
+              <li><b>Discussion:</b> {{discussion.discussionId}}</li>
+              <li><b>Episode:</b> {{discussion.episodeId}}</li>
+              <li><b>Podcast:</b> {{discussion.podcastId}}</li>
+            </ul>
+          </p>
+          <p v-if="displayJson" class="mb-1">
+            <code><pre class="discussion-json">{{discussion}}</pre></code>
+          </p>
+        </b-list-group-item>
+      </b-list-group>
+    </div>
+    <div>
+      <LoadingSpinner :variant="'secondary'" v-if="isLoading"/>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { Howl } from 'howler';
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import AudioPlayer from "../../components/AudioPlayer";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default {
   name: 'Topic',
   components: {
-    AudioPlayer
+    AudioPlayer,
+    LoadingSpinner
+  },
+  created () {
+    this.fetchTopic(this.$route.params.topicName)
   },
   data() {
     return {
-      currentDiscussion: null,
-      currentAudio: null,
-      audioConfig: null,
+      trackInterval: null,
+      trackTime: 0,
+      displayDescription: true,
+      displayIds: false,
+      displayJson: false,
+      showIds: true
     }
   },
   computed: {
     ...mapGetters(['getTopic']),
+    ...mapState({
+      audioConfig: state => state.audio.audioConfig,
+      currentAudio: state => state.audio.currentAudio,
+      currentDiscussion: state => state.audio.currentDiscussion,
+      isLoading: state => state.topics.isRequesting
+    }),
     currentTopic: function() {
-      return this.getTopic(this.$route.params.topicId)
+      return this.getTopic
     },
     isPlaying: function() {
-      return !!(this.audioConfig && this.audioConfig.playing(this.currentAudio))
+      return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
     }
   },
   methods: {
-    playAudio(discussion) {
-      if (discussion) { //if we pass a specific discussion, play it
-        this.createAudio(discussion)
-      } else if (!this.audioConfig) { // if we just trigger blindly, start from top
-        this.createAudio(this.currentTopic.playlist[0])
-      } else { 
-        this.audioConfig.play(this.currentAudio)
-      }
+    ...mapActions(['fetchTopic', 'playAudio', 'pauseAudio', 'createAudio', 'killAudio']),
+    audioAction(discussion) {
+      (this.currentDiscussion && this.currentDiscussion.discussionId) === discussion.discussionId
+        ? this.pauseAudio()
+        : this.createAudio(discussion)
     },
-    createAudio(discussion) {
-      this.killAudio();
-
-      const playerStatus = this
-      this.currentDiscussion = discussion
-
-      this.audioConfig = new Howl({
-        html5: true,
-        src: discussion.audioUrl,
-        sprite: {
-          clip: [discussion.startTime, discussion.endTime]
-        }
-      });
-
-      this.audioConfig.on('end', function(){
-        const {playlist} = playerStatus.currentTopic
-
-        const nextItemIndex = playlist.findIndex(playlistItem => playlistItem.id === discussion.id) + 1
-        const nextDiscussion = playlist[nextItemIndex]
-
-        playerStatus.killAudio()
-        if (nextDiscussion) playerStatus.createAudio(nextDiscussion)
-      });
-
-      this.currentAudio = this.audioConfig.play('clip');
-    },
-    pauseAudio() {
-      this.audioConfig.pause(this.currentAudio)
-    },
-    killAudio() {
-      if (this.audioConfig) {
-        this.audioConfig.unload(this.currentAudio)
-        this.currentAudio = null
-        this.audioConfig = null
-      }
+    playlistItemText(discussion) {
+      return this.displayDescription ? '' : `${discussion.podcastTitle} (${discussion.episodeTitle}) (${discussion.startTime}-${discussion.endTime || 'End'})`
     }
   },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
@@ -123,6 +135,36 @@ a {
 }
 
 .discussion-icon {
-  float: left;
+  position: absolute;
+  left: 0;
+}
+
+.playlist-toggle {
+    display: flex;
+}
+
+.checkbox-label {
+  margin-left: 5px;
+}
+
+.discussion-json {
+  float: initial;
+  text-align: initial;
+}
+
+.discussion-json:hover {
+  cursor: initial;
+}
+
+.id-list li {
+  display: block;
+}
+
+.tag-display a {
+  color: white;
+}
+
+.tag-display span {
+  margin: 2px;
 }
 </style>

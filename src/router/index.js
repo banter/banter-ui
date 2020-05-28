@@ -16,7 +16,7 @@ export const router = new Router({
     component: Home
   },
   {
-    path: '/topics/:topicId',
+    path: '/topics/:topicName',
     name: 'Topic',
     component: Topic
   }]
