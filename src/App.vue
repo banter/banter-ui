@@ -7,13 +7,15 @@
 
 <script>
 import BanterNavbar from "./components/BanterNavBar"
+
 export default {
   name: 'App',
   created() {
     this.$store.dispatch("fetchGenres");
+    this.$store.dispatch("fetchTrendingTopics");
   },
   components: {
-    BanterNavbar
+    BanterNavbar,
   }
 }
 </script>

@@ -1,23 +1,22 @@
 <template>
   <div class="main-content">
-    <TopicHero :topics="getTrendingTopicTags"/>
-    <TopicCarouselScroll/>
+      <b-list-group class="topics-list">
+        <b-list-group-item v-for="topic in topics" :key="topic.id">
+          <router-link :key="`topic-${topic.name}`" :to="`/topics/${topic.name}`">{{ topic.name }}</router-link>
+        </b-list-group-item>
+      </b-list-group>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import TopicHero from "../../containers/TopicHero"
-import TopicCarouselScroll from "../../containers/TopicCarouselScroll"
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
-  components: {
-    TopicHero,
-    TopicCarouselScroll
-  },
-  computed: {
-    ...mapGetters(["getTrendingTopicTags"])
+    computed: {
+    ...mapState({
+      topics: state => state.topics.topics
+    }),
   }
 }
 </script>

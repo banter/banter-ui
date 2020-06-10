@@ -5,9 +5,11 @@ export const TopicsModule = {
   state: {
     topics: [],
     tagMatches: [],
+    trendingTopics: [],
     currentTopic: {},
     isRequesting: false,
     isRequestingQuery: false,
+    isRequestingTrending: false,
     errored: false,
     error: ''
   },
@@ -50,6 +52,27 @@ export const TopicsModule = {
           })
           .catch(error => {
             commit("topicError", error);
+            reject(error);
+          });
+      });
+    },
+    fetchTrendingTopics({
+      commit
+    }) {
+      return new Promise((resolve, reject) => {
+        commit("fetchTrendingTopicsRequest");
+        return axios
+          .get(`${API.BASE_URL}${API.TOPICS}${API.COLLECTIONS}?tagType=sport&sinceDaysAgo=5&limit=3`)
+          .then(response => {
+            if (response.status === 200) {
+              commit("fetchTrendingTopicsSuccess", response.data);
+              resolve(response.data.original);
+            } else {
+              reject(response);
+            }
+          })
+          .catch(error => {
+            commit("trendingTopicsError", error);
             reject(error);
           });
       });
@@ -118,17 +141,23 @@ export const TopicsModule = {
     },
     clearTopicsQueryRequest(state) {
       state.tagMatches = []
+    },
+    fetchTrendingTopicsRequest(state) {
+      state.isRequestingTrending = true;
+    },
+    fetchTrendingTopicsSuccess(state, payload) {
+      state.trendingTopics = payload;
+      state.isRequestingTrending = false;
+    },
+    trendingTopicsError(state, error) {
+      state.isRequestingTrending = false;
+      state.errored = true;
+      state.error = error.message;
     }
   },
   getters: {
-    getTopics(state) {
-      return state.topics;
-    },
-    getTopic(state) {
-      return state.currentTopic;
+    getTrendingTopicTags(state) {
+      return state.trendingTopics.map(trendingTopics => trendingTopics?.primaryTopic?.tag);
     }
-    // getTopic: (state, getters) => id => {
-    //   return getters.getTopics.find(topic => +topic.id === +id);
-    // }
   }
 };

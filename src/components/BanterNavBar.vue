@@ -5,6 +5,13 @@
         <b-img height="60" :src="require('../assets/logo.png')" alt="Banter Logo"></b-img>
       </router-link>
     </b-navbar-brand>
+
+    <b-navbar-nav>
+      <b-nav-item>
+        <router-link class="dropdown-item" to="/genres">All Genres</router-link>
+      </b-nav-item>
+    </b-navbar-nav>
+    
     <b-navbar-nav :style="{margin: 'auto'}" class="nav-search-form" align="center">
       <b-nav-form>
         <b-input-group id="nav-search-group" size="lg">
