@@ -19,10 +19,11 @@
             autofill="off"
             autocomplete="off"
             placeholder="Search"
-            @input="(val) => {return val.length > 0 ? queryTopics(val) : clearTopicQuery()}"
+            @input="(val) => {return val.length > 0 ? queryTopics(val) : clearTopicList()}"
             v-model="searchText"/>
+            <!-- TODO: Add keyboard actions -->
           <ul v-if="matchedTags.length > 0" id="autocomplete-options" class="dropdown-menu">
-            <li @click="clearTopicQuery()" :key="tag.id" v-for="tag in matchedTags">
+            <li @click="clearTopicList()" :key="tag.id" v-for="tag in matchedTags">
               <router-link class="dropdown-item" :to="`/topics/${tag.value}`">{{ tag.value }}</router-link>
             </li>
           </ul>
@@ -49,7 +50,11 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['queryTopics', 'clearTopicQuery'])
+    ...mapActions(['queryTopics', 'clearTopicQuery']),
+    clearTopicList() {
+      this.clearTopicQuery()
+      this.searchText = ''
+    }
   },
   data() {
     return {
