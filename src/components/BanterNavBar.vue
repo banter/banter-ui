@@ -11,8 +11,21 @@
           <b-input-group-prepend>
             <b-icon id="nav-search-icon" font-scale="2" icon="search" />
           </b-input-group-prepend>
-          <b-form-input id="nav-search-input" class="mr-sm-2 shadow-none" type="search" placeholder="Search">
-          </b-form-input>
+          <b-form-input 
+            list="matched-tags"
+            id="nav-search-input"
+            class="mr-sm-2 shadow-none"
+            type="search"
+            autofill="off"
+            autocomplete="off"
+            placeholder="Search"
+            @input="(val) => {return val.length > 0 ? queryTopics(val) : clearTopicQuery()}"
+            v-model="searchText"/>
+          <ul v-if="matchedTags.length > 0" id="autocomplete-options" class="dropdown-menu">
+            <li @click="clearTopicQuery()" :key="tag.id" v-for="tag in matchedTags">
+              <router-link class="dropdown-item" :to="`/topics/${tag.value}`">{{ tag.value }}</router-link>
+            </li>
+          </ul>
         </b-input-group>
       </b-nav-form>
     </b-navbar-nav>
@@ -23,6 +36,28 @@
     </b-navbar-nav>
   </b-navbar>
 </template>
+
+<script>
+import { mapActions, mapState } from 'vuex'
+
+export default {
+  name: 'BanterNavBar',
+  computed: {
+    ...mapState({
+      matchedTags: state => state.topics.tagMatches,
+      isLoading: state => state.topics.isRequestingQuery
+    })
+  },
+  methods: {
+    ...mapActions(['queryTopics', 'clearTopicQuery'])
+  },
+  data() {
+    return {
+      searchText: ""
+    }
+  }
+}
+</script>
 
 <style>
 #nav-search-group {
@@ -81,6 +116,15 @@
   align-items: center;
   text-align: center;
   margin: 7px 20px;
+}
+
+#autocomplete-options {
+  width: 100%;
+  display: block;
+}
+
+.autocomplete-option {
+  padding-bottom: 1px solid black;
 }
 
 </style>

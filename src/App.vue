@@ -10,7 +10,7 @@ import BanterNavbar from "./components/BanterNavBar"
 export default {
   name: 'App',
   created() {
-    this.$store.dispatch("fetchTopics");
+    this.$store.dispatch("fetchGenres");
   },
   components: {
     BanterNavbar

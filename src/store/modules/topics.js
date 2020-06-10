@@ -4,22 +4,24 @@ import API from "../../api";
 export const TopicsModule = {
   state: {
     topics: [],
+    tagMatches: [],
     currentTopic: {},
     isRequesting: false,
+    isRequestingQuery: false,
     errored: false,
     error: ''
   },
   actions: {
-    fetchTopics({
+    fetchGenres({
       commit
     }) {
       return new Promise((resolve, reject) => {
-        commit("fetchTopicsRequest");
+        commit("fetchGenresRequest");
         return axios
           .get(`${API.BASE_URL}${API.GENRES}`)
           .then(response => {
             if (response.status === 200) {
-              commit("fetchTopicsSuccess", response.data);
+              commit("fetchGenresSuccess", response.data);
               resolve(response.data.original);
             } else {
               reject(response);
@@ -51,13 +53,37 @@ export const TopicsModule = {
             reject(error);
           });
       });
+    },
+    queryTopics({
+      commit
+    }, tagString) {
+      return new Promise((resolve, reject) => {
+        commit("queryTopicsRequest");
+        return axios
+          .get(`${API.BASE_URL}${API.TOPICS}?q=${tagString}&limit=15`)
+          .then(response => {
+            if (response.status === 200) {
+              commit("queryTopicsSuccess", response.data);
+              resolve(response.data.original);
+            } else {
+              reject(response);
+            }
+          })
+          .catch(error => {
+            commit("queryTopicsError", error);
+            reject(error);
+          });
+      });
+    },
+    clearTopicQuery({commit}) {
+      commit("clearTopicsQueryRequest");
     }
   },
   mutations: {
-    fetchTopicsRequest(state) {
+    fetchGenresRequest(state) {
       state.isRequesting = true;
     },
-    fetchTopicsSuccess(state, payload) {
+    fetchGenresSuccess(state, payload) {
       state.topics = payload;
       state.isRequesting = false;
     },
@@ -78,6 +104,21 @@ export const TopicsModule = {
       state.errored = true;
       state.error = error.message;
     },
+    queryTopicsRequest(state) {
+      state.isRequestingQuery = true;
+    },
+    queryTopicsSuccess(state, payload) {
+      state.tagMatches = payload;
+      state.isRequestingQuery = false;
+    },
+    queryTopicsError(state, error) {
+      state.isRequestingQuery = false;
+      state.errored = true;
+      state.error = error.message;
+    },
+    clearTopicsQueryRequest(state) {
+      state.tagMatches = []
+    }
   },
   getters: {
     getTopics(state) {
