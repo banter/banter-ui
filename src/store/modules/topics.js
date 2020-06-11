@@ -1,5 +1,5 @@
-import axios from "axios";
 import API from "../../api";
+import {apiRequest} from "../helpers"
 
 export const TopicsModule = {
   state: {
@@ -17,86 +17,60 @@ export const TopicsModule = {
     fetchGenres({
       commit
     }) {
-      return new Promise((resolve, reject) => {
-        commit("fetchGenresRequest");
-        return axios
-          .get(`${API.BASE_URL}${API.GENRES}`)
-          .then(response => {
-            if (response.status === 200) {
-              commit("fetchGenresSuccess", response.data);
-              resolve(response.data.original);
-            } else {
-              reject(response);
-            }
-          })
-          .catch(error => {
-            commit("topicsError", error);
-            reject(error);
-          });
-      });
+      const requestData = {url: `${API.BASE_URL}${API.GENRES}`}
+      const mutations = {
+        preCommit: "fetchGenresRequest",
+        successCommit: "fetchGenresSuccess",
+        errorCommit: "topicsError"
+      }
+      return apiRequest({requestData, mutations, commit})
     },
     fetchTopic({
       commit
     }, topic) {
-      return new Promise((resolve, reject) => {
-        commit("fetchTopicRequest");
-        return axios
-          .get(`${API.BASE_URL}${API.TOPICS}${topic}`)
-          .then(response => {
-            if (response.status === 200) {
-              commit("fetchTopicSuccess", response.data);
-              resolve(response.data.original);
-            } else {
-              reject(response);
-            }
-          })
-          .catch(error => {
-            commit("topicError", error);
-            reject(error);
-          });
-      });
+      const requestData = {url: `${API.BASE_URL}${API.TOPICS}${topic}`}
+      const mutations = {
+        preCommit: "fetchTopicRequest",
+        successCommit: "fetchTopicSuccess",
+        errorCommit: "topicError"
+      }
+      return apiRequest({requestData, mutations, commit})
     },
     fetchTrendingTopics({
       commit
     }) {
-      return new Promise((resolve, reject) => {
-        commit("fetchTrendingTopicsRequest");
-        return axios
-          .get(`${API.BASE_URL}${API.TOPICS}${API.COLLECTIONS}?tagType=sport&sinceDaysAgo=5&limit=3`)
-          .then(response => {
-            if (response.status === 200) {
-              commit("fetchTrendingTopicsSuccess", response.data);
-              resolve(response.data.original);
-            } else {
-              reject(response);
-            }
-          })
-          .catch(error => {
-            commit("trendingTopicsError", error);
-            reject(error);
-          });
-      });
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}${API.TRENDING}`,
+        queries: {
+          sinceDaysAgo: 5,
+          limit: 3
+        }
+      }
+      const mutations = {
+        preCommit: "fetchTrendingTopicsRequest",
+        successCommit: "fetchTrendingTopicsSuccess",
+        errorCommit: "trendingTopicsError"
+      }
+
+      return apiRequest({requestData, mutations, commit})
     },
     queryTopics({
       commit
     }, tagString) {
-      return new Promise((resolve, reject) => {
-        commit("queryTopicsRequest");
-        return axios
-          .get(`${API.BASE_URL}${API.TOPICS}?q=${tagString}&limit=15`)
-          .then(response => {
-            if (response.status === 200) {
-              commit("queryTopicsSuccess", response.data);
-              resolve(response.data.original);
-            } else {
-              reject(response);
-            }
-          })
-          .catch(error => {
-            commit("queryTopicsError", error);
-            reject(error);
-          });
-      });
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}`,
+        queries: {
+          q: tagString,
+          limit: 15
+        }
+      }
+      const mutations = {
+        preCommit: "queryTopicsRequest",
+        successCommit: "queryTopicsSuccess",
+        errorCommit: "queryTopicsError"
+      }
+
+      return apiRequest({requestData, mutations, commit})
     },
     clearTopicQuery({commit}) {
       commit("clearTopicsQueryRequest");
@@ -157,7 +131,7 @@ export const TopicsModule = {
   },
   getters: {
     getTrendingTopicTags(state) {
-      return state.trendingTopics.map(trendingTopics => trendingTopics?.primaryTopic?.tag);
+      return state.trendingTopics.map(trendingTopics => trendingTopics?.tag);
     }
   }
 };
