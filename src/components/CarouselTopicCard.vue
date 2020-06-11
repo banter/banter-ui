@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     imageClass: function() {
-      switch (this.index) {
+      switch (this.index % 3) {
         case 0:
           return "cage"
         case 1:
@@ -67,8 +67,6 @@ export default {
 }
 
 .hero-card {
-  height: 15vw;
-  width: 15vw;
   min-height: 150px;
   min-width: 150px;
 }

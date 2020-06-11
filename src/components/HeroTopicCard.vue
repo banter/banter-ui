@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     imageClass: function() {
-      switch (this.index) {
+      switch (this.index % 3) {
         case 0:
           return "cage"
         case 1:
@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .card-wrapper {
   margin: 0 10px;
   position: relative;

@@ -1,11 +1,16 @@
 <template>
   <div class="hero-topic-card-container">
-    <CarouselTopicCard v-for="(topic, i) in collection.relatedTopics" :key="topic.id" :topic="topic.tag" :index="i"/>
+    <carousel class="carousel-content" :per-page="5" :paginationEnabled="false" :navigationEnabled="true">
+      <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
+        <CarouselTopicCard  :topic="topic.tag" :index="i"/>
+      </slide>
+    </carousel>
   </div>
 </template>
 
 <script>
 import CarouselTopicCard from "../components/CarouselTopicCard"
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   name: 'TopicCarouselScroll',
@@ -17,7 +22,9 @@ export default {
     }
   },
   components: {
-    CarouselTopicCard
+    CarouselTopicCard,
+    Carousel,
+    Slide
   }
 }
 </script>
@@ -27,5 +34,10 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.carousel-content {
+  width: 95%;
+  margin: 10px;
 }
 </style>
