@@ -13,6 +13,7 @@ export default {
   created() {
     this.$store.dispatch("fetchGenres");
     this.$store.dispatch("fetchTrendingTopics");
+    this.$store.dispatch("fetchCollections");
   },
   components: {
     BanterNavbar,

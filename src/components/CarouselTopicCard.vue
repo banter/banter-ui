@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'HeroTopicCard',
+  name: 'CarouselTopicCard',
   props: {
     index: {
       type: Number,
@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .card-wrapper {
   margin: 0 10px;
   position: relative;
@@ -67,10 +67,10 @@ export default {
 }
 
 .hero-card {
-  height: 25vw;
-  width: 25vw;
-  min-height: 250px;
-  min-width: 250px;
+  height: 15vw;
+  width: 15vw;
+  min-height: 150px;
+  min-width: 150px;
 }
 
 .topic-descriptor {

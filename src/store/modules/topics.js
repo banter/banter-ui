@@ -4,6 +4,7 @@ import {apiRequest} from "../helpers"
 export const TopicsModule = {
   state: {
     topics: [],
+    collections: [],
     tagMatches: [],
     trendingTopics: [],
     currentTopic: {},
@@ -50,6 +51,25 @@ export const TopicsModule = {
         preCommit: "fetchTrendingTopicsRequest",
         successCommit: "fetchTrendingTopicsSuccess",
         errorCommit: "trendingTopicsError"
+      }
+
+      return apiRequest({requestData, mutations, commit})
+    },
+    fetchCollections({
+      commit
+    }) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}${API.COLLECTIONS}`,
+        queries: {
+          tagType: "sport",
+          sinceDaysAgo: 5,
+          limit: 10
+        }
+      }
+      const mutations = {
+        preCommit: "fetchCollectionsRequest",
+        successCommit: "fetchCollectionsSuccess",
+        errorCommit: "collectionsError"
       }
 
       return apiRequest({requestData, mutations, commit})
@@ -125,6 +145,18 @@ export const TopicsModule = {
     },
     trendingTopicsError(state, error) {
       state.isRequestingTrending = false;
+      state.errored = true;
+      state.error = error.message;
+    },
+    fetchCollectionsRequest(state) {
+      state.isRequestingCollections = true;
+    },
+    fetchCollectionsSuccess(state, payload) {
+      state.collections = payload;
+      state.isRequestingCollections = false;
+    },
+    collectionsError(state, error) {
+      state.isRequestingCollections = false;
       state.errored = true;
       state.error = error.message;
     }

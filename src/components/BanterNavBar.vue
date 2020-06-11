@@ -37,11 +37,11 @@
         </b-input-group>
       </b-nav-form>
     </b-navbar-nav>
-    <b-navbar-nav class="align-ml">
+    <!-- <b-navbar-nav class="align-ml">
       <b-button size="sm" id="nav-signup" type="submit">
         <p id="nav-signup-text">Sign Up</p>
       </b-button>
-    </b-navbar-nav>
+    </b-navbar-nav> -->
   </b-navbar>
 </template>
 

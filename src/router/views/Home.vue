@@ -1,12 +1,14 @@
 <template>
   <div class="main-content">
     <TopicHero :topics="getTrendingTopicTags"/>
-    <TopicCarouselScroll/>
+    <div class="carousel-container" v-for="(collection, index) in collections" :key="`carousel-${index}`">
+      <TopicCarouselScroll :collection="collection"/>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import TopicHero from "../../containers/TopicHero"
 import TopicCarouselScroll from "../../containers/TopicCarouselScroll"
 
@@ -17,7 +19,10 @@ export default {
     TopicCarouselScroll
   },
   computed: {
-    ...mapGetters(["getTrendingTopicTags"])
+    ...mapGetters(["getTrendingTopicTags"]),
+    ...mapState({
+      collections: state => state.topics.collections
+    }),
   }
 }
 </script>
