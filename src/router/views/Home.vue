@@ -39,8 +39,6 @@ a {
 }
 .main-content {
   margin: auto;
-  width: 600px;
-  margin-top: 50px;
 }
 .topics-list {
   margin-top: 50px;

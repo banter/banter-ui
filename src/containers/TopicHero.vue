@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <HeroTopicCard v-for="topic in topics" :key="topic.id" :topic="topic"/>
+  <div class="hero-topic-card-container">
+    <HeroTopicCard v-for="(topic, i) in topics" :key="topic.id" :topic="topic" :index="i"/>
   </div>
 </template>
 
@@ -23,5 +23,9 @@ export default {
 </script>
 
 <style>
-
+.hero-topic-card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 </style>
