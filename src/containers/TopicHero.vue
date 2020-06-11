@@ -1,11 +1,11 @@
 <template>
   <div class="hero-topic-card-container">
-    <HeroTopicCard v-for="(topic, i) in topics" :key="topic.id" :topic="topic" :index="i"/>
+    <TopicCard type="hero-card" v-for="(topic, i) in topics" :key="topic.id" :topic="topic" :index="i"/>
   </div>
 </template>
 
 <script>
-import HeroTopicCard from "../components/HeroTopicCard"
+import TopicCard from "../components/TopicCard"
 
 export default {
   name: 'TopicHero',
@@ -17,7 +17,7 @@ export default {
     }
   },
   components: {
-    HeroTopicCard
+    TopicCard
   }
 }
 </script>

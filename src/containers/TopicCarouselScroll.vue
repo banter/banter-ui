@@ -2,27 +2,27 @@
   <div class="hero-topic-card-container">
     <carousel class="carousel-content" :per-page="5" :paginationEnabled="false" :navigationEnabled="true">
       <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
-        <CarouselTopicCard  :topic="topic.tag" :index="i"/>
+        <TopicCard type="carousel-card" :topic="topic.tag" :index="i"/>
       </slide>
     </carousel>
   </div>
 </template>
 
 <script>
-import CarouselTopicCard from "../components/CarouselTopicCard"
+import TopicCard from "../components/TopicCard"
 import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   name: 'TopicCarouselScroll',
   props: {
     collection: {
-      type: Array,
+      type: Object,
       required: true,
-      default: () => []
+      default: () => {return {}}
     }
   },
   components: {
-    CarouselTopicCard,
+    TopicCard,
     Carousel,
     Slide
   }
