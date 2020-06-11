@@ -1,15 +1,19 @@
 <template>
-  <div class="hero-topic-card-container">
-    <carousel class="carousel-content" :per-page="5" :paginationEnabled="false" :navigationEnabled="true">
-      <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
-        <TopicCard type="carousel-card" :topic="topic.tag" :index="i"/>
-      </slide>
-    </carousel>
+  <div>
+    <CarouselHeader :topic="collection.primaryTopic.tag"/>
+    <div class="topic-card-container">
+      <carousel class="carousel-content" :per-page="5" :paginationEnabled="false" :navigationEnabled="true">
+        <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
+          <TopicCard type="carousel-card" :topic="topic.tag" :index="i"/>
+        </slide>
+      </carousel>
+    </div>
   </div>
 </template>
 
 <script>
 import TopicCard from "../components/TopicCard"
+import CarouselHeader from "../components/CarouselHeader"
 import { Carousel, Slide } from 'vue-carousel';
 
 export default {
@@ -23,6 +27,7 @@ export default {
   },
   components: {
     TopicCard,
+    CarouselHeader,
     Carousel,
     Slide
   }
@@ -30,7 +35,7 @@ export default {
 </script>
 
 <style>
-.hero-topic-card-container {
+.topic-card-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -39,5 +44,13 @@ export default {
 .carousel-content {
   width: 95%;
   margin: 10px;
+}
+
+.carousel-header-container {
+  width: 380px;
+  height: 70px;
+  font-family: Roboto;
+  font-size: 24px;
+  letter-spacing: 0.25px;
 }
 </style>

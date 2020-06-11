@@ -112,52 +112,56 @@ export default {
 }
 
 // Carousel Card styles
-.carousel-card {
-  min-height: 250px;
-  max-height: 350px;
-  min-width: 250px;
-  max-width: 350px;
+.carousel-card-wrapper {
+  width: 250px;
+  height: 250px;
+  .carousel-card {
+    min-height: 250px;
+    max-height: 350px;
+    min-width: 250px;
+    max-width: 350px;
 
-  &::after{
-    border-radius: 25px;
-  }
+    &::after{
+      border-radius: 25px;
+    }
 
-  .topic-descriptor {
-    background:rgba(0,0,0,0.65);
-    color: white;
-    width: 100%;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 0;
-    border-radius: 0 0 25px 25px;
-  }
+    .topic-descriptor {
+      background:rgba(0,0,0,0.65);
+      color: white;
+      width: 100%;
+      height: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      border-radius: 0 0 25px 25px;
+    }
 
-  .topic-label {
-    font-style: normal;
-    font-weight: 300;
-    font-size: 22px;
-    text-align: center;
-    line-height: 22px;
-    height: 100%;
-    padding: 20px 0px;
+    .topic-label {
+      font-style: normal;
+      font-weight: 300;
+      font-size: 22px;
+      text-align: center;
+      line-height: 22px;
+      height: 100%;
+      padding: 20px 0px;
+    }
   }
 }
 
 .cage::after {
-  background: url('https://www.placecage.com/700/700');
+  background: url('https://www.placecage.com/450/450');
 }
 .corgi::after {
-  background: url('http://placecorgi.com/500/500');
+  background: url('http://placecorgi.com/450/450');
 }
 
 .bear::after {
-  background: url('http://placebear.com/500/500');
+  background: url('http://placebear.com/450/450');
 }
 
 .placeimg::after {
-  background: url('http://placeimg.com/500/500');
+  background: url('http://placeimg.com/450/450');
 }
 </style>

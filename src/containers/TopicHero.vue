@@ -26,6 +26,6 @@ export default {
 .hero-topic-card-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 </style>
