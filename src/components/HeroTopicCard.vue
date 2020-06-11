@@ -1,12 +1,14 @@
 <template>
   <div class="card-wrapper">
-    <div :class="`hero-card ${imageClass}`">
-      <div class="topic-descriptor">
-        <p class="topic-label">
-          {{topic.value}}
-        </p>
+    <router-link :to="`/topics/${topic.value}`">
+      <div :class="`hero-card ${imageClass}`">
+        <div class="topic-descriptor">
+          <p class="topic-label">
+            {{topic.value}}
+          </p>
+        </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
