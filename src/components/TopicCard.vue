@@ -1,7 +1,8 @@
 <template>
   <div :class="`card-wrapper ${type}-wrapper`">
     <router-link :to="`/topics/${topic.value}`">
-      <div :class="`image-card ${imageClass} ${type}`">
+      <div :class="`image-card ${type}`">
+        <b-img class="topic-image" :src="`${topic.imageUrl || 'http://placeimg.com/450/450'}`"/>
         <div class="topic-descriptor">
           <p class="topic-label">
             {{topic.value}}
@@ -31,20 +32,6 @@ export default {
       required: true,
       default: () => ""
     }
-  },
-  computed: {
-    imageClass: function() {
-      switch (this.index % 3) {
-        case 0:
-          return "cage"
-        case 1:
-          return "corgi"
-        case 2:
-          return "bear"
-        default:
-          return "placeimg"
-      }
-    },
   }
 }
 </script>
@@ -58,25 +45,28 @@ export default {
 
 // The hover overlay
 .image-card {
-  &:after {
-    content: "";
-    width: 100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    transition: all 1s;
-    -webkit-transition: all 1s;
-    opacity: 0.5;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;
-  }
+  position: relative;
+  overflow: hidden;
   &:hover {
-    &:after {
-      opacity: 1;
+    .topic-image {
+      background:rgba(0,0,0,0.6);
+      transition: all 1s;
+      opacity: 0.5;
+      &:after {
+        opacity: 1;
+      }
     }
+  }
+  .topic-image {
+    position: absolute;
+    object-fit: cover;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    top: 50%;     
+    left: 50%;
+    transform: translate( -50%, -50%);
+    border-radius: 25px;
   }
 }
 
@@ -94,7 +84,7 @@ export default {
     width: 50%;
     height: 65px;
     left: 0;
-    bottom: 10px;
+    bottom: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -121,6 +111,13 @@ export default {
     min-width: 250px;
     max-width: 350px;
 
+    &:hover {
+      .topic-descriptor {
+        transition: all 1.5s;
+        background-color :black;
+      }
+    }
+    
     &::after{
       border-radius: 25px;
     }
@@ -148,20 +145,5 @@ export default {
       padding: 20px 0px;
     }
   }
-}
-
-.cage::after {
-  background: url('https://www.placecage.com/450/450');
-}
-.corgi::after {
-  background: url('http://placecorgi.com/450/450');
-}
-
-.bear::after {
-  background: url('http://placebear.com/450/450');
-}
-
-.placeimg::after {
-  background: url('http://placeimg.com/450/450');
 }
 </style>
