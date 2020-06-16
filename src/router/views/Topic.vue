@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 import AudioPlayer from "../../components/AudioPlayer";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -84,15 +84,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTopic']),
     ...mapState({
       audioConfig: state => state.audio.audioConfig,
       currentAudio: state => state.audio.currentAudio,
       currentDiscussion: state => state.audio.currentDiscussion,
-      isLoading: state => state.topics.isRequesting
+      isLoading: state => state.topics.isRequesting,
+      chosenTopic: state => state.topics.currentTopic
     }),
     currentTopic: function() {
-      return this.getTopic
+      return this.chosenTopic
     },
     isPlaying: function() {
       return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
