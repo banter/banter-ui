@@ -119,7 +119,12 @@ export const AudioModule = {
     },
     updateTimestamp(state) {
       const { endTimeMillis } = state.currentDiscussion
-      const currentTime = (+state.audioConfig.seek() || 0) * 1000;
+      let currentTime
+      try {
+        currentTime = (+state?.audioConfig?.seek() || 0) * 1000
+      } catch (e) {
+        currentTime = 0
+      }
       const remainingMillis = (endTimeMillis && currentTime) ? endTimeMillis - currentTime : 0
       state.timestampRemaining = remainingMillis
     }
