@@ -2,11 +2,7 @@
   <div class="main-content">
     <div v-if="!isLoading">
       <h2>{{currentTopic.name}}</h2>
-        <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying"/>
-      <div class="playlist-toggle">
-        <input type="checkbox" id="description" v-model="displayDescription">
-        <label class="checkbox-label" for="description">Display Description</label>
-      </div>
+      <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying"/>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
         <label class="checkbox-label" for="ids">Display Ids</label>
@@ -21,17 +17,18 @@
           v-for="(discussion, index) in currentTopic.playlist" 
           :key="`discussion-${index}`">
 
-          <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
-          <router-link to="#">
+          <div>
             <div class="d-flex w-100 justify-content-between flex-column">
-              <h4 class="mb-1">{{discussion.podcastTitle}}</h4>
-              <h5 class="mb-1">{{discussion.episodeTitle}}</h5>
-              <h6 class="mb-1">{{discussion.startTime}}-{{discussion.endTime || 'End'}}</h6>
+              <div class="discussion-top-row">
+                <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
+                <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
+                <div class="discussion-text-content">
+                  <h5 class="mb-1">{{discussion.podcastTitle}}</h5>
+                  <p class="mb-1">{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
+                </div>
+              </div>
             </div>
-          </router-link>
-          <p v-if="displayDescription" class="mb-1">
-            {{discussion.description}}
-          </p>
+          </div>
           <div class="tag-display">
             <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="primary">
               <router-link :to="`/topics/${tag.value}`">
@@ -59,7 +56,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 import AudioPlayer from "../../components/AudioPlayer";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -77,22 +74,21 @@ export default {
     return {
       trackInterval: null,
       trackTime: 0,
-      displayDescription: true,
       displayIds: false,
       displayJson: false,
       showIds: true
     }
   },
   computed: {
-    ...mapGetters(['getTopic']),
     ...mapState({
       audioConfig: state => state.audio.audioConfig,
       currentAudio: state => state.audio.currentAudio,
       currentDiscussion: state => state.audio.currentDiscussion,
-      isLoading: state => state.topics.isRequesting
+      isLoading: state => state.topics.isRequesting,
+      chosenTopic: state => state.topics.currentTopic
     }),
     currentTopic: function() {
-      return this.getTopic
+      return this.chosenTopic
     },
     isPlaying: function() {
       return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
@@ -104,9 +100,6 @@ export default {
       (this.currentDiscussion && this.currentDiscussion.discussionId) === discussion.discussionId
         ? this.pauseAudio()
         : this.createAudio(discussion)
-    },
-    playlistItemText(discussion) {
-      return this.displayDescription ? '' : `${discussion.podcastTitle} (${discussion.episodeTitle}) (${discussion.startTime}-${discussion.endTime || 'End'})`
     }
   },
 }
@@ -134,9 +127,12 @@ a {
   margin-top: 50px;
 }
 
+.discussion-playlist {
+  margin-bottom: 60px;
+}
+
 .discussion-icon {
-  position: absolute;
-  left: 0;
+  cursor: pointer;
 }
 
 .playlist-toggle {
@@ -166,5 +162,22 @@ a {
 
 .tag-display span {
   margin: 2px;
+}
+
+.podcast-thumbnail {
+  width: 20%;
+  height: auto;
+}
+
+.discussion-top-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.discussion-text-content {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
 }
 </style>
