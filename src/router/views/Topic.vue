@@ -2,11 +2,7 @@
   <div class="main-content">
     <div v-if="!isLoading">
       <h2>{{currentTopic.name}}</h2>
-        <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying"/>
-      <div class="playlist-toggle">
-        <input type="checkbox" id="description" v-model="displayDescription">
-        <label class="checkbox-label" for="description">Display Description</label>
-      </div>
+      <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying"/>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
         <label class="checkbox-label" for="ids">Display Ids</label>
@@ -78,7 +74,6 @@ export default {
     return {
       trackInterval: null,
       trackTime: 0,
-      displayDescription: true,
       displayIds: false,
       displayJson: false,
       showIds: true
@@ -105,9 +100,6 @@ export default {
       (this.currentDiscussion && this.currentDiscussion.discussionId) === discussion.discussionId
         ? this.pauseAudio()
         : this.createAudio(discussion)
-    },
-    playlistItemText(discussion) {
-      return this.displayDescription ? '' : `${discussion.podcastTitle} (${discussion.episodeTitle}) (${discussion.startTime}-${discussion.endTime || 'End'})`
     }
   },
 }
