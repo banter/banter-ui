@@ -26,9 +26,7 @@
         <span v-if="isPlaying">({{remainingTime ? remainingTime   : ''}})</span>  
       </div>
       <div class="audio-description">
-        <div class="audio-image">
-          <span><img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/></span>
-        </div>
+        <span><img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/></span>
         <div class="audio-content">
           <span class="now-playing-title" v-if="discussion">{{`${discussion.podcastTitle} (${episodeDate.format("MMM DD, YYYY")})`}}</span>
           <span class="now-playing-description" v-if="discussion">{{discussion.description}}</span>
@@ -47,44 +45,23 @@ export default {
     components: {
       LoadingSpinner
     },
-    props: {
-      discussion: {
-        type: Object,
-        required: false,
-        default: () => {}
-      },
-      isPlaying: {
-        type: Boolean,
-        required: true,
-        default: false
-      },
-      trackTime: {
-        type: Number,
-        required: true,
-        default: 0
-      },
-      playAudio: {
-        type: Function,
-        required: true,
-        default: () => {}
-      },
-      pauseAudio: {
-        type: Function,
-        required: true,
-        default: () => {}
-      }
-    },
     mounted() {
+      console.log("In Mounted")
       this.trackInterval = setInterval(() => {
         this.getRemainingTime()
       }, 750);
         this.getRemainingTime()
     },
     destroyed() {
+      console.log("In Destroyed")
       clearInterval(this.trackInterval);
     },
     watch: {
+      // Does this monitor to see if timestamp remaining changes, if it does, the newVal is the new value and it gets update
+      // Accordingly 
       timestampRemaining(newVal) {
+        
+        console.log("timestampRemiaing", newVal)
         const duration = this.$moment.duration((newVal || 0), 'milliseconds');
         this.remainingTime = this.$moment.utc(duration.as('milliseconds')).format('HH:mm:ss')
       }
@@ -92,7 +69,11 @@ export default {
     computed: {
       ...mapState({
         timestampRemaining: state => state.audio.timestampRemaining,
-        isLoading: state => state.audio.isRequesting
+        isLoading: state => state.audio.isRequesting,
+        audioConfig: state => state.audio.audioConfig,
+        currentAudio: state => state.audio.currentAudio,
+        discussion: state => state.audio.currentDiscussion,
+        chosenTopic: state => state.topics.currentTopic
       }),
       audioIcon: function() {
         return this.isPlaying ? 'pause' : 'play'
@@ -106,6 +87,9 @@ export default {
         } else {
           return null
         }
+      },
+      isPlaying: function() {
+        return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
       }
     },
     data() {
@@ -114,7 +98,7 @@ export default {
       }
     },
     methods: {
-      ...mapActions(['goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
+      ...mapActions(['playAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
     }
   }
 </script>

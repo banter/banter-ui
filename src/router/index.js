@@ -13,7 +13,7 @@ export const router = new Router({
   mode: "history",
   routes: [{
     path: "/",
-    name: 'Topics',
+    name: 'Home',
     component: Home
   },
   {

@@ -26,9 +26,7 @@ export const TopicsModule = {
       }
       return apiRequest({requestData, mutations, commit})
     },
-    fetchTopic({
-      commit
-    }, topic) {
+    fetchTopic({ commit }, topic) {
       const requestData = {url: `${API.BASE_URL}${API.TOPICS}${topic}`}
       const mutations = {
         preCommit: "fetchTopicRequest",
