@@ -21,17 +21,18 @@
           v-for="(discussion, index) in currentTopic.playlist" 
           :key="`discussion-${index}`">
 
-          <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
-          <router-link to="#">
+          <div>
             <div class="d-flex w-100 justify-content-between flex-column">
-              <h4 class="mb-1">{{discussion.podcastTitle}}</h4>
-              <h5 class="mb-1">{{discussion.episodeTitle}}</h5>
-              <h6 class="mb-1">{{discussion.startTime}}-{{discussion.endTime || 'End'}}</h6>
+              <div class="discussion-top-row">
+                <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
+                <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
+                <div class="discussion-text-content">
+                  <h5 class="mb-1">{{discussion.podcastTitle}}</h5>
+                  <p class="mb-1">{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
+                </div>
+              </div>
             </div>
-          </router-link>
-          <p v-if="displayDescription" class="mb-1">
-            {{discussion.description}}
-          </p>
+          </div>
           <div class="tag-display">
             <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="primary">
               <router-link :to="`/topics/${tag.value}`">
@@ -134,9 +135,12 @@ a {
   margin-top: 50px;
 }
 
+.discussion-playlist {
+  margin-bottom: 60px;
+}
+
 .discussion-icon {
-  position: absolute;
-  left: 0;
+  cursor: pointer;
 }
 
 .playlist-toggle {
@@ -166,5 +170,22 @@ a {
 
 .tag-display span {
   margin: 2px;
+}
+
+.podcast-thumbnail {
+  width: 20%;
+  height: auto;
+}
+
+.discussion-top-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.discussion-text-content {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
 }
 </style>

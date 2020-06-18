@@ -26,8 +26,13 @@
         <span v-if="isPlaying">({{remainingTime ? remainingTime   : ''}})</span>  
       </div>
       <div class="audio-description">
-        <span class="now-playing-title" v-if="discussion">{{discussion.episodeTitle}}</span>
-        <span class="now-playing-description" v-if="discussion">{{discussion.description}}</span>
+        <div class="audio-image">
+          <span><img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/></span>
+        </div>
+        <div class="audio-content">
+          <span class="now-playing-title" v-if="discussion">{{discussion.episodeTitle}}</span>
+          <span class="now-playing-description" v-if="discussion">{{discussion.description}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -124,6 +129,10 @@ export default {
     display: flex;
   }
 
+  .audio-description {
+    display: flex;
+  }
+
   .audio-player-container div {
     margin: auto;
   }
@@ -152,5 +161,14 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     font-style: italic;
+  }
+
+  .podcast-thumbnail {
+    width: 50px;
+    height: auto;
+  }
+  
+  .audio-content {
+    padding-left: 15px;
   }
 </style>
