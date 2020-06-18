@@ -70,6 +70,12 @@ export default {
   created () {
     this.fetchTopic(this.$route.params.topicName)
   },
+  mounted () {
+    const newPlaylist = this.currentTopic?.playlist
+    if (newPlaylist) {
+      this.createAudio(newPlaylist[0])
+    }
+  },
   data() {
     return {
       trackInterval: null,
