@@ -2,7 +2,7 @@
   <div class="main-content">
     <div v-if="!isLoading">
       <h2>{{currentTopic.name}}</h2>
-      <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying"/>
+      <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying" :episodeDate="episodeDate"/>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
         <label class="checkbox-label" for="ids">Display Ids</label>
@@ -23,8 +23,8 @@
                 <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
                 <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
                 <div class="discussion-text-content">
-                  <h5 class="mb-1">{{discussion.podcastTitle}}</h5>
-                  <p class="mb-1">{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
+                  <h5 class="mb-1">{{`${discussion.podcastTitle}`}}</h5>
+                  <p class="mb-1">{{episodeDate.format("MMM DD")}} - {{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
                 </div>
               </div>
             </div>
@@ -99,6 +99,9 @@ export default {
     },
     isPlaying: function() {
       return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
+    },
+    episodeDate:function() {
+      return this.$moment(`${this.currentDiscussion.episodePublishDate.monthValue}-${this.currentDiscussion.episodePublishDate.dayOfMonth}-${this.currentDiscussion.episodePublishDate.year}`)
     }
   },
   methods: {
