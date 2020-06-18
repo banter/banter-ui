@@ -46,22 +46,16 @@ export default {
       LoadingSpinner
     },
     mounted() {
-      console.log("In Mounted")
       this.trackInterval = setInterval(() => {
         this.getRemainingTime()
       }, 750);
         this.getRemainingTime()
     },
     destroyed() {
-      console.log("In Destroyed")
       clearInterval(this.trackInterval);
     },
     watch: {
-      // Does this monitor to see if timestamp remaining changes, if it does, the newVal is the new value and it gets update
-      // Accordingly 
       timestampRemaining(newVal) {
-        
-        console.log("timestampRemiaing", newVal)
         const duration = this.$moment.duration((newVal || 0), 'milliseconds');
         this.remainingTime = this.$moment.utc(duration.as('milliseconds')).format('HH:mm:ss')
       }

@@ -80,7 +80,6 @@ export default {
       showIds: true
     }
   },
-  // Dont have to call a function under computed 
   computed: {
     ...mapState({
       currentDiscussion: state => state.audio.currentDiscussion,
