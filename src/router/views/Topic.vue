@@ -2,14 +2,13 @@
   <div class="main-content">
     <div v-if="!isLoading">
       <h2>{{currentTopic.name}}</h2>
-      <AudioPlayer v-if="audioConfig" :discussion="currentDiscussion" :pauseAudio="pauseAudio" :playAudio="playAudio" :trackTime="trackTime" :isPlaying="isPlaying" :episodeDate="episodeDate"/>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
         <label class="checkbox-label" for="ids">Display Ids</label>
       </div>
       <div class="playlist-toggle">
         <input type="checkbox" id="json" v-model="displayJson">
-        <label class="checkbox-label" for="json">Display JSON</label>
+        <label class="checkbox-label" for="json">Display </label>
       </div>
       <b-list-group class="discussion-playlist">
         <b-list-group-item 
@@ -24,7 +23,7 @@
                 <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
                 <div class="discussion-text-content">
                   <h5 class="mb-1">{{`${discussion.podcastTitle}`}}</h5>
-                  <p class="mb-1">{{`${episodeDate && episodeDate.format("MMM DD") + ' - '}`}}{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
+                  <p class="mb-1">{{`${discussionDate(discussion) && discussionDate(discussion).format("MMM DD") + ' - '}`}}{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
                 </div>
               </div>
             </div>
@@ -57,14 +56,11 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-
-import AudioPlayer from "../../components/AudioPlayer";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default {
   name: 'Topic',
   components: {
-    AudioPlayer,
     LoadingSpinner
   },
   created () {
@@ -79,8 +75,6 @@ export default {
   },
   data() {
     return {
-      trackInterval: null,
-      trackTime: 0,
       displayIds: false,
       displayJson: false,
       showIds: true
@@ -88,32 +82,27 @@ export default {
   },
   computed: {
     ...mapState({
-      audioConfig: state => state.audio.audioConfig,
-      currentAudio: state => state.audio.currentAudio,
       currentDiscussion: state => state.audio.currentDiscussion,
       isLoading: state => state.topics.isRequesting,
       chosenTopic: state => state.topics.currentTopic
     }),
     currentTopic: function() {
       return this.chosenTopic
-    },
-    isPlaying: function() {
-      return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
-    },
-    episodeDate:function() {
-      if (this?.currentDiscussion?.episodePublishDate) {
-        return this.$moment(`${this.currentDiscussion.episodePublishDate.monthValue}-${this.currentDiscussion.episodePublishDate.dayOfMonth}-${this.currentDiscussion.episodePublishDate.year}`)
-      } else {
-        return null
-      }
     }
   },
   methods: {
-    ...mapActions(['fetchTopic', 'playAudio', 'pauseAudio', 'createAudio', 'killAudio']),
+    ...mapActions(['fetchTopic', 'pauseAudio', 'createAudio']),
     audioAction(discussion) {
       (this.currentDiscussion && this.currentDiscussion.discussionId) === discussion.discussionId
-        ? this.pauseAudio()
+      ? this.pauseAudio()
         : this.createAudio(discussion)
+    },
+    discussionDate(discussion){
+      if (discussion?.episodePublishDate) {
+        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`)
+      } else {
+        return null
+      }
     }
   },
 }
