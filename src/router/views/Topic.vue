@@ -24,7 +24,7 @@
                 <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
                 <div class="discussion-text-content">
                   <h5 class="mb-1">{{`${discussion.podcastTitle}`}}</h5>
-                  <p class="mb-1">{{episodeDate.format("MMM DD")}} - {{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
+                  <p class="mb-1">{{`${episodeDate && episodeDate.format("MMM DD") + ' - '}`}}{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
                 </div>
               </div>
             </div>
@@ -101,7 +101,11 @@ export default {
       return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
     },
     episodeDate:function() {
-      return this.$moment(`${this.currentDiscussion.episodePublishDate.monthValue}-${this.currentDiscussion.episodePublishDate.dayOfMonth}-${this.currentDiscussion.episodePublishDate.year}`)
+      if (this?.currentDiscussion?.episodePublishDate) {
+        return this.$moment(`${this.currentDiscussion.episodePublishDate.monthValue}-${this.currentDiscussion.episodePublishDate.dayOfMonth}-${this.currentDiscussion.episodePublishDate.year}`)
+      } else {
+        return null
+      }
     }
   },
   methods: {

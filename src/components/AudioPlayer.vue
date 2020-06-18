@@ -101,7 +101,11 @@ export default {
         return this.isPlaying ? this.pauseAudio : this.playAudio
       },
       episodeDate:function() {
-        return this.$moment(`${this.discussion.episodePublishDate.monthValue}-${this.discussion.episodePublishDate.dayOfMonth}-${this.discussion.episodePublishDate.year}`)
+        if (this?.discussion?.episodePublishDate) {
+          return this.$moment(`${this.discussion.episodePublishDate.monthValue}-${this.discussion.episodePublishDate.dayOfMonth}-${this.discussion.episodePublishDate.year}`)
+        } else {
+          return null
+        }
       }
     },
     data() {
