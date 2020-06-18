@@ -70,9 +70,10 @@ export default {
   created () {
     this.fetchTopic(this.$route.params.topicName)
   },
-  mounted () {
-    const newPlaylist = this.currentTopic?.playlist
-    if (newPlaylist) {
+  async mounted () {
+    if (this.$route.params.topicName !== this.currentTopic.name) {
+      await this.fetchTopic(this.$route.params.topicName)
+      const newPlaylist = this.currentTopic?.playlist
       this.createAudio(newPlaylist[0])
     }
   },

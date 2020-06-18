@@ -30,7 +30,7 @@
           <span><img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/></span>
         </div>
         <div class="audio-content">
-          <span class="now-playing-title" v-if="discussion">{{discussion.episodeTitle}}</span>
+          <span class="now-playing-title" v-if="discussion">{{`${discussion.podcastTitle} (${episodeDate.format("MMM DD, YYYY")})`}}</span>
           <span class="now-playing-description" v-if="discussion">{{discussion.description}}</span>
         </div>
       </div>
@@ -99,6 +99,9 @@ export default {
       },
       audioAction: function() {
         return this.isPlaying ? this.pauseAudio : this.playAudio
+      },
+      episodeDate:function() {
+        return this.$moment(`${this.discussion.episodePublishDate.monthValue}-${this.discussion.episodePublishDate.dayOfMonth}-${this.discussion.episodePublishDate.year}`)
       }
     },
     data() {
