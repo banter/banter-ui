@@ -53,6 +53,7 @@ export const AudioModule = {
           const nextItemIndex = playlist.findIndex(playlistItem => playlistItem.discussionId === state.currentDiscussion.discussionId) + 1
           const nextDiscussion = playlist[nextItemIndex]
   
+          // If there is a next discussion, createAudio, otheriwse killAudio?
           nextDiscussion ? dispatch('createAudio', nextDiscussion) : dispatch('killAudio')
         });
       }
@@ -79,6 +80,7 @@ export const AudioModule = {
       commit('updateTimestamp')
     }
   },
+  // Edits the data
   mutations: {
     createAudioRequest(state) {
       state.isRequesting = true

@@ -1,15 +1,18 @@
 <template>
   <div id="app">
     <BanterNavbar/>
+    <AudioPlayer v-if="audioConfig"/>
     <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
 <script>
 import BanterNavbar from "./components/BanterNavBar"
+import AudioPlayer from "./components/AudioPlayer"
+import { mapState } from 'vuex'
 
 export default {
-  name: 'App',
+  name: 'Banter',
   created() {
     this.$store.dispatch("fetchGenres");
     this.$store.dispatch("fetchTrendingTopics");
@@ -17,7 +20,14 @@ export default {
   },
   components: {
     BanterNavbar,
+    AudioPlayer
+  },
+  computed: {
+    ...mapState({
+      audioConfig: state => state.audio.audioConfig
+    }),
   }
+
 }
 </script>
 
