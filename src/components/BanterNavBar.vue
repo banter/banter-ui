@@ -51,12 +51,16 @@
         <b-dropdown-item @click="clearUser">Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
       <b-modal id="modal-1" hide-footer hide-header title="BootstrapVue">
-        <p class="my-4">Time to sign in</p>
-        <a href="http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:8081">
-          <b-button id="google-signin" type="submit">
-            <span>Google</span>
-          </b-button>
-        </a>
+        <div class="social-logins">
+          <a 
+            v-for="oauthProvider in OAUTH"
+            class="btn btn-outline-dark social-login" role="button" style="text-transform:none"
+            :key="`${oauthProvider.name}-login`"
+            :href="`http://localhost:8080/oauth${oauthProvider.name === 'twitter' ? '1' : '2'}/authorization/${oauthProvider.name}?redirect_uri=http://localhost:8081`">
+            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" :src="oauthProvider.logo" />
+            <span>Log in with <span class="brand-name">{{oauthProvider.name}}</span></span>
+          </a>
+        </div>
       </b-modal>
     </b-navbar-nav>
   </b-navbar>
@@ -64,6 +68,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import { OAUTH } from '../constants/OAuth'
 
 export default {
   name: 'BanterNavBar',
@@ -83,7 +88,8 @@ export default {
   },
   data() {
     return {
-      searchText: ""
+      searchText: "",
+      OAUTH
     }
   }
 }
@@ -155,6 +161,26 @@ export default {
 
 .autocomplete-option {
   padding-bottom: 1px solid black;
+}
+
+.social-logins {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.email-login {
+  margin: auto;
+}
+
+.social-login {
+  margin: 5px;
+  max-width: 250px;
+}
+
+.brand-name {
+  text-transform: capitalize;
 }
 
 </style>
