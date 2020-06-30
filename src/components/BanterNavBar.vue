@@ -37,11 +37,28 @@
         </b-input-group>
       </b-nav-form>
     </b-navbar-nav>
-    <!-- <b-navbar-nav class="align-ml">
-      <b-button size="sm" id="nav-signup" type="submit">
+    <b-navbar-nav class="align-ml">
+      <b-button v-if="!currentUser.email" v-b-modal.modal-1 size="sm" id="nav-signup" type="submit">
         <p id="nav-signup-text">Sign Up</p>
       </b-button>
-    </b-navbar-nav> -->
+
+      <b-nav-item-dropdown v-if="currentUser.email" right>
+        <!-- Using 'button-content' slot -->
+        <template v-slot:button-content>
+          <em>{{currentUser.email}}</em>
+        </template>
+        <b-dropdown-item href="#">Profile</b-dropdown-item>
+        <b-dropdown-item @click="clearUser">Sign Out</b-dropdown-item>
+      </b-nav-item-dropdown>
+      <b-modal id="modal-1" hide-footer hide-header title="BootstrapVue">
+        <p class="my-4">Time to sign in</p>
+        <a href="http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:8081">
+          <b-button id="google-signin" type="submit">
+            <span>Google</span>
+          </b-button>
+        </a>
+      </b-modal>
+    </b-navbar-nav>
   </b-navbar>
 </template>
 
@@ -53,11 +70,12 @@ export default {
   computed: {
     ...mapState({
       matchedTags: state => state.topics.tagMatches,
-      isLoading: state => state.topics.isRequestingQuery
+      isLoading: state => state.topics.isRequestingQuery,
+      currentUser: state => state.users.currentUser
     })
   },
   methods: {
-    ...mapActions(['queryTopics', 'clearTopicQuery']),
+    ...mapActions(['queryTopics', 'clearTopicQuery', 'clearUser']),
     clearTopicList() {
       this.clearTopicQuery()
       this.searchText = ''
