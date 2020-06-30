@@ -43,7 +43,6 @@
       </b-button>
 
       <b-nav-item-dropdown v-if="currentUser.email" right>
-        <!-- Using 'button-content' slot -->
         <template v-slot:button-content>
           <em>{{currentUser.email}}</em>
         </template>

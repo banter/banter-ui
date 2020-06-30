@@ -19,7 +19,6 @@ export async function apiRequest({requestData, mutations, commit}) {
         }
       })
       .catch(error => {
-        console.log(error);
         commit(errorCommit, error);
         reject(error);
       });
