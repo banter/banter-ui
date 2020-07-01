@@ -12,7 +12,7 @@
       </b-nav-item>
     </b-navbar-nav>
     
-    <b-navbar-nav :style="{margin: 'auto'}" class="nav-search-form" align="center">
+    <b-navbar-nav class="nav-search-form" align="center">
       <b-nav-form>
         <b-input-group id="nav-search-group" size="lg">
           <b-input-group-prepend>
@@ -38,7 +38,7 @@
       </b-nav-form>
     </b-navbar-nav>
     <b-navbar-nav class="align-ml">
-      <b-button v-if="!currentUser.email" v-b-modal.modal-1 size="sm" id="nav-signup" type="submit">
+      <b-button v-if="!currentUser.email" v-b-modal.login-modal size="sm" id="nav-signup" type="submit">
         <p id="nav-signup-text">Sign Up</p>
       </b-button>
 
@@ -49,14 +49,14 @@
         <b-dropdown-item href="#">Profile</b-dropdown-item>
         <b-dropdown-item @click="clearUser">Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
-      <b-modal id="modal-1" hide-footer hide-header title="BootstrapVue">
+      <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
         <div class="social-logins">
           <a 
             v-for="oauthProvider in OAUTH"
-            class="btn btn-outline-dark social-login" role="button" style="text-transform:none"
+            class="btn btn-outline-dark social-login" role="button"
             :key="`${oauthProvider.name}-login`"
-            :href="`http://localhost:8080/oauth${oauthProvider.name === 'twitter' ? '1' : '2'}/authorization/${oauthProvider.name}?redirect_uri=http://localhost:8081`">
-            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" :src="oauthProvider.logo" />
+            :href="`${API.OAUTH_BASE_URL}/oauth${oauthProvider.name === 'twitter' ? '1' : '2'}/authorization/${oauthProvider.name}?redirect_uri=${API.REDIRECT_URL}`">
+            <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
             <span>Log in with <span class="brand-name">{{oauthProvider.name}}</span></span>
           </a>
         </div>
@@ -67,7 +67,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { OAUTH } from '../constants/OAuth'
+import { OAUTH } from '../constants/oauth-providers'
+import API from '../constants/api'
 
 export default {
   name: 'BanterNavBar',
@@ -88,7 +89,8 @@ export default {
   data() {
     return {
       searchText: "",
-      OAUTH
+      OAUTH,
+      API
     }
   }
 }
@@ -180,6 +182,16 @@ export default {
 
 .brand-name {
   text-transform: capitalize;
+}
+
+.provider-logo {
+  width: 20px;
+  margin-bottom: 3px;
+  margin-right: 5px;
+}
+
+.nav-search-form {
+  margin: auto;
 }
 
 </style>
