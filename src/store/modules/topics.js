@@ -1,4 +1,4 @@
-import API from "../../api";
+import API from "../../constants/api";
 import {apiRequest} from "../helpers"
 
 export const TopicsModule = {
