@@ -1,6 +1,13 @@
 <template>
   <div class="main-content">
     <div v-if="!isLoading">
+      <div>
+        <TopicHeader type="carousel-card"/>
+      </div>
+      <div>
+        zfcdafsdfsdfdsf
+        <DiscussionCard type="carousel-card"/>
+      </div>
       <h2>{{currentTopic.name}}</h2>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
@@ -20,6 +27,7 @@
             <div class="d-flex w-100 justify-content-between flex-column">
               <div class="discussion-top-row">
                 <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
+                <!-- <Discussion :discussion="discussion" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'">  -->
                 <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
                 <div class="discussion-text-content">
                   <h5 class="mb-1">{{`${discussion.podcastTitle}`}}</h5>
@@ -57,11 +65,15 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import LoadingSpinner from "../../components/LoadingSpinner";
+import TopicHeader from "../../components/TopicHeader";
+import DiscussionCard from "../../components/DiscussionCard";
 
 export default {
   name: 'Topic',
   components: {
-    LoadingSpinner
+    LoadingSpinner, 
+    TopicHeader,
+    DiscussionCard
   },
   created () {
     this.fetchTopic(this.$route.params.topicName)
@@ -126,7 +138,7 @@ a {
 
 .main-content {
   margin: auto;
-  width: 600px;
+  width: 80%;
   margin-top: 50px;
 }
 

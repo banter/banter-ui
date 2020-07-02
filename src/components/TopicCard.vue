@@ -1,5 +1,6 @@
+
 <template>
-  <div :class="`card-wrapper ${type}-wrapper`">
+  <div :class="`card-wrapper carousel-card-wrapper`">
     <router-link :to="`/topics/${topic.value}`">
       <div :class="`image-card ${type}`">
         <b-img class="topic-image" :src="`${topic.imageUrl || 'http://placeimg.com/450/450'}`"/>
@@ -7,6 +8,7 @@
           <p class="topic-label">
             {{topic.value}}
           </p>
+          
         </div>
       </div>
     </router-link>
