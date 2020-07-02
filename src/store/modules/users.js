@@ -35,11 +35,6 @@ export const UserModule = {
         errorCommit: "currentUserError"
       }
       return apiRequest({requestData, mutations, commit})
-    },
-    clearUser({
-      commit
-    }) {
-      commit("clearUserRequest");
     }
   },
   mutations: {
@@ -54,9 +49,6 @@ export const UserModule = {
       state.isRequesting = false;
       state.errored = true;
       state.error = error.message;
-    },
-    clearUserRequest(state) {
-      state.currentUser = {};
     }
   }
 };

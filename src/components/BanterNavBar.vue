@@ -47,7 +47,7 @@
           <em>{{currentUser.email}}</em>
         </template>
         <b-dropdown-item href="#">Profile</b-dropdown-item>
-        <b-dropdown-item @click="clearUser">Sign Out</b-dropdown-item>
+        <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
       <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
         <div class="social-logins">
@@ -80,7 +80,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['queryTopics', 'clearTopicQuery', 'clearUser']),
+    ...mapActions(['queryTopics', 'clearTopicQuery']),
     clearTopicList() {
       this.clearTopicQuery()
       this.searchText = ''
