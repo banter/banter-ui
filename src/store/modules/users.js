@@ -11,10 +11,26 @@ export const UserModule = {
   actions: {
     loginUser({
       commit
-    }) {
+    }, {authName, authEmail, authPassword}) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.LOGIN}`,
-        method: 'POST'
+        method: 'POST',
+        data: {name: authName, email: authEmail, password: authPassword}
+      }
+      const mutations = {
+        preCommit: "fetchCurrentUserRequest",
+        successCommit: "fetchCurrentUserSuccess",
+        errorCommit: "currentUserError"
+      }
+      return apiRequest({requestData, mutations, commit})
+    },
+    signupUser({
+      commit
+    }, {authName, authEmail, authPassword}) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.USERS}${API.REGISTER}`,
+        method: 'POST',
+        data: {name: authName, email: authEmail, password: authPassword}
       }
       const mutations = {
         preCommit: "fetchCurrentUserRequest",
