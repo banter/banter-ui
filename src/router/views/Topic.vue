@@ -2,13 +2,8 @@
   <div class="main-content">
     <div v-if="!isLoading">
       <div>
-        <TopicHeader type="carousel-card"/>
+        <TopicHeader :currentTopic="currentTopic"/>
       </div>
-      <div>
-        zfcdafsdfsdfdsf
-        <DiscussionCard type="carousel-card"/>
-      </div>
-      <h2>{{currentTopic.name}}</h2>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
         <label class="checkbox-label" for="ids">Display Ids</label>
@@ -17,31 +12,13 @@
         <input type="checkbox" id="json" v-model="displayJson">
         <label class="checkbox-label" for="json">Display </label>
       </div>
-      <b-list-group class="discussion-playlist">
+
         <b-list-group-item 
-          class="discussion-playlist-item"
+        style="border: none"
           v-for="(discussion, index) in currentTopic.playlist" 
           :key="`discussion-${index}`">
-
           <div>
-            <div class="d-flex w-100 justify-content-between flex-column">
-              <div class="discussion-top-row">
-                <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
-                <!-- <Discussion :discussion="discussion" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'">  -->
-                <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
-                <div class="discussion-text-content">
-                  <h5 class="mb-1">{{`${discussion.podcastTitle}`}}</h5>
-                  <p class="mb-1">{{`${discussionDate(discussion) && discussionDate(discussion).format("MMM DD") + ' - '}`}}{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="tag-display">
-            <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="primary">
-              <router-link :to="`/topics/${tag.value}`">
-                {{tag.value}}
-              </router-link>    
-            </b-badge>
+                <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"/>
           </div>
           <p v-if="displayIds" class="mb-1">
             <ul class="id-list">
@@ -54,7 +31,6 @@
             <code><pre class="discussion-json">{{discussion}}</pre></code>
           </p>
         </b-list-group-item>
-      </b-list-group>
     </div>
     <div>
       <LoadingSpinner :variant="'secondary'" v-if="isLoading"/>
@@ -99,6 +75,8 @@ export default {
       chosenTopic: state => state.topics.currentTopic
     }),
     currentTopic: function() {
+      console.log("Getting Current Topic")
+      console.log(this.chosenTopic)
       return this.chosenTopic
     }
   },
