@@ -51,9 +51,6 @@ export default {
     TopicHeader,
     DiscussionCard
   },
-  created () {
-    this.fetchTopic(this.$route.params.topicName)
-  },
   async mounted () {
     if (this.$route.params.topicName !== this.currentTopic.name) {
       await this.fetchTopic(this.$route.params.topicName)

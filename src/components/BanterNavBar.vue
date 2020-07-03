@@ -12,7 +12,7 @@
       </b-nav-item>
     </b-navbar-nav>
     
-    <b-navbar-nav :style="{margin: 'auto'}" class="nav-search-form" align="center">
+    <b-navbar-nav class="nav-search-form" align="center">
       <b-nav-form>
         <b-input-group id="nav-search-group" size="lg">
           <b-input-group-prepend>
@@ -37,23 +37,46 @@
         </b-input-group>
       </b-nav-form>
     </b-navbar-nav>
-    <!-- <b-navbar-nav class="align-ml">
-      <b-button size="sm" id="nav-signup" type="submit">
+    <b-navbar-nav class="align-ml">
+      <b-button v-if="!currentUser.email" v-b-modal.login-modal size="sm" id="nav-signup" type="submit">
         <p id="nav-signup-text">Sign Up</p>
       </b-button>
-    </b-navbar-nav> -->
+
+      <b-nav-item-dropdown v-if="currentUser.email" right>
+        <template v-slot:button-content>
+          <em>{{currentUser.email}}</em>
+        </template>
+        <b-dropdown-item href="#">Profile</b-dropdown-item>
+        <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">Sign Out</b-dropdown-item>
+      </b-nav-item-dropdown>
+      <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
+        <div class="social-logins">
+          <a 
+            v-for="oauthProvider in OAUTH"
+            class="btn btn-outline-dark social-login" role="button"
+            :key="`${oauthProvider.name}-login`"
+            :href="`${API.OAUTH_BASE_URL}/oauth${oauthProvider.name === 'twitter' ? '1' : '2'}/authorization/${oauthProvider.name}?redirect_uri=${API.REDIRECT_URL}`">
+            <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
+            <span>Log in with <span class="brand-name">{{oauthProvider.name}}</span></span>
+          </a>
+        </div>
+      </b-modal>
+    </b-navbar-nav>
   </b-navbar>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import { OAUTH } from '../constants/oauth-providers'
+import API from '../constants/api'
 
 export default {
   name: 'BanterNavBar',
   computed: {
     ...mapState({
       matchedTags: state => state.topics.tagMatches,
-      isLoading: state => state.topics.isRequestingQuery
+      isLoading: state => state.topics.isRequestingQuery,
+      currentUser: state => state.users.currentUser
     })
   },
   methods: {
@@ -65,7 +88,9 @@ export default {
   },
   data() {
     return {
-      searchText: ""
+      searchText: "",
+      OAUTH,
+      API
     }
   }
 }
@@ -137,6 +162,36 @@ export default {
 
 .autocomplete-option {
   padding-bottom: 1px solid black;
+}
+
+.social-logins {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.email-login {
+  margin: auto;
+}
+
+.social-login {
+  margin: 5px;
+  max-width: 250px;
+}
+
+.brand-name {
+  text-transform: capitalize;
+}
+
+.provider-logo {
+  width: 20px;
+  margin-bottom: 3px;
+  margin-right: 5px;
+}
+
+.nav-search-form {
+  margin: auto;
 }
 
 </style>

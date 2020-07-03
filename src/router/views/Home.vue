@@ -21,6 +21,27 @@ export default {
     TopicHero,
     TopicCarouselScroll
   },
+  props: {
+    loginSuccess: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    loginError: {
+      type: String,
+      required: false,
+      default: ''
+    },
+  },
+  mounted() {
+    if (this.loginError) {
+      this.$bvToast.toast(this.loginError, {
+        title: 'Login Error',
+        variant: 'warning',
+        autoHideDelay: 5000
+      })
+    }
+  },
   computed: {
     ...mapGetters(["getTrendingTopicTags"]),
     ...mapState({
