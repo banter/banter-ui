@@ -6,6 +6,8 @@
       </router-link>
     </b-navbar-brand>
 
+<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
     <b-navbar-nav>
       <b-nav-item>
         <router-link class="dropdown-item" to="/genres">All Genres</router-link>

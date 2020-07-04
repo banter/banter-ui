@@ -1,7 +1,10 @@
+  
 <template>
   <div class="main-content">
     <div v-if="!isLoading">
-      <h2>{{currentTopic.name}}</h2>
+      <div>
+        <TopicHeader :headerText="currentTopic.name" :headerImage="currentTopic.primaryTag.imageUrl"/>
+      </div>
       <div class="playlist-toggle">
         <input type="checkbox" id="ids" v-model="displayIds">
         <label class="checkbox-label" for="ids">Display Ids</label>
@@ -10,30 +13,13 @@
         <input type="checkbox" id="json" v-model="displayJson">
         <label class="checkbox-label" for="json">Display </label>
       </div>
-      <b-list-group class="discussion-playlist">
+
         <b-list-group-item 
-          class="discussion-playlist-item"
+        style="border: none"
           v-for="(discussion, index) in currentTopic.playlist" 
           :key="`discussion-${index}`">
-
           <div>
-            <div class="d-flex w-100 justify-content-between flex-column">
-              <div class="discussion-top-row">
-                <b-icon @click="() => audioAction(discussion)" font-scale="3" class="discussion-icon" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"></b-icon>
-                <img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/>
-                <div class="discussion-text-content">
-                  <h5 class="mb-1">{{`${discussion.podcastTitle}`}}</h5>
-                  <p class="mb-1">{{`${discussionDate(discussion) && discussionDate(discussion).format("MMM DD") + ' - '}`}}{{discussion.description}} ({{discussion.startTime}}-{{discussion.endTime || 'End'}})</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="tag-display">
-            <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="primary">
-              <router-link :to="`/topics/${tag.value}`">
-                {{tag.value}}
-              </router-link>    
-            </b-badge>
+                <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"/>
           </div>
           <p v-if="displayIds" class="mb-1">
             <ul class="id-list">
@@ -46,7 +32,6 @@
             <code><pre class="discussion-json">{{discussion}}</pre></code>
           </p>
         </b-list-group-item>
-      </b-list-group>
     </div>
     <div>
       <LoadingSpinner :variant="'secondary'" v-if="isLoading"/>
@@ -57,16 +42,20 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import LoadingSpinner from "../../components/LoadingSpinner";
-
+import TopicHeader from "../../components/TopicHeader";
+import DiscussionCard from "../../components/DiscussionCard";
 export default {
   name: 'Topic',
   components: {
-    LoadingSpinner
+    LoadingSpinner, 
+    TopicHeader,
+    DiscussionCard
   },
   async mounted () {
     if (this.$route.params.topicName !== this.currentTopic.name) {
       await this.fetchTopic(this.$route.params.topicName)
       const newPlaylist = this.currentTopic?.playlist
+      console.log(this.currentTopic)
       this.createAudio(newPlaylist[0])
     }
   },
@@ -104,7 +93,6 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 h3 {
   margin: 40px 0 0;
@@ -120,61 +108,48 @@ li {
 a {
   color: #42b983;
 }
-
 .main-content {
   margin: auto;
-  width: 600px;
+  width: 80%;
   margin-top: 50px;
 }
-
 .discussion-playlist {
   margin-bottom: 60px;
 }
-
 .discussion-icon {
   cursor: pointer;
 }
-
 .playlist-toggle {
     display: flex;
 }
-
 .checkbox-label {
   margin-left: 5px;
 }
-
 .discussion-json {
   float: initial;
   text-align: initial;
 }
-
 .discussion-json:hover {
   cursor: initial;
 }
-
 .id-list li {
   display: block;
 }
-
 .tag-display a {
   color: white;
 }
-
 .tag-display span {
   margin: 2px;
 }
-
 .podcast-thumbnail {
   width: 20%;
   height: auto;
 }
-
 .discussion-top-row {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-
 .discussion-text-content {
   display: flex;
   flex-direction: column;
