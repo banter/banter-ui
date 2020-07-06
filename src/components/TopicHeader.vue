@@ -4,7 +4,7 @@
     overlay
     :img-src="headerImage"
     img-alt="Card Image"
-    class="header-text"
+    class="header-card"
   >
       <b-card-text class="header-card-text">
         <h4> {{headerText}}</h4>
@@ -33,14 +33,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+.card {
+    background: none;
+
+}
+
+.card-img {
+    object-fit: contain;
+    max-height: 600px;
+}
+
 .header-card-text {
   background: black;
   opacity: .6;
   color: white;
   width: fit-content;
   position: absolute;
-  bottom: 15px;
-  left: 15px;
+  bottom: 30px;
+  left: 60px;
   padding: 15px
 }
 .card-wrapper {
@@ -51,5 +63,6 @@ export default {
 .header-card {
   max-width: 1000px;
   min-width: 320px;
+  border: none;
 }
 </style>

@@ -74,9 +74,11 @@ export default {
     },
     
     discussionDuration(discussion){
+      // TODO Handle Discussion Duration / get from API Response
       // ({{discussion.startTime}}-{{discussion.endTime || 'End'}})
       //  - discussion.endTime || 'End'
-      return (discussion.startTime)
+      (discussion.startTime)
+      return "TBD"
     }
   }
 
