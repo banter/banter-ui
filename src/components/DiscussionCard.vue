@@ -1,42 +1,44 @@
-<template>    
+<template>
   <div class="discussion-card-wrapper">
     <!-- border-variant="dark"  -->
     <b-card no-body class="overflow-hidden discussion-card" align="left">
       <b-row no-gutters>
         <b-col md="3">
           <div>
-<b-card-img class="discussion-card-image rounded-0"  height="200px"  alt="Image" :src="discussion.podcastThumbnailUrl"></b-card-img>
-            <b-iconstack scale="3"  class="discussion-icon">
-      <b-icon stacked icon="circle-fill" variant="white"></b-icon>
-      <b-icon stacked :icon="icon" variant="black"></b-icon>
-      <b-icon stacked icon="circle" variant="white"></b-icon>
-    </b-iconstack>
-                    <div class="discussion-timestamp">
-          <p style="margin-bottom:0px">
-            {{`${discussionDuration(discussion)}`}}
-          </p>
-        </div>
+            <b-card-img class="discussion-card-image rounded-0" height="200px" alt="Image"
+              :src="discussion.podcastThumbnailUrl"></b-card-img>
+            <b-iconstack scale="3" class="discussion-icon">
+              <b-icon stacked icon="circle-fill" variant="white"></b-icon>
+              <b-icon stacked :icon="icon" variant="black"></b-icon>
+              <b-icon stacked icon="circle" variant="white"></b-icon>
+            </b-iconstack>
+            <div class="discussion-timestamp">
+              <p style="margin-bottom:0px">
+                TBD
+              </p>
+            </div>
           </div>
         </b-col>
         <b-col md="9">
           <b-card-body>
-              <b-row>
-                  <b-card-text class="podcast-description-text">
-                    {{discussion.description}}
-            </b-card-text>
-              </b-row>
-              <b-row>
-                  <b-card-text class="podcast-name-text" >
-                    {{`${discussion.podcastTitle}`}} • {{`${discussionDate(discussion) && discussionDate(discussion).fromNow()}`}} 
-            </b-card-text>
-              </b-row>
+            <b-row>
+              <b-card-text class="podcast-description-text">
+                {{discussion.description}}
+              </b-card-text>
+            </b-row>
+            <b-row>
+              <b-card-text class="podcast-name-text">
+                {{`${discussion.podcastTitle}`}} •
+                {{`${discussionDate(discussion) && discussionDate(discussion).fromNow()}`}}
+              </b-card-text>
+            </b-row>
             <b-row>
               <div class="tag-display">
                 <b-icon icon="tag-fill"></b-icon>
                 <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="light">
                   <router-link :to="`/topics/${tag.value}`">
                     {{tag.value}}
-                  </router-link>    
+                  </router-link>
                 </b-badge>
               </div>
             </b-row>
@@ -61,7 +63,7 @@ export default {
     discussion: {
     type: Object,
     required: true,
-    default: () => { return {}}
+    default: () => ({})
 }
   },  
   methods: {
@@ -72,14 +74,6 @@ export default {
         return null
       }
     },
-    
-    discussionDuration(discussion){
-      // TODO Handle Discussion Duration / get from API Response
-      // ({{discussion.startTime}}-{{discussion.endTime || 'End'}})
-      //  - discussion.endTime || 'End'
-      (discussion.startTime)
-      return "TBD"
-    }
   }
 
 }
@@ -108,7 +102,7 @@ export default {
     min-width: 240px;
     margin: auto;
     background: #FFFFFF;
-    box-shadow: 0px 3.08995px 7.72488px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
       &:hover {
     .card-img.discussion-card-image {
       background:rgba(0,0,0,0.6);
@@ -126,10 +120,10 @@ export default {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
-    font-size: 15.4498px;
+    font-size: 15px;
     line-height: 22px;
     /* identical to box height, or 145% */
-    letter-spacing: 0.193122px;
+    letter-spacing: 0.2px;
     color: #606060;
 }
 .podcast-description-text {

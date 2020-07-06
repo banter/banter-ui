@@ -3,17 +3,8 @@
   <div class="main-content">
     <div v-if="!isLoading">
       <div>
-        <TopicHeader :headerText="currentTopic.name" :headerImage="currentTopic.primaryTag.imageUrl"/>
+        <TopicHeader :currentTopic="currentTopic"/>
       </div>
-      <div class="playlist-toggle">
-        <input type="checkbox" id="ids" v-model="displayIds">
-        <label class="checkbox-label" for="ids">Display Ids</label>
-      </div>
-      <div class="playlist-toggle">
-        <input type="checkbox" id="json" v-model="displayJson">
-        <label class="checkbox-label" for="json">Display </label>
-      </div>
-
         <b-list-group-item 
         style="border: none"
           v-for="(discussion, index) in currentTopic.playlist" 
@@ -21,16 +12,6 @@
           <div>
                 <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"/>
           </div>
-          <p v-if="displayIds" class="mb-1">
-            <ul class="id-list">
-              <li><b>Discussion:</b> {{discussion.discussionId}}</li>
-              <li><b>Episode:</b> {{discussion.episodeId}}</li>
-              <li><b>Podcast:</b> {{discussion.podcastId}}</li>
-            </ul>
-          </p>
-          <p v-if="displayJson" class="mb-1">
-            <code><pre class="discussion-json">{{discussion}}</pre></code>
-          </p>
         </b-list-group-item>
     </div>
     <div>
@@ -55,7 +36,6 @@ export default {
     if (this.$route.params.topicName !== this.currentTopic.name) {
       await this.fetchTopic(this.$route.params.topicName)
       const newPlaylist = this.currentTopic?.playlist
-      console.log(this.currentTopic)
       this.createAudio(newPlaylist[0])
     }
   },

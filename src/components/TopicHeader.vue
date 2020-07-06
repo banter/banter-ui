@@ -1,33 +1,24 @@
 <template>
-  <div class="header-card card-wrapper">
-  <b-card
-    overlay
-    :img-src="headerImage"
-    img-alt="Card Image"
-    class="header-card"
-  >
-      <b-card-text class="header-card-text">
-        <h4> {{headerText}}</h4>
-    </b-card-text>
+    <div class="header-card card-wrapper">
+        <b-card overlay :img-src="currentTopic.primaryTag.imageUrl" img-alt="Card Image" class="header-card">
+            <b-card-text class="header-card-text">
+                <h4> {{currentTopic.name}}</h4>
+            </b-card-text>
 
-  </b-card>
+        </b-card>
     </div>
 </template>
 
 <script>
+
 export default {
   name: 'TopicHeader',
   props: {
-    headerText: {
-      type: String,
+    currentTopic: {
+      type: Object,
       required: true,
-      default: () => ""
+      default: () => ({})
     },
-    headerImage: {
-      type: String,
-      required: true,
-      default: () => ""
-    }
 }
 }
 </script>
