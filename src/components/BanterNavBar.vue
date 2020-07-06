@@ -57,7 +57,7 @@
             Sign In
           </div>
           <h2 class="signin-header">{{returningUser ? 'Sign In' : 'Sign Up'}}</h2>
-          <div class="input-group form-group">
+          <div v-if="!returningUser" class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><b-icon :icon="'person-fill'"/></span>
 						</div>
@@ -76,9 +76,15 @@
 						<b-input type="password" v-model="authPassword" class="form-control" placeholder="password"/>
 					</div>
 					<div class="input-group form-group">
-						<b-button :variant="'primary'" @click="authAction">
-              <p id="nav-signup-text">{{returningUser ? 'Log In' : 'Sign Up'}}</p>
+						<b-button :disabled="isRequesting" :variant="'primary'" @click="authAction">
+              <div v-if="isRequesting">
+                <LoadingSpinner :variant="'secondary'"/>
+              </div>
+              <p v-if="!isRequesting" id="nav-signup-text">{{returningUser ? 'Log In' : 'Sign Up'}}</p>
             </b-button>
+					</div>
+					<div v-if="error" class="error-display">
+						<p>{{error}}</p>
 					</div>
         </div>
         <div class="social-logins">
@@ -100,6 +106,7 @@
 import { mapActions, mapState } from 'vuex'
 import { OAUTH } from '../constants/oauth-providers'
 import API from '../constants/api'
+import LoadingSpinner from "./LoadingSpinner";
 
 export default {
   name: 'BanterNavBar',
@@ -107,8 +114,13 @@ export default {
     ...mapState({
       matchedTags: state => state.topics.tagMatches,
       isLoading: state => state.topics.isRequestingQuery,
-      currentUser: state => state.users.currentUser
+      currentUser: state => state.users.currentUser,
+      error: state => state.users.error,
+      isRequesting: state => state.users.isRequesting
     })
+  },
+  components: {
+    LoadingSpinner
   },
   methods: {
     ...mapActions(['queryTopics', 'clearTopicQuery', 'loginUser', 'signupUser']),
@@ -119,7 +131,7 @@ export default {
     authAction() {
       const {authName, authEmail, authPassword} = this;
       this.returningUser 
-        ? this.loginUser({authName, authEmail, authPassword})
+        ? this.loginUser({authEmail, authPassword})
         : this.signupUser({authName, authEmail, authPassword});
     }
   },

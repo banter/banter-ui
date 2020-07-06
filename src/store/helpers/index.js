@@ -1,7 +1,8 @@
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 export async function apiRequest({requestData, mutations, commit}) {
-  const {url, queries = {}, method = 'GET', headers = {withCredentials: true}, data = {}} = requestData
+  const {url, queries = {}, method = 'GET', data = {}} = requestData
   const {preCommit, successCommit, errorCommit} = mutations
 
   const queryParams = Object.keys(queries).map(key => `${key}=${encodeURIComponent(queries[key])}`).join('&')
@@ -11,7 +12,6 @@ export async function apiRequest({requestData, mutations, commit}) {
     return axios({
       url: `${url}${queryParams ? `?${queryParams}` : ''}`,
       method,
-      headers,
       data
     }).then(response => {
         if (response.status === 200) {

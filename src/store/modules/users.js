@@ -11,16 +11,16 @@ export const UserModule = {
   actions: {
     loginUser({
       commit
-    }, {authName, authEmail, authPassword}) {
+    }, {authEmail, authPassword}) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.LOGIN}`,
         method: 'POST',
-        data: {name: authName, email: authEmail, password: authPassword}
+        data: {email: authEmail, password: authPassword}
       }
       const mutations = {
         preCommit: "fetchCurrentUserRequest",
         successCommit: "fetchCurrentUserSuccess",
-        errorCommit: "currentUserError"
+        errorCommit: "authUserError"
       }
       return apiRequest({requestData, mutations, commit})
     },
@@ -35,7 +35,7 @@ export const UserModule = {
       const mutations = {
         preCommit: "fetchCurrentUserRequest",
         successCommit: "fetchCurrentUserSuccess",
-        errorCommit: "currentUserError"
+        errorCommit: "authUserError"
       }
       return apiRequest({requestData, mutations, commit})
     },
@@ -56,12 +56,17 @@ export const UserModule = {
   mutations: {
     fetchCurrentUserRequest(state) {
       state.isRequesting = true;
+      state.error = null;
     },
     fetchCurrentUserSuccess(state, payload) {
       state.currentUser = payload;
       state.isRequesting = false;
+      state.error = null;
     },
-    currentUserError(state, error) {
+    currentUserError(state) {
+      state.isRequesting = false;
+    },
+    authUserError(state, error) {
       state.isRequesting = false;
       state.errored = true;
       state.error = error.message;
