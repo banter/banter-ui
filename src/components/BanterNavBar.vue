@@ -49,7 +49,7 @@
         <b-dropdown-item href="#">Profile</b-dropdown-item>
         <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
-      <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
+      <b-modal  id="login-modal" hide-footer hide-header title="Login Modal">
         <div class="sign-up-form">
           <div class="sign-up-switch-container">
             Sign Up
@@ -128,11 +128,16 @@ export default {
       this.clearTopicQuery()
       this.searchText = ''
     },
-    authAction() {
+    async authAction() {
       const {authName, authEmail, authPassword} = this;
       this.returningUser 
-        ? this.loginUser({authEmail, authPassword})
-        : this.signupUser({authName, authEmail, authPassword});
+        ? await this.loginUser({authEmail, authPassword})
+        : await this.signupUser({authName, authEmail, authPassword});
+
+      this.closeModal('login-modal')
+    },
+    closeModal(modal) {
+      this.$root.$emit('bv::hide::modal', modal)
     }
   },
   data() {
