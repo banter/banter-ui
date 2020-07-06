@@ -14,7 +14,8 @@ export const router = new Router({
   routes: [{
     path: "/",
     name: 'Home',
-    component: Home
+    component: Home,
+    props: route => ({ loginSuccess: route.query.success, loginError: route.query.error  })
   },
   {
     path: '/topics/:topicName',
