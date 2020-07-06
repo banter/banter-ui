@@ -49,7 +49,44 @@
         <b-dropdown-item href="#">Profile</b-dropdown-item>
         <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
-      <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
+      <b-modal  id="login-modal" hide-footer hide-header title="Login Modal">
+        <div class="sign-up-form">
+          <div class="sign-up-switch-container">
+            Sign Up
+            <b-form-checkbox v-model="returningUser" class="sign-up-switch" name="check-button" size="lg" switch/>
+            Sign In
+          </div>
+          <h2 class="signin-header">{{returningUser ? 'Sign In' : 'Sign Up'}}</h2>
+          <div v-if="!returningUser" class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><b-icon :icon="'person-fill'"/></span>
+						</div>
+						<b-input type="text" v-model="authName" class="form-control" placeholder="name"/>
+					</div>
+          <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><b-icon :icon="'envelope-fill'"/></span>
+						</div>
+						<b-input type="email" v-model="authEmail" class="form-control" placeholder="email"/>
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><b-icon :icon="'lock-fill'"/></span>
+						</div>
+						<b-input type="password" v-model="authPassword" class="form-control" placeholder="password"/>
+					</div>
+					<div class="input-group form-group">
+						<b-button :disabled="isRequesting" :variant="'primary'" @click="authAction">
+              <div v-if="isRequesting">
+                <LoadingSpinner :variant="'secondary'"/>
+              </div>
+              <p v-if="!isRequesting" id="nav-signup-text">{{returningUser ? 'Log In' : 'Sign Up'}}</p>
+            </b-button>
+					</div>
+					<div v-if="error" class="error-display">
+						<p>{{error}}</p>
+					</div>
+        </div>
         <div class="social-logins">
           <a 
             v-for="oauthProvider in OAUTH"
@@ -57,7 +94,7 @@
             :key="`${oauthProvider.name}-login`"
             :href="`${API.OAUTH_BASE_URL}/oauth${oauthProvider.name === 'twitter' ? '1' : '2'}/authorization/${oauthProvider.name}?redirect_uri=${API.REDIRECT_URL}`">
             <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
-            <span>Log in with <span class="brand-name">{{oauthProvider.name}}</span></span>
+            <span>{{returningUser ? 'Log in' : 'Sign up'}} with <span class="brand-name">{{oauthProvider.name}}</span></span>
           </a>
         </div>
       </b-modal>
@@ -69,6 +106,7 @@
 import { mapActions, mapState } from 'vuex'
 import { OAUTH } from '../constants/oauth-providers'
 import API from '../constants/api'
+import LoadingSpinner from "./LoadingSpinner";
 
 export default {
   name: 'BanterNavBar',
@@ -76,19 +114,39 @@ export default {
     ...mapState({
       matchedTags: state => state.topics.tagMatches,
       isLoading: state => state.topics.isRequestingQuery,
-      currentUser: state => state.users.currentUser
+      currentUser: state => state.users.currentUser,
+      error: state => state.users.error,
+      isRequesting: state => state.users.isRequesting
     })
   },
+  components: {
+    LoadingSpinner
+  },
   methods: {
-    ...mapActions(['queryTopics', 'clearTopicQuery']),
+    ...mapActions(['queryTopics', 'clearTopicQuery', 'loginUser', 'signupUser']),
     clearTopicList() {
       this.clearTopicQuery()
       this.searchText = ''
+    },
+    async authAction() {
+      const {authName, authEmail, authPassword} = this;
+      this.returningUser 
+        ? await this.loginUser({authEmail, authPassword})
+        : await this.signupUser({authName, authEmail, authPassword});
+
+      this.closeModal('login-modal')
+    },
+    closeModal(modal) {
+      this.$root.$emit('bv::hide::modal', modal)
     }
   },
   data() {
     return {
       searchText: "",
+      returningUser: true,
+      authEmail: '',
+      authPassword: '',
+      authName: '',
       OAUTH,
       API
     }
@@ -192,6 +250,21 @@ export default {
 
 .nav-search-form {
   margin: auto;
+}
+
+.sign-up-switch { 
+  margin: 0 15px;
+}
+
+.sign-up-switch-container {
+    display: flex;
+    margin: 10px auto;
+    justify-content: center;
+}
+
+.signin-header {
+  text-align: center;
+  margin: 30px;
 }
 
 </style>

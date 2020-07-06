@@ -20,7 +20,8 @@ const API = {
   COLLECTIONS: "collections/",
   USERS: "users/",
   ME: "me",
-  LOGIN: "login/",
+  LOGIN: "login",
+  REGISTER: "register",
   LOGOUT: `logout?redirect_uri=${CONSTANTS.REDIRECT_URLS[ENV]}`,
 };
 
