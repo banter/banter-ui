@@ -1,7 +1,8 @@
 <template>
   <div class="discussion-card-wrapper">
     <!-- border-variant="dark"  -->
-    <b-card no-body class="overflow-hidden discussion-card" align="left">
+    <!-- `isActiveDiscussion ? background:lightgrey : background:none` -->
+    <b-card no-body class="overflow-hidden discussion-card" :style="isActiveDiscussion ? {'background':'lightgrey'} : {}" align="left">
       <b-row no-gutters>
         <b-col md="3">
           <div>
@@ -9,7 +10,7 @@
               :src="discussion.podcastThumbnailUrl"></b-card-img>
             <b-iconstack scale="3" class="discussion-icon">
               <b-icon stacked icon="circle-fill" variant="white"></b-icon>
-              <b-icon stacked :icon="icon" variant="black"></b-icon>
+              <b-icon stacked :icon="audioIcon" variant="black"></b-icon>
               <b-icon stacked icon="circle" variant="white"></b-icon>
             </b-iconstack>
             <div class="discussion-timestamp">
@@ -51,13 +52,14 @@
 
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'DiscussionCard',
   props: {
-    icon: {
-      type: String,
+    isActiveDiscussion: {
+      type: Boolean,
       required: true,
-      default: () => "play"
+      default: () => false
     },
       
     discussion: {
@@ -66,6 +68,24 @@ export default {
     default: () => ({})
 }
   },  
+
+    computed: {
+      ...mapState({
+        isLoading: state => state.audio.isRequesting,
+        audioConfig: state => state.audio.audioConfig,
+      }),
+      audioIcon: function() {
+        return this.isPlaying && this.isActiveDiscussion==true ? 'pause' : 'play'
+      },
+      audioAction: function() {
+        return this.isPlaying ? this.pauseAudio : this.playAudio
+      },
+      isPlaying: function() {
+        return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
+      }
+    },
+
+
   methods: {
     discussionDate(discussion){
       if (discussion?.episodePublishDate) {
