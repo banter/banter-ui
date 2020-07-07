@@ -1,7 +1,6 @@
 <template>
   <div class="discussion-card-wrapper">
     <!-- border-variant="dark"  -->
-    <!-- `isActiveDiscussion ? background:lightgrey : background:none` -->
     <b-card no-body class="overflow-hidden discussion-card" :style="isActiveDiscussion ? {'background':'lightgrey'} : {}" align="left">
       <b-row no-gutters>
         <b-col md="3">
