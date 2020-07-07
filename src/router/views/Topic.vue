@@ -10,7 +10,7 @@
           v-for="(discussion, index) in currentTopic.playlist" 
           :key="`discussion-${index}`">
           <div>
-                <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :icon="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? 'pause ': 'play'"/>
+                <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :isActiveDiscussion="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId) ? true: false"/>
           </div>
         </b-list-group-item>
     </div>
