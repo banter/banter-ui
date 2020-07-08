@@ -1,9 +1,14 @@
 <template>
   <div class="main-content">
-    <TopicHero :topics="getTrendingTopicTags"/>
-
-    <div class="carousel-container" v-for="(collection, index) in collections" :key="`carousel-${index}`">
-      <TopicCarouselScroll :collection="collection"/>
+    <!-- Waiting to Display Topic Hero until content is loaded
+    this is done because the cards use the request data to render, if
+    html is loaded before the trending topics are in, gets screwed -->
+    <div v-if="!isRequestingTrending">
+      {{isRequestingTrending}}
+      <TopicHero v-if="!isRequestingTrending" :topics="getTrendingTopicTags"/>
+    </div>
+    <div v-for="(collection, index) in collections" :key="`carousel-${index}`">
+      <NewTopicCarouselScroll :collection="collection"/>
     </div>
   </div>
 
@@ -13,13 +18,13 @@
 
 import { mapGetters, mapState } from 'vuex'
 import TopicHero from "../../containers/TopicHero"
-import TopicCarouselScroll from "../../containers/TopicCarouselScroll"
+import NewTopicCarouselScroll from "../../containers/NewTopicCarouselScroll"
 
 export default {
   name: 'Home',
   components: {
     TopicHero,
-    TopicCarouselScroll
+    NewTopicCarouselScroll
   },
   props: {
     loginSuccess: {
@@ -45,6 +50,7 @@ export default {
   computed: {
     ...mapGetters(["getTrendingTopicTags"]),
     ...mapState({
+      isRequestingTrending: state => state.topics.isRequesting,
       collections: state => state.topics.collections
     }),
   }
@@ -67,6 +73,7 @@ a {
   color: #42b983;
 }
 .main-content {
+  width: 95%;
   margin: auto;
 }
 .topics-list {
