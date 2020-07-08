@@ -4,17 +4,18 @@
     <b-card no-body class="overflow-hidden discussion-card" :style="isActiveDiscussion ? {'background':'lightgrey'} : {}" align="left">
       <b-row no-gutters>
         <b-col md="3">
-          <div>
+          <div style="position:relative">
             <b-card-img class="discussion-card-image rounded-0" height="200px" alt="Image"
-              :src="discussion.podcastThumbnailUrl"></b-card-img>
+              :src="discussion.podcastThumbnailUrl">
+              </b-card-img>
             <b-iconstack scale="3" class="discussion-icon">
               <b-icon stacked icon="circle-fill" variant="white"></b-icon>
               <b-icon stacked :icon="audioIcon" variant="black"></b-icon>
               <b-icon stacked icon="circle" variant="white"></b-icon>
-            </b-iconstack>
-            <div class="discussion-timestamp">
-              <p style="margin-bottom:0px">
-                TBD
+            </b-iconstack> 
+            <div class="discussion-timestamp" :style="discussionTime(discussion)=='' ? {} : {'background-color':'black'}" >
+              <p class="discussion-timestamp-text" style="margin-bottom:0px">
+                {{`${discussionTime(discussion)}`}}
               </p>
             </div>
           </div>
@@ -22,7 +23,7 @@
         <b-col md="9">
           <b-card-body>
             <b-row>
-              <b-card-text class="podcast-description-text">
+              <b-card-text class="podcast-description-text" style="{'margin-botton':'10px'}">
                 {{discussion.description}}
               </b-card-text>
             </b-row>
@@ -93,14 +94,16 @@ export default {
         return null
       }
     },
+    discussionTime(discussion){
+      var duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss')
+      return duration === "0:00" ? '' : duration 
+    }
   }
-
 }
+
 </script>
 
 <style lang="scss" scoped>
-
-
 
 .discussion-icon {
     position: absolute;
@@ -112,8 +115,9 @@ export default {
 
 .discussion-card-wrapper {
   margin: auto;
+  width: fit-content;
   cursor: pointer;
-  padding: 15px;
+  padding: 5px;
 }
 
 .discussion-card{
@@ -122,16 +126,7 @@ export default {
     margin: auto;
     background: #FFFFFF;
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
-      &:hover {
-    .card-img.discussion-card-image {
-      background:rgba(0,0,0,0.6);
-      transition: all 1s;
-      opacity: 0.5;
-      &:after {
-        opacity: 1;
-      }
-    }
-  }
+
 }
 
 .podcast-name-text{
@@ -149,10 +144,11 @@ export default {
   font-family: Roboto;
 font-style: normal;
 font-weight: normal;
-font-size: 18.5397px;
+font-size: 18px;
 line-height: 26px;
+margin-bottom: 12px!important;
 /* or 142% */
-letter-spacing: 0.193122px;
+letter-spacing: 0.2px;
 color: #030303;
 }
 
@@ -176,13 +172,15 @@ color: #030303;
 }
 
   .discussion-timestamp {
-    position: absolute;
-    background-color: black;
+      position: absolute;
+    top: 85%;
+    transform: translate(-85%, -85%);
+    left: 85%;
+    opacity: .80;
     opacity: .95;
+    // background-color: black;
     color: white;
     padding: 3px;
-    bottom: 20px;
-    right:20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -200,14 +198,14 @@ color: #030303;
   font-family: Roboto;
 font-style: normal;
 font-weight: normal;
-font-size: 16.9947px;
+font-size: 17px;
 line-height: 15px;
 /* or 91% */
 
 display: flex;
 align-items: center;
 text-align: center;
-letter-spacing: 0.193122px;
+letter-spacing: 0.2px;
 color: #030303;
 }
 
