@@ -1,38 +1,55 @@
 <template>
   <div class="audio-player">
-    <div class="audio-player-container">
-      <div class="player-controls-container">
-        <div class="player-controls">
-          <a title="Back to start" @click="() => goTostartOfDiscussion()" font-scale="3"><b>0<b-icon font-scale="1" :icon="'arrow-return-left'" /></b></a>
-        </div>
-        <div class="player-controls">
-          <a title="Back to start" @click="() => goBack15Seconds()" font-scale="3"><b>15<b-icon font-scale="1" :icon="'arrow-counterclockwise'" /></b></a>
-        </div>
-        <div class="player-controls">
+
+    <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center fixed-bottom">
+      <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
+        <b-navbar-nav>
+          <a title="Back to start" @click="() => goTostartOfDiscussion()" font-scale="3" class="audio-icon"><b>0
+              <b-icon font-scale="1" :icon="'arrow-return-left'" /></b></a>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3" class="audio-icon"><b>15
+              <b-icon font-scale="1" :icon="'arrow-counterclockwise'" /></b></a>
+        </b-navbar-nav>
+        <b-navbar-nav>
           <b-icon @click="() => audioAction()" font-scale="3" class="discussion-icon" :icon="audioIcon"></b-icon>
-        </div>
-        <div class="player-controls">
-          <a title="Go to end of discussion" @click="() => goForward15Seconds()" font-scale="3"><b><b-icon font-scale="1" :icon="'arrow-clockwise'" />15</b></a>
-        </div>
-        <div class="player-controls">
-          <a title="Go to end of discussion" @click="() => goToEndOfDiscussion()" font-scale="3"><b><b-icon font-scale="1" :icon="'arrow-return-right'" />:05</b></a>
-        </div>
-        <div class="player-controls">
-          <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"><b><b-icon :icon="'skip-end-fill'"/></b></a>
-        </div>
-      </div>
-      <div class="audio-timeline">
-        <span v-if="!isPlaying && isLoading"><LoadingSpinner/></span>
-        <span v-if="isPlaying">({{remainingTime ? remainingTime   : ''}})</span>  
-      </div>
-      <div class="audio-description">
-        <span><img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl"/></span>
-        <div class="audio-content">
-          <span class="now-playing-title" v-if="discussion">{{`${discussion.podcastTitle} (${episodeDate.format("MMM DD, YYYY")})`}}</span>
-          <span class="now-playing-description" v-if="discussion">{{discussion.description}}</span>
-        </div>
-      </div>
-    </div>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <a title="Fast Forward 15 seconds" @click="() => goForward15Seconds()" font-scale="3" class="audio-icon"><b>
+              <b-icon font-scale="1" :icon="'arrow-clockwise'" />15</b></a>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <a title="Go to end of discussion" @click="() => goToEndOfDiscussion()" font-scale="3" class="audio-icon"><b>
+              <b-icon font-scale="1" :icon="'arrow-return-right'" />:05</b></a>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3" class="audio-icon"><b>
+              <b-icon :icon="'skip-end-fill'" /></b></a>
+        </b-navbar-nav>
+      </b-navbar-brand>
+      <b-navbar-toggle target="audio-collapse"></b-navbar-toggle>
+
+      <b-collapse id="audio-collapse" is-nav>
+
+        <b-navbar-nav class="navbar-nav w-100 justify-content-center">
+          <span v-if="!isPlaying && isLoading">
+            <LoadingSpinner /></span>
+          <span v-if="isPlaying">({{remainingTime ? remainingTime   : ''}})</span>
+        </b-navbar-nav>
+
+        <b-navbar-nav class="navbar-nav w-100 ml-auto justify-content-end">
+          <b-nav-item>
+            <span><img class="podcast-thumbnail" :src="discussion.podcastThumbnailUrl" /></span>
+          </b-nav-item>
+          <b-nav-item>
+            <span class="now-playing-title"
+              v-if="discussion">{{`${discussion.podcastTitle} (${episodeDate.format("MMM DD, YYYY")})`}}</span>
+            <span class="now-playing-description" v-if="discussion">{{discussion.description}}</span>
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+
+    </nav>
   </div>
 </template>
 
@@ -98,15 +115,21 @@ export default {
 </script>
 
 <style scoped>
-  .audio-player {
+
+.fixed-bottom {
     position: fixed;
-    z-index: 1;
-    width: 100%;
-    left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f2f2f2;
-    border-top: 1px solid #cecece;
+    left: 0;
+    z-index: 1030;
+}
+
+  .audio-player {
+    margin: auto;
+  }
+
+  .audio-icon {
+    margin:auto;
   }
 
   .audio-player-container {
