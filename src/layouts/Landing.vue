@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: 'Welcome To Banter'
-}
+  name: 'welcome-to-banter',
+};
 </script>
 
 <style>

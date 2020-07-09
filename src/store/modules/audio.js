@@ -1,134 +1,138 @@
 import { Howl } from 'howler';
 
-export const AudioModule = {
+export default {
   state: {
     currentAudio: null,
     currentDiscussion: null,
     audioConfig: null,
     isRequesting: false,
-    timestampRemaining: 0
+    timestampRemaining: 0,
   },
   actions: {
     playAudio({ commit, dispatch }, discussion) {
-      if (discussion) { //if we pass a specific discussion, play it
-        commit('killAudioRequest')
-        dispatch('createAudio', discussion)
-      } else { 
-        dispatch('resumeAudio', discussion) // play paused audio
+      if (discussion) { // if we pass a specific discussion, play it
+        commit('killAudioRequest');
+        dispatch('createAudio', discussion);
+      } else {
+        dispatch('resumeAudio', discussion); // play paused audio
       } // TODO - if neither, start from top of playlist
     },
     pauseAudio({ commit }) {
-      commit("pauseAudioRequest");
+      commit('pauseAudioRequest');
     },
     resumeAudio({ commit }) {
-      commit("resumeAudioRequest");
+      commit('resumeAudioRequest');
     },
-    createAudio({ commit, rootState, state, dispatch }, discussion) {
-      commit('killAudioRequest')
-      commit("createAudioRequest", discussion);
-      state.currentDiscussion = discussion
-      
-      const { episodePlaybackUrl, startTimeMillis, endTimeMillis } = state.currentDiscussion
+    createAudio({
+      commit, rootState, state, dispatch,
+    }, discussion) {
+      commit('killAudioRequest');
+      commit('createAudioRequest', discussion);
+      state.currentDiscussion = discussion;
 
-      const audioInfo = new Audio(episodePlaybackUrl)
+      const { episodePlaybackUrl, startTimeMillis, endTimeMillis } = state.currentDiscussion;
+
+      const audioInfo = new Audio(episodePlaybackUrl);
       audioInfo.onloadedmetadata = () => {
-        state.currentDiscussion.endTimeMillis = endTimeMillis || (audioInfo.duration * 1000)
+        state.currentDiscussion.endTimeMillis = endTimeMillis || (audioInfo.duration * 1000);
 
         state.audioConfig = new Howl({
           html5: true,
           src: episodePlaybackUrl,
           sprite: {
             // fix this for END
-            clip: [startTimeMillis, (state.currentDiscussion.endTimeMillis - startTimeMillis)]
-          }
+            clip: [startTimeMillis, (state.currentDiscussion.endTimeMillis - startTimeMillis)],
+          },
         });
-        
+
         state.currentAudio = state.audioConfig.play('clip');
-        commit('audioRequestSuccess')
-        
+        commit('audioRequestSuccess');
+
         // only use sprite if there's an endtime provided
         state.audioConfig.on('end', () => {
-          const {playlist} = rootState.topics.currentTopic
-  
-          const nextItemIndex = playlist.findIndex(playlistItem => playlistItem.discussionId === state.currentDiscussion.discussionId) + 1
-          const nextDiscussion = playlist[nextItemIndex]
-  
+          const { playlist } = rootState.topics.currentTopic;
+
+          const nextItemIndex = playlist
+            .findIndex((item) => item.discussionId === state.currentDiscussion.discussionId) + 1;
+          const nextDiscussion = playlist[nextItemIndex];
+
           // If there is a next discussion, createAudio, otheriwse killAudio?
-          nextDiscussion ? dispatch('createAudio', nextDiscussion) : dispatch('killAudio')
+          return nextDiscussion ? dispatch('createAudio', nextDiscussion) : dispatch('killAudio');
         });
-      }
+      };
     },
     goToEndOfDiscussion({ commit }) {
-      commit('endOfDiscussionRequest')
+      commit('endOfDiscussionRequest');
     },
     goTostartOfDiscussion({ commit }) {
-      commit('startOfDiscussionRequest')
+      commit('startOfDiscussionRequest');
     },
     goBack15Seconds({ commit }) {
-      commit('back15SecondsRequest')
+      commit('back15SecondsRequest');
     },
     goForward15Seconds({ commit }) {
-      commit('forward15SecondsRequest')
+      commit('forward15SecondsRequest');
     },
     goToNextDiscussion({ commit }) {
-      commit('nextDiscussionRequest')
+      commit('nextDiscussionRequest');
     },
     killAudio({ commit }) {
-      commit('killAudioRequest')
+      commit('killAudioRequest');
     },
     getRemainingTime({ commit }) {
-      commit('updateTimestamp')
-    }
+      commit('updateTimestamp');
+    },
   },
   // Edits the data
   mutations: {
     createAudioRequest(state) {
-      state.isRequesting = true
+      state.isRequesting = true;
     },
     audioRequestSuccess(state) {
-      state.isRequesting = false
+      state.isRequesting = false;
     },
     pauseAudioRequest(state) {
-      state.audioConfig.pause(state.currentAudio)
+      state.audioConfig.pause(state.currentAudio);
     },
     resumeAudioRequest(state) {
-      state.audioConfig.play(state.currentAudio)
+      state.audioConfig.play(state.currentAudio);
     },
     back15SecondsRequest(state) {
       const newTimestamp = (+state.audioConfig.seek() || 0) - 15;
-      state.audioConfig.seek(Math.max(newTimestamp, 0), state.currentAudio)
+      state.audioConfig.seek(Math.max(newTimestamp, 0), state.currentAudio);
     },
     forward15SecondsRequest(state) {
       const newTimestamp = (+state.audioConfig.seek() || 0) + 15;
-      state.audioConfig.seek(Math.min(newTimestamp, state.currentDiscussion.endTimeMillis), state.currentAudio)
+      const seekSpot = Math.min(newTimestamp, state.currentDiscussion.endTimeMillis);
+      state.audioConfig.seek(seekSpot, state.currentAudio);
     },
     startOfDiscussionRequest(state) {
-      state.audioConfig.seek(0, state.currentAudio)
+      state.audioConfig.seek(0, state.currentAudio);
     },
     nextDiscussionRequest(state) {
-      state.audioConfig.seek(state.currentDiscussion.endTimeMillis, state.currentAudio)
+      state.audioConfig.seek(state.currentDiscussion.endTimeMillis, state.currentAudio);
     },
     endOfDiscussionRequest(state) {
-      const fiveSecondsLeft = state.currentDiscussion.endTimeMillis / 1000 - 5
-      state.audioConfig.seek(fiveSecondsLeft, state.currentAudio)
+      const fiveSecondsLeft = state.currentDiscussion.endTimeMillis / 1000 - 5;
+      state.audioConfig.seek(fiveSecondsLeft, state.currentAudio);
     },
     killAudioRequest(state) {
       if (state.audioConfig) {
-        state.audioConfig.unload(this.currentAudio)
-        state.currentAudio = null
-        state.audioConfig = {}
+        state.audioConfig.unload(this.currentAudio);
+        state.currentAudio = null;
+        state.audioConfig = {};
       }
     },
     updateTimestamp(state) {
-      const { endTimeMillis } = state.currentDiscussion
-      let currentTime
+      const { endTimeMillis } = state.currentDiscussion;
+      let currentTime;
       try {
-        currentTime = (+state?.audioConfig?.seek() || 0) * 1000
+        currentTime = (+state?.audioConfig?.seek() || 0) * 1000;
       } catch (e) {
-        currentTime = 0
+        currentTime = 0;
       }
-      const remainingMillis = (endTimeMillis && currentTime) ? endTimeMillis - currentTime : 0
-      state.timestampRemaining = remainingMillis
-    }
-  }
-}
+      const remainingMillis = (endTimeMillis && currentTime) ? endTimeMillis - currentTime : 0;
+      state.timestampRemaining = remainingMillis;
+    },
+  },
+};

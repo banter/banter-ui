@@ -2,23 +2,25 @@
   <div class="main-content">
       <b-list-group class="topics-list">
         <b-list-group-item v-for="topic in topics" :key="topic.id">
-          <router-link :key="`topic-${topic.name}`" :to="`/topics/${topic.name}`">{{ topic.name }}</router-link>
+          <router-link :key="`topic-${topic.name}`" :to="`/topics/${topic.name}`">
+            {{ topic.name }}
+          </router-link>
         </b-list-group-item>
       </b-list-group>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'Home',
-    computed: {
+  computed: {
     ...mapState({
-      topics: state => state.topics.topics
+      topics: (state) => state.topics.topics,
     }),
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

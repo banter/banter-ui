@@ -4,7 +4,7 @@
       <img svg-inline class="icon" src='../assets/play-button.svg' alt="example" />
       <p>{{topic.value}}</p>
     </router-link>
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -14,10 +14,10 @@ export default {
     topic: {
       type: Object,
       required: true,
-      default: () => {return {}}
-    }
-  }
-}
+      default: () => ({}),
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

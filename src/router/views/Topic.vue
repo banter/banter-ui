@@ -1,77 +1,79 @@
-  
 <template>
   <div class="main-content">
     <div v-if="!isLoading">
       <div>
-        <TopicHeader :currentTopic="currentTopic"/>
+        <TopicHeader :currentTopic="currentTopic" />
       </div>
-        <b-list-group-item 
-        style="border: none"
-          v-for="(discussion, index) in currentTopic.playlist" 
-          :key="`discussion-${index}`">
-          <div>
-                <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :isActiveDiscussion="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId)"/>
-          </div>
-        </b-list-group-item>
+      <b-list-group-item style="border: none" v-for="(discussion, index) in currentTopic.playlist"
+        :key="`discussion-${index}`">
+        <div>
+          <DiscussionCard v-on:click.native="audioAction(discussion)" :discussion="discussion"
+            :isActiveDiscussion="isActiveDiscussion(discussion)"/>
+        </div>
+      </b-list-group-item>
     </div>
     <div>
-      <LoadingSpinner :variant="'secondary'" v-if="isLoading"/>
+      <LoadingSpinner :variant="'secondary'" v-if="isLoading" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-import LoadingSpinner from "../../components/LoadingSpinner";
-import TopicHeader from "../../components/TopicHeader";
-import DiscussionCard from "../../components/DiscussionCard";
+import { mapActions, mapState } from 'vuex';
+import LoadingSpinner from '../../components/LoadingSpinner.vue';
+import TopicHeader from '../../components/TopicHeader.vue';
+import DiscussionCard from '../../components/DiscussionCard.vue';
+
 export default {
   name: 'Topic',
   components: {
-    LoadingSpinner, 
+    LoadingSpinner,
     TopicHeader,
-    DiscussionCard
+    DiscussionCard,
   },
-  async mounted () {
+  async mounted() {
     if (this.$route.params.topicName !== this.currentTopic.name) {
-      await this.fetchTopic(this.$route.params.topicName)
-      const newPlaylist = this.currentTopic?.playlist
-      this.createAudio(newPlaylist[0])
+      await this.fetchTopic(this.$route.params.topicName);
+      const newPlaylist = this.currentTopic?.playlist;
+      this.createAudio(newPlaylist[0]);
     }
   },
   data() {
     return {
       displayIds: false,
       displayJson: false,
-      showIds: true
-    }
+      showIds: true,
+    };
   },
   computed: {
     ...mapState({
-      currentDiscussion: state => state.audio.currentDiscussion,
-      isLoading: state => state.topics.isRequesting,
-      chosenTopic: state => state.topics.currentTopic
+      currentDiscussion: (state) => state.audio.currentDiscussion,
+      isLoading: (state) => state.topics.isRequesting,
+      chosenTopic: (state) => state.topics.currentTopic,
     }),
-    currentTopic: function() {
-      return this.chosenTopic
-    }
+    currentTopic() {
+      return this.chosenTopic;
+    },
   },
   methods: {
     ...mapActions(['fetchTopic', 'pauseAudio', 'createAudio']),
     audioAction(discussion) {
-      (this.currentDiscussion && this.currentDiscussion.discussionId) === discussion.discussionId
-      ? this.pauseAudio()
-        : this.createAudio(discussion)
+      (this.currentDiscussion?.discussionId === discussion.discussionId
+        ? this.pauseAudio
+        : this.createAudio)(discussion);
     },
-    discussionDate(discussion){
+    discussionDate(discussion) {
       if (discussion?.episodePublishDate) {
-        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`)
-      } else {
-        return null
+        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`);
       }
-    }
+      return null;
+    },
+    isActiveDiscussion(discussion) {
+      if (!discussion?.discussionId || !this.currentDiscussion?.discussionId) return false;
+      return this.currentDiscussion.discussionId === discussion.discussionId;
+    },
   },
-}
+};
 </script>
 <style scoped>
 h3 {

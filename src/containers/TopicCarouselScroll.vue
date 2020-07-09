@@ -2,7 +2,10 @@
   <div>
     <CarouselHeader :topic="collection.primaryTopic.tag"/>
     <div class="topic-card-container">
-      <carousel class="carousel-content" :per-page="5" :paginationEnabled="false" :navigationEnabled="true">
+      <carousel class="carousel-content"
+        :per-page="5"
+        :paginationEnabled="false"
+        navigationEnabled>
         <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
           <TopicCard type="carousel-card" :topic="topic.tag" :index="i"/>
         </slide>
@@ -12,9 +15,9 @@
 </template>
 
 <script>
-import TopicCard from "../components/TopicCard"
-import CarouselHeader from "../components/CarouselHeader"
 import { Carousel, Slide } from 'vue-carousel';
+import TopicCard from '../components/TopicCard.vue';
+import CarouselHeader from '../components/CarouselHeader.vue';
 
 export default {
   name: 'TopicCarouselScroll',
@@ -22,16 +25,16 @@ export default {
     collection: {
       type: Object,
       required: true,
-      default: () => {return {}}
-    }
+      default: () => ({}),
+    },
   },
   components: {
     TopicCard,
     CarouselHeader,
     Carousel,
-    Slide
-  }
-}
+    Slide,
+  },
+};
 </script>
 
 <style>

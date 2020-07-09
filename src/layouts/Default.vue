@@ -8,29 +8,29 @@
 
 <script>
 
-import BanterNavBar from "../components/BanterNavBar"
-import AudioPlayer from "../components/AudioPlayer"
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import BanterNavBar from '../components/BanterNavBar.vue';
+import AudioPlayer from '../components/AudioPlayer.vue';
 
 export default {
   name: 'Banter',
   created() {
-    this.$store.dispatch("fetchGenres");
-    this.$store.dispatch("fetchTrendingTopics");
-    this.$store.dispatch("fetchCollections");
-    this.$store.dispatch("fetchCurrentUser");
+    this.$store.dispatch('fetchGenres');
+    this.$store.dispatch('fetchTrendingTopics');
+    this.$store.dispatch('fetchCollections');
+    this.$store.dispatch('fetchCurrentUser');
   },
   components: {
     BanterNavBar,
-    AudioPlayer
+    AudioPlayer,
   },
   computed: {
     ...mapState({
-      audioConfig: state => state.audio.audioConfig
+      audioConfig: (state) => state.audio.audioConfig,
     }),
-  }
+  },
 
-}
+};
 </script>
 
 <style scoped>

@@ -1,11 +1,16 @@
 <template>
   <div class="hero-topic-card-container">
-    <TopicCard type="hero-card" v-for="(topic, i) in topics" :key="topic.id" :topic="topic" :index="i"/>
+    <TopicCard
+      type="hero-card"
+      v-for="(topic, i) in topics"
+      :key="topic.id"
+      :topic="topic"
+      :index="i"/>
   </div>
 </template>
 
 <script>
-import TopicCard from "../components/TopicCard"
+import TopicCard from '../components/TopicCard.vue';
 
 export default {
   name: 'TopicHero',
@@ -13,13 +18,13 @@ export default {
     topics: {
       type: Array,
       required: true,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   components: {
-    TopicCard
-  }
-}
+    TopicCard,
+  },
+};
 </script>
 
 <style>

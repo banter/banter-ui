@@ -1,7 +1,7 @@
-import API from "../../constants/api";
-import {apiRequest} from "../helpers"
+import API from '../../constants/api';
+import apiRequest from '../helpers';
 
-export const TopicsModule = {
+export default {
   state: {
     topics: [],
     collections: [],
@@ -12,87 +12,87 @@ export const TopicsModule = {
     isRequestingQuery: false,
     isRequestingTrending: false,
     errored: false,
-    error: ''
+    error: '',
   },
   actions: {
     fetchGenres({
-      commit
+      commit,
     }) {
-      const requestData = {url: `${API.BASE_URL}${API.GENRES}`}
+      const requestData = { url: `${API.BASE_URL}${API.GENRES}` };
       const mutations = {
-        preCommit: "fetchGenresRequest",
-        successCommit: "fetchGenresSuccess",
-        errorCommit: "topicsError"
-      }
-      return apiRequest({requestData, mutations, commit})
+        preCommit: 'fetchGenresRequest',
+        successCommit: 'fetchGenresSuccess',
+        errorCommit: 'topicsError',
+      };
+      return apiRequest({ requestData, mutations, commit });
     },
     fetchTopic({ commit }, topic) {
-      const requestData = {url: `${API.BASE_URL}${API.TOPICS}${topic}`}
+      const requestData = { url: `${API.BASE_URL}${API.TOPICS}${topic}` };
       const mutations = {
-        preCommit: "fetchTopicRequest",
-        successCommit: "fetchTopicSuccess",
-        errorCommit: "topicError"
-      }
-      return apiRequest({requestData, mutations, commit})
+        preCommit: 'fetchTopicRequest',
+        successCommit: 'fetchTopicSuccess',
+        errorCommit: 'topicError',
+      };
+      return apiRequest({ requestData, mutations, commit });
     },
     fetchTrendingTopics({
-      commit
+      commit,
     }) {
       const requestData = {
         url: `${API.BASE_URL}${API.TOPICS}${API.TRENDING}`,
         queries: {
           sinceDaysAgo: 5,
-          limit: 3
-        }
-      }
+          limit: 3,
+        },
+      };
       const mutations = {
-        preCommit: "fetchTrendingTopicsRequest",
-        successCommit: "fetchTrendingTopicsSuccess",
-        errorCommit: "trendingTopicsError"
-      }
+        preCommit: 'fetchTrendingTopicsRequest',
+        successCommit: 'fetchTrendingTopicsSuccess',
+        errorCommit: 'trendingTopicsError',
+      };
 
-      return apiRequest({requestData, mutations, commit})
+      return apiRequest({ requestData, mutations, commit });
     },
     fetchCollections({
-      commit
+      commit,
     }) {
       const requestData = {
         url: `${API.BASE_URL}${API.TOPICS}${API.COLLECTIONS}`,
         queries: {
-          tagType: "sport",
+          tagType: 'sport',
           sinceDaysAgo: 5,
-          limit: 10
-        }
-      }
+          limit: 10,
+        },
+      };
       const mutations = {
-        preCommit: "fetchCollectionsRequest",
-        successCommit: "fetchCollectionsSuccess",
-        errorCommit: "collectionsError"
-      }
+        preCommit: 'fetchCollectionsRequest',
+        successCommit: 'fetchCollectionsSuccess',
+        errorCommit: 'collectionsError',
+      };
 
-      return apiRequest({requestData, mutations, commit})
+      return apiRequest({ requestData, mutations, commit });
     },
     queryTopics({
-      commit
+      commit,
     }, tagString) {
       const requestData = {
         url: `${API.BASE_URL}${API.TOPICS}`,
         queries: {
           q: tagString,
-          limit: 15
-        }
-      }
+          limit: 15,
+        },
+      };
       const mutations = {
-        preCommit: "queryTopicsRequest",
-        successCommit: "queryTopicsSuccess",
-        errorCommit: "queryTopicsError"
-      }
+        preCommit: 'queryTopicsRequest',
+        successCommit: 'queryTopicsSuccess',
+        errorCommit: 'queryTopicsError',
+      };
 
-      return apiRequest({requestData, mutations, commit})
+      return apiRequest({ requestData, mutations, commit });
     },
-    clearTopicQuery({commit}) {
-      commit("clearTopicsQueryRequest");
-    }
+    clearTopicQuery({ commit }) {
+      commit('clearTopicsQueryRequest');
+    },
   },
   mutations: {
     fetchGenresRequest(state) {
@@ -132,7 +132,7 @@ export const TopicsModule = {
       state.error = error.message;
     },
     clearTopicsQueryRequest(state) {
-      state.tagMatches = []
+      state.tagMatches = [];
     },
     fetchTrendingTopicsRequest(state) {
       state.isRequestingTrending = true;
@@ -157,11 +157,11 @@ export const TopicsModule = {
       state.isRequestingCollections = false;
       state.errored = true;
       state.error = error.message;
-    }
+    },
   },
   getters: {
     getTrendingTopicTags(state) {
-      return state.trendingTopics.map(trendingTopics => trendingTopics?.tag);
-    }
-  }
+      return state.trendingTopics.map((trendingTopics) => trendingTopics?.tag);
+    },
+  },
 };

@@ -5,10 +5,9 @@
 
 <script>
 export default {
-  name: 'Landing'
-}
+  name: 'Landing',
+};
 </script>
-
 
 <style scoped>
 </style>

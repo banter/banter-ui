@@ -1,7 +1,10 @@
 <template>
   <div class="discussion-card-wrapper">
     <!-- border-variant="dark"  -->
-    <b-card no-body class="overflow-hidden discussion-card" :style="isActiveDiscussion ? {'background':'lightgrey'} : {}" align="left">
+    <b-card no-body
+      class="overflow-hidden discussion-card"
+      :style="isActiveDiscussion ? {'background':'lightgrey'} : {}"
+      align="left">
       <b-row no-gutters>
         <b-col md="3">
           <div style="position:relative">
@@ -12,8 +15,9 @@
               <b-icon stacked icon="circle-fill" variant="white"></b-icon>
               <b-icon stacked :icon="audioIcon" variant="black"></b-icon>
               <b-icon stacked icon="circle" variant="white"></b-icon>
-            </b-iconstack> 
-            <div class="discussion-timestamp" :style="discussionTime(discussion)=='' ? {} : {'background-color':'black'}" >
+            </b-iconstack>
+            <div class="discussion-timestamp"
+              :style="discussionTime(discussion)=='' ? {} : {'background-color':'black'}" >
               <p class="discussion-timestamp-text" style="margin-bottom:0px">
                 {{`${discussionTime(discussion)}`}}
               </p>
@@ -50,56 +54,56 @@
   </div>
 </template>
 
-
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+
 export default {
   name: 'DiscussionCard',
   props: {
     isActiveDiscussion: {
       type: Boolean,
       required: true,
-      default: () => false
+      default: () => false,
     },
-      
+
     discussion: {
-    type: Object,
-    required: true,
-    default: () => ({})
-}
-  },  
-
-    computed: {
-      ...mapState({
-        isLoading: state => state.audio.isRequesting,
-        audioConfig: state => state.audio.audioConfig,
-      }),
-      audioIcon: function() {
-        return this.isPlaying && this.isActiveDiscussion==true ? 'pause' : 'play'
-      },
-      audioAction: function() {
-        return this.isPlaying ? this.pauseAudio : this.playAudio
-      },
-      isPlaying: function() {
-        return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
-      }
+      type: Object,
+      required: true,
+      default: () => ({}),
     },
+  },
 
+  computed: {
+    ...mapState({
+      isLoading: (state) => state.audio.isRequesting,
+      audioConfig: (state) => state.audio.audioConfig,
+    }),
+    audioIcon() {
+      return this.isPlaying && this.isActiveDiscussion === true ? 'pause' : 'play';
+    },
+    audioAction() {
+      return this.isPlaying ? this.pauseAudio : this.playAudio;
+    },
+    isPlaying() {
+      return !!(
+        this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio)
+      );
+    },
+  },
 
   methods: {
-    discussionDate(discussion){
+    discussionDate(discussion) {
       if (discussion?.episodePublishDate) {
-        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`)
-      } else {
-        return null
+        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`);
       }
+      return null;
     },
-    discussionTime(discussion){
-      var duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss')
-      return duration === "0:00" ? '' : duration 
-    }
-  }
-}
+    discussionTime(discussion) {
+      const duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss');
+      return duration === '0:00' ? '' : duration;
+    },
+  },
+};
 
 </script>
 
@@ -152,7 +156,6 @@ letter-spacing: 0.2px;
 color: #030303;
 }
 
-
 .card-img.discussion-card-image {
   object-fit: contain;
   position: relative;
@@ -164,7 +167,7 @@ color: #030303;
     max-width: 100%;
     width: 100%;
     height: 100%;
-    top: 50%;     
+    top: 50%;
     left: 50%;
     transform: translate( -50%, -50%);
     border-radius: 25px;
@@ -212,6 +215,5 @@ color: #030303;
 .tag-display span {
   margin: 2px;
 }
-
 
 </style>

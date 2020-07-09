@@ -20,20 +20,20 @@ export default {
     index: {
       type: Number,
       required: true,
-      default: 0
+      default: 0,
     },
     topic: {
       type: Object,
       required: true,
-      default: () => {return {}}
+      default: () => ({}),
     },
     type: {
       type: String,
       required: true,
-      default: () => ""
-    }
-  }
-}
+      default: () => '',
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -63,7 +63,7 @@ export default {
     max-width: 100%;
     width: 100%;
     height: 100%;
-    top: 50%;     
+    top: 50%;
     left: 50%;
     transform: translate( -50%, -50%);
     border-radius: 25px;
@@ -117,7 +117,7 @@ export default {
         background-color :black;
       }
     }
-    
+
     &::after{
       border-radius: 25px;
     }

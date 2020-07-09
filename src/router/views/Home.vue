@@ -1,8 +1,10 @@
 <template>
   <div class="main-content">
     <TopicHero :topics="getTrendingTopicTags"/>
-
-    <div class="carousel-container" v-for="(collection, index) in collections" :key="`carousel-${index}`">
+    <div
+      class="carousel-container"
+      v-for="(collection, index) in collections"
+      :key="`carousel-${index}`">
       <TopicCarouselScroll :collection="collection"/>
     </div>
   </div>
@@ -11,26 +13,26 @@
 
 <script>
 
-import { mapGetters, mapState } from 'vuex'
-import TopicHero from "../../containers/TopicHero"
-import TopicCarouselScroll from "../../containers/TopicCarouselScroll"
+import { mapGetters, mapState } from 'vuex';
+import TopicHero from '../../containers/TopicHero.vue';
+import TopicCarouselScroll from '../../containers/TopicCarouselScroll.vue';
 
 export default {
   name: 'Home',
   components: {
     TopicHero,
-    TopicCarouselScroll
+    TopicCarouselScroll,
   },
   props: {
     loginSuccess: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     loginError: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
   },
   mounted() {
@@ -38,17 +40,17 @@ export default {
       this.$bvToast.toast(this.loginError, {
         title: 'Login Error',
         variant: 'warning',
-        autoHideDelay: 5000
-      })
+        autoHideDelay: 5000,
+      });
     }
   },
   computed: {
-    ...mapGetters(["getTrendingTopicTags"]),
+    ...mapGetters(['getTrendingTopicTags']),
     ...mapState({
-      collections: state => state.topics.collections
+      collections: (state) => state.topics.collections,
     }),
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
