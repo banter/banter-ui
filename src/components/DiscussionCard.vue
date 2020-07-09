@@ -65,10 +65,14 @@ export default {
       required: true,
       default: () => false,
     },
-
     discussion: {
       type: Object,
       required: true,
+      default: () => ({}),
+    },
+    audioConfig: {
+      type: Object,
+      required: false,
       default: () => ({}),
     },
   },
@@ -76,10 +80,9 @@ export default {
   computed: {
     ...mapState({
       isLoading: (state) => state.audio.isRequesting,
-      audioConfig: (state) => state.audio.audioConfig,
     }),
     audioIcon() {
-      return this.isPlaying && this.isActiveDiscussion === true ? 'pause' : 'play';
+      return (this.isPlaying && this.isActiveDiscussion) ? 'pause' : 'play';
     },
     audioAction() {
       return this.isPlaying ? this.pauseAudio : this.playAudio;

@@ -8,6 +8,7 @@
         :key="`discussion-${index}`">
         <div>
           <DiscussionCard v-on:click.native="audioAction(discussion)" :discussion="discussion"
+            :audioConfig="audioConfig"
             :isActiveDiscussion="isActiveDiscussion(discussion)"/>
         </div>
       </b-list-group-item>
@@ -50,17 +51,22 @@ export default {
       currentDiscussion: (state) => state.audio.currentDiscussion,
       isLoading: (state) => state.topics.isRequesting,
       chosenTopic: (state) => state.topics.currentTopic,
+      audioConfig: (state) => state.audio.audioConfig,
     }),
     currentTopic() {
       return this.chosenTopic;
     },
   },
   methods: {
-    ...mapActions(['fetchTopic', 'pauseAudio', 'createAudio']),
+    ...mapActions(['fetchTopic', 'pauseAudio', 'createAudio', 'playAudio']),
     audioAction(discussion) {
-      (this.currentDiscussion?.discussionId === discussion.discussionId
-        ? this.pauseAudio
-        : this.createAudio)(discussion);
+      let action;
+      if (this.currentDiscussion?.discussionId === discussion?.discussionId) {
+        action = this.audioConfig.playing() ? this.pauseAudio : this.playAudio;
+      } else {
+        action = this.createAudio;
+      }
+      action(discussion);
     },
     discussionDate(discussion) {
       if (discussion?.episodePublishDate) {

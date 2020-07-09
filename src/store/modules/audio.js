@@ -120,7 +120,7 @@ export default {
       if (state.audioConfig) {
         state.audioConfig.unload(this.currentAudio);
         state.currentAudio = null;
-        state.audioConfig = {};
+        state.audioConfig = null;
       }
     },
     updateTimestamp(state) {

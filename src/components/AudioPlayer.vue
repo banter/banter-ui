@@ -4,11 +4,6 @@
     <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center fixed-bottom">
       <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
         <b-navbar-nav>
-          <a title="Back to start" @click="() => goTostartOfDiscussion()" font-scale="3"
-            class="audio-icon"><b>0
-              <b-icon font-scale="1" :icon="'arrow-return-left'" /></b></a>
-        </b-navbar-nav>
-        <b-navbar-nav>
           <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3"
             class="audio-icon"><b>15
               <b-icon font-scale="1" :icon="'arrow-counterclockwise'" /></b></a>
@@ -21,11 +16,6 @@
           <a title="Fast Forward 15 seconds" @click="() => goForward15Seconds()" font-scale="3"
             class="audio-icon"><b>
               <b-icon font-scale="1" :icon="'arrow-clockwise'" />15</b></a>
-        </b-navbar-nav>
-        <b-navbar-nav>
-          <a title="Go to end of discussion" @click="() => goToEndOfDiscussion()" font-scale="3"
-            class="audio-icon"><b>
-              <b-icon font-scale="1" :icon="'arrow-return-right'" />:05</b></a>
         </b-navbar-nav>
         <b-navbar-nav>
           <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"
@@ -186,5 +176,9 @@ export default {
 
   .audio-content {
     padding-left: 15px;
+  }
+
+  a.audio-icon {
+    cursor: pointer;
   }
 </style>

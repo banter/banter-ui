@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import API from '../../constants/api';
 import apiRequest from '../helpers';
 
@@ -138,7 +139,7 @@ export default {
       state.isRequestingTrending = true;
     },
     fetchTrendingTopicsSuccess(state, payload) {
-      state.trendingTopics = payload;
+      Vue.set(state, 'trendingTopics', payload);
       state.isRequestingTrending = false;
     },
     trendingTopicsError(state, error) {
