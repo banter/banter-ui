@@ -1,5 +1,17 @@
 <template>
   <div class="landing-home">
+    <b-navbar toggleable="sm">
+      <b-navbar-brand>
+        <router-link :to="'/'">
+          <b-img height="60" :src="require('../../assets/logo.png')" alt="Banter Logo"></b-img>
+        </router-link>
+      </b-navbar-brand>
+
+      <b-navbar-nav class="ml-auto">
+        <b-nav-text class="mr-sm-4">About</b-nav-text>
+        <b-nav-text class="mr-sm-4">Pricing</b-nav-text>
+      </b-navbar-nav>
+    </b-navbar>
     <div class="landing-content">
       <h1 class="marketing-message"> The New Way to Listen to Sports Talk</h1>
       <b-img fluid class="landing-image" :src="require('../../assets/radio.png')" alt="Radio"/>
