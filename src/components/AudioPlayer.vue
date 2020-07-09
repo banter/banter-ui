@@ -19,7 +19,7 @@
         </b-navbar-nav>
         <b-navbar-nav>
           <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"
-            class="audio-icon"><b>
+            class="audio-icon ml-sm-2"><b>
               <b-icon :icon="'skip-end-fill'" /></b></a>
         </b-navbar-nav>
       </b-navbar-brand>
@@ -141,6 +141,10 @@ export default {
 
   .audio-player-container div {
     margin: auto;
+  }
+
+  .discussion-icon {
+    cursor: pointer;
   }
 
   .player-controls {

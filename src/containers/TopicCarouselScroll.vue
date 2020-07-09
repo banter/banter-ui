@@ -1,13 +1,11 @@
 <template>
   <div>
-    <CarouselHeader :topic="collection.primaryTopic.tag"/>
+    <CarouselHeader :topic="collection.primaryTopic.tag" />
     <div class="topic-card-container">
-      <carousel class="carousel-content"
-        :per-page="5"
-        :paginationEnabled="false"
-        navigationEnabled>
+      <carousel class="carousel-content" :paginationEnabled="true"
+        :perPageCustom="[[100, 1], [400, 2], [1000, 3], [1400, 5]]" :navigationEnabled="true">
         <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
-          <TopicCard type="carousel-card" :topic="topic.tag" :index="i"/>
+          <TopicCard type="carousel-card" :topic="topic.tag" :index="i" />
         </slide>
       </carousel>
     </div>
@@ -38,6 +36,7 @@ export default {
 </script>
 
 <style>
+
 .topic-card-container {
   display: flex;
   flex-direction: row;
@@ -45,12 +44,12 @@ export default {
 }
 
 .carousel-content {
-  width: 95%;
+  width: 90%;
   margin: 10px;
 }
 
 .carousel-header-container {
-  width: 380px;
+  width: 25%;
   height: 70px;
   font-family: Roboto;
   font-size: 24px;

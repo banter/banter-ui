@@ -1,15 +1,10 @@
 <template>
   <div class="main-content">
-    <!-- Waiting to Display Topic Hero until content is loaded
-    this is done because the cards use the request data to render, if
-    html is loaded before the trending topics are in, gets screwed -->
-    <div v-if="!isRequestingTrending">
-      <TopicHero
-        v-if="!isRequestingTrending && getTrendingTopicTags.length > 0"
-        :topics="getTrendingTopicTags"/>
-    </div>
+    <TopicHero
+      v-if="!isRequestingTrending && getTrendingTopicTags.length > 0"
+      :topics="getTrendingTopicTags"/>
     <div v-for="(collection, index) in collections" :key="`carousel-${index}`">
-      <NewTopicCarouselScroll :collection="collection"/>
+      <TopicCarouselScroll :collection="collection"/>
     </div>
   </div>
 
@@ -19,13 +14,13 @@
 
 import { mapGetters, mapState } from 'vuex';
 import TopicHero from '../../containers/TopicHero.vue';
-import NewTopicCarouselScroll from '../../containers/NewTopicCarouselScroll.vue';
+import TopicCarouselScroll from '../../containers/TopicCarouselScroll.vue';
 
 export default {
   name: 'Home',
   components: {
     TopicHero,
-    NewTopicCarouselScroll,
+    TopicCarouselScroll,
   },
   props: {
     loginSuccess: {
