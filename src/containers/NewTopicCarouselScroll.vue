@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <CarouselHeader :topic="collection.primaryTopic.tag" />
-        <div class="topic-card-container">
-            <carousel class="carousel-content" :paginationEnabled="true"
-                :perPageCustom="[[100, 1], [400, 2], [1000, 3], [1400, 5]]" :navigationEnabled="true">
-                <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
-                    <TopicCard type="carousel-card" :topic="topic.tag" :index="i" />
-                </slide>
-            </carousel>
-        </div>
+  <div>
+    <CarouselHeader :topic="collection.primaryTopic.tag" />
+    <div class="topic-card-container">
+      <carousel class="carousel-content" :paginationEnabled="true"
+        :perPageCustom="[[100, 1], [400, 2], [1000, 3], [1400, 5]]" :navigationEnabled="true">
+        <slide v-for="(topic, i) in collection.relatedTopics" :key="topic.id">
+          <TopicCard type="carousel-card" :topic="topic.tag" :index="i" />
+        </slide>
+      </carousel>
     </div>
+  </div>
 </template>
 
 <script>

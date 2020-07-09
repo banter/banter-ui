@@ -1,5 +1,6 @@
 import API from "../../constants/api";
 import {apiRequest} from "../helpers"
+import Vue from "vue";
 
 export const TopicsModule = {
   state: {
@@ -138,7 +139,7 @@ export const TopicsModule = {
       state.isRequestingTrending = true;
     },
     fetchTrendingTopicsSuccess(state, payload) {
-      state.trendingTopics = payload;
+      Vue.set(state, 'trendingTopics', payload);
       state.isRequestingTrending = false;
     },
     trendingTopicsError(state, error) {

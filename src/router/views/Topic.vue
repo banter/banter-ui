@@ -1,21 +1,19 @@
-  
 <template>
   <div class="main-content">
     <div v-if="!isLoading">
       <div>
-        <TopicHeader :currentTopic="currentTopic"/>
+        <TopicHeader :currentTopic="currentTopic" />
       </div>
-        <b-list-group-item 
-        style="border: none"
-          v-for="(discussion, index) in currentTopic.playlist" 
-          :key="`discussion-${index}`">
-          <div>
-                <DiscussionCard  v-on:click.native="audioAction(discussion)" :discussion="discussion" :isActiveDiscussion="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId)"/>
-          </div>
-        </b-list-group-item>
+      <b-list-group-item style="border: none" v-for="(discussion, index) in currentTopic.playlist"
+        :key="`discussion-${index}`">
+        <div>
+          <DiscussionCard v-on:click.native="audioAction(discussion)" :discussion="discussion"
+            :isActiveDiscussion="((currentDiscussion && currentDiscussion.discussionId) === discussion.discussionId)" />
+        </div>
+      </b-list-group-item>
     </div>
     <div>
-      <LoadingSpinner :variant="'secondary'" v-if="isLoading"/>
+      <LoadingSpinner :variant="'secondary'" v-if="isLoading" />
     </div>
   </div>
 </template>

@@ -4,8 +4,7 @@
     this is done because the cards use the request data to render, if
     html is loaded before the trending topics are in, gets screwed -->
     <div v-if="!isRequestingTrending">
-      {{isRequestingTrending}}
-      <TopicHero v-if="!isRequestingTrending" :topics="getTrendingTopicTags"/>
+      <TopicHero v-if="!isRequestingTrending && getTrendingTopicTags.length > 0" :topics="getTrendingTopicTags"/>
     </div>
     <div v-for="(collection, index) in collections" :key="`carousel-${index}`">
       <NewTopicCarouselScroll :collection="collection"/>

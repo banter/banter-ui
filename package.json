@@ -1,10 +1,10 @@
 {
   "name": "Banter",
   "version": "0.1.0",
-  "private": true,
+  "private": true,  
   "scripts": {
     "dev": "vue-cli-service --mode=development serve",
-    "serve": "vue-cli-service --mode=production serve",
+    "serve": "vue-cl i-service --mode=production serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "server": "nodemon server.js",
