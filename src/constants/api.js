@@ -1,11 +1,11 @@
 const CONSTANTS = {
   API_BASE_URLS: {
-    DEVELOPMENT: 'http://bante-loadb-ylobkweh6xeq-909332376.us-east-1.elb.amazonaws.com',
-    PRODUCTION: 'https://api.banteraudio.com'
+    LOCAL: 'http://bante-loadb-ylobkweh6xeq-909332376.us-east-1.elb.amazonaws.com',
+    DEVELOPMENT: 'https://api.banteraudio.com'
   },
   REDIRECT_URLS: {
-    DEVELOPMENT: 'http://localhost:8081',
-    PRODUCTION: 'https://banteraudio.com'
+    LOCAL: 'http://localhost:8081',
+    DEVELOPMENT: 'https://banteraudio.com'
   }
 }
 const ENV = process.env.NODE_ENV.toUpperCase();

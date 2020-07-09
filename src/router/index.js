@@ -6,15 +6,23 @@ import {
   Topic,
   Genres,
   TermsAndConditions,
-  PrivacyPolicy
+  PrivacyPolicy,
+  Landing
 } from "./views/index";
 
 Vue.use(Router);
 
 export const router = new Router({
   mode: "history",
-  routes: [{
-    path: "/",
+  routes: [
+  {
+    path: '/',
+    name: 'Welcome To Banter',
+    component: Landing,
+    meta: { layout: 'landing' }
+  },
+  {
+    path: "/home",
     name: 'Home',
     component: Home,
     props: route => ({ loginSuccess: route.query.success, loginError: route.query.error  })

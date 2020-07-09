@@ -1,3 +1,4 @@
+export { default as Landing } from "./Landing.vue";
 export { default as Home } from "./Home.vue";
 export { default as Genres } from "./Genres.vue";
 export { default as Topic } from "./Topic.vue";
