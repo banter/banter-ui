@@ -1,12 +1,13 @@
 <template>
-    <div class="header-card card-wrapper">
-        <b-card overlay :img-src="currentTopic.primaryTag.imageUrl" img-alt="Card Image" class="header-card">
-            <b-card-text class="header-card-text">
-                <h4> {{currentTopic.name}}</h4>
-            </b-card-text>
+  <div class="header-card card-wrapper">
+    <b-card overlay :img-src="currentImageUrl" img-alt="Card Image"
+      class="header-card">
+      <b-card-text class="header-card-text">
+        <h4> {{currentTopic.name}}</h4>
+      </b-card-text>
 
-        </b-card>
-    </div>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -17,14 +18,18 @@ export default {
     currentTopic: {
       type: Object,
       required: true,
-      default: () => ({})
+      default: () => ({}),
     },
-}
-}
+  },
+  computed: {
+    currentImageUrl() {
+      return this.currentTopic?.primaryTag?.imageUrl;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 
 .card {
     background: none;
