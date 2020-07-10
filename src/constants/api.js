@@ -2,10 +2,12 @@ const CONSTANTS = {
   API_BASE_URLS: {
     LOCAL: 'http://localhost:8080',
     DEVELOPMENT: 'https://api.banteraudio.com',
+    PRODUCTION: 'https://api.banteraudio.com',
   },
   REDIRECT_URLS: {
     LOCAL: 'http://localhost:8081',
     DEVELOPMENT: 'https://banteraudio.com',
+    PRODUCTION: 'https://banteraudio.com',
   },
 };
 const ENV = process.env.NODE_ENV.toUpperCase();

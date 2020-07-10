@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service --mode=development serve",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "debug": "node --nolazy --inspect-brk=9229 server.js",
-    "dev": "vue-cli-service --mode=local serve",
+    "dev": "vue-cli-service --mode=development serve",
+    "local": "vue-cli-service --mode=local serve",
     "server": "nodemon server.js"
   },
   "dependencies": {
