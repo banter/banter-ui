@@ -1,6 +1,6 @@
 const CONSTANTS = {
   API_BASE_URLS: {
-    LOCAL: 'http://bante-loadb-ylobkweh6xeq-909332376.us-east-1.elb.amazonaws.com',
+    LOCAL: 'http://localhost:8080',
     DEVELOPMENT: 'https://api.banteraudio.com',
   },
   REDIRECT_URLS: {
