@@ -12,7 +12,7 @@
 
 <script>
 
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 import TopicHero from '../../containers/TopicHero.vue';
 import TopicCarouselScroll from '../../containers/TopicCarouselScroll.vue';
 
@@ -21,12 +21,6 @@ export default {
   components: {
     TopicHero,
     TopicCarouselScroll,
-  },
-  data() {
-    return {
-      heroSize: 300,
-      isMobile: false,
-    };
   },
   props: {
     loginSuccess: {
@@ -48,34 +42,22 @@ export default {
         autoHideDelay: 5000,
       });
     }
-    window.addEventListener('resize', this.myEventHandler);
-    this.myEventHandler();
+    window.addEventListener('resize', this.resizeWindow);
+    this.resizeWindow();
   },
   destroyed() {
-    window.removeEventListener('resize', this.myEventHandler);
+    window.removeEventListener('resize', this.resizeWindow);
   },
   methods: {
-    myEventHandler() {
-      const screenWidth = window.innerWidth;
-      if (screenWidth < 420) {
-        this.heroSize = 180;
-        this.isMobile = true;
-      } else if (screenWidth < 600) {
-        this.heroSize = 270;
-      } else if (screenWidth < 750) {
-        this.heroSize = 300;
-      } else if (screenWidth < 1200) {
-        this.heroSize = 350;
-      } else {
-        this.heroSize = 500;
-      }
-    },
+    ...mapActions(['resizeWindow']),
   },
   computed: {
     ...mapGetters(['getTrendingTopicTags']),
     ...mapState({
       isRequestingTrending: (state) => state.topics.isRequesting,
       collections: (state) => state.topics.collections,
+      heroSize: (state) => state.sizing.heroSize,
+      isMobile: (state) => state.sizing.isMobile,
     }),
   },
 };
