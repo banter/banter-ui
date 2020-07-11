@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <BanterNavbar/>
+    <BanterNavBar/>
     <AudioPlayer v-if="audioConfig"/>
     <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
 <script>
-import BanterNavbar from "./components/BanterNavBar"
+
+import BanterNavBar from "./components/BanterNavBar"
 import AudioPlayer from "./components/AudioPlayer"
 import { mapState } from 'vuex'
 
@@ -20,7 +21,7 @@ export default {
     this.$store.dispatch("fetchCurrentUser");
   },
   components: {
-    BanterNavbar,
+    BanterNavBar,
     AudioPlayer
   },
   computed: {
