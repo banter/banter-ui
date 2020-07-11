@@ -2,9 +2,9 @@
   <div class="main-content">
     <TopicHero
       v-if="!isRequestingTrending && getTrendingTopicTags.length > 0"
-      :topics="getTrendingTopicTags"/>
+      :topics="getTrendingTopicTags" :heroSize="heroSize"/>
     <div v-for="(collection, index) in collections" :key="`carousel-${index}`">
-      <TopicCarouselScroll :collection="collection"/>
+      <TopicCarouselScroll :collection="collection" :isMobile="isMobile"/>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
 
 <script>
 
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 import TopicHero from '../../containers/TopicHero.vue';
 import TopicCarouselScroll from '../../containers/TopicCarouselScroll.vue';
 
@@ -42,12 +42,22 @@ export default {
         autoHideDelay: 5000,
       });
     }
+    window.addEventListener('resize', this.resizeWindow);
+    this.resizeWindow();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeWindow);
+  },
+  methods: {
+    ...mapActions(['resizeWindow']),
   },
   computed: {
     ...mapGetters(['getTrendingTopicTags']),
     ...mapState({
       isRequestingTrending: (state) => state.topics.isRequesting,
       collections: (state) => state.topics.collections,
+      heroSize: (state) => state.sizing.heroSize,
+      isMobile: (state) => state.sizing.isMobile,
     }),
   },
 };

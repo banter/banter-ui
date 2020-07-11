@@ -3,7 +3,8 @@
     <b-navbar toggleable="lg" type="light" variant="faded">
       <b-navbar-brand>
         <router-link :to="'/home'">
-          <b-img height="60" :src="require('../assets/logo.png')" alt="Banter Logo"></b-img>
+          <b-img height="60" :src="require('../assets/Banter_logo_dark.png')"
+          alt="Banter Logo"></b-img>
         </router-link>
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

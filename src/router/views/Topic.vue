@@ -1,5 +1,8 @@
 <template>
   <div class="main-content">
+    <div v-if="isLoading" class="loading-body">
+      <LoadingSpinner :variant="'secondary'"/>
+    </div>
     <div v-if="!isLoading">
       <div>
         <TopicHeader :currentTopic="currentTopic" />
@@ -12,9 +15,6 @@
             :isActiveDiscussion="isActiveDiscussion(discussion)"/>
         </div>
       </b-list-group-item>
-    </div>
-    <div>
-      <LoadingSpinner :variant="'secondary'" v-if="isLoading" />
     </div>
   </div>
 </template>
@@ -100,6 +100,11 @@ a {
   margin: auto;
   width: 80%;
   margin-top: 50px;
+}
+.loading-body {
+    position: relative;
+    margin-left: 50%;
+    margin-right: 50%;
 }
 .discussion-playlist {
   margin-bottom: 60px;
