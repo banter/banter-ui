@@ -6,7 +6,11 @@ import {
   BootstrapVue,
   IconsPlugin,
 } from 'bootstrap-vue';
+
+// Analytics
 import Hotjar from 'vue-hotjar';
+import VueAnalytics from 'vue-analytics';
+
 import store from './store/index';
 import router from './router/index';
 import App from './App.vue';
@@ -19,6 +23,12 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(Hotjar, {
   id: '1897223',
+  isProduction: process.env.NODE_ENV.toUpperCase() === 'PRODUCTION',
+});
+
+Vue.use(VueAnalytics, {
+  id: 'UA-172462319-1',
+  router,
 });
 
 Vue.use(BootstrapVue);

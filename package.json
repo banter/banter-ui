@@ -21,6 +21,7 @@
     "howler": "^2.2.0",
     "moment": "^2.26.0",
     "vue": "^2.6.11",
+    "vue-analytics": "^5.22.1",
     "vue-carousel": "^0.18.0",
     "vue-carousel-3d": "^0.2.0",
     "vue-hotjar": "^1.1.2",
