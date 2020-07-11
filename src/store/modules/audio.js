@@ -6,7 +6,9 @@ export default {
     currentDiscussion: null,
     audioConfig: null,
     isRequesting: false,
+    loadingNewAudio: false,
     timestampRemaining: 0,
+    audioIcon: 'play',
   },
   actions: {
     playAudio({ commit, dispatch }, discussion) {
@@ -26,7 +28,7 @@ export default {
     createAudio({
       commit, rootState, state, dispatch,
     }, discussion) {
-      commit('killAudioRequest');
+      commit('killAudioRequest', true);
       commit('createAudioRequest', discussion);
       state.currentDiscussion = discussion;
 
@@ -87,15 +89,20 @@ export default {
   mutations: {
     createAudioRequest(state) {
       state.isRequesting = true;
+      state.audioIcon = 'loading';
     },
     audioRequestSuccess(state) {
       state.isRequesting = false;
+      state.audioIcon = 'pause';
+      state.loadingNewAudio = false;
     },
     pauseAudioRequest(state) {
       state.audioConfig.pause(state.currentAudio);
+      state.audioIcon = 'play';
     },
     resumeAudioRequest(state) {
       state.audioConfig.play(state.currentAudio);
+      state.audioIcon = 'pause';
     },
     back15SecondsRequest(state) {
       const newTimestamp = (+state.audioConfig.seek() || 0) - 15;
@@ -116,11 +123,13 @@ export default {
       const fiveSecondsLeft = state.currentDiscussion.endTimeMillis / 1000 - 5;
       state.audioConfig.seek(fiveSecondsLeft, state.currentAudio);
     },
-    killAudioRequest(state) {
+    killAudioRequest(state, newAudioLoading) {
       if (state.audioConfig) {
         state.audioConfig.unload(this.currentAudio);
+        state.loadingNewAudio = !!newAudioLoading;
         state.currentAudio = null;
         state.audioConfig = null;
+        state.audioIcon = 'play';
       }
     },
     updateTimestamp(state) {

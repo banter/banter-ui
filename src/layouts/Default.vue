@@ -1,7 +1,7 @@
 <template>
   <div id="banter-app">
     <BanterNavBar/>
-    <AudioPlayer v-if="audioConfig"/>
+    <AudioPlayer v-if="audioConfig || loadingNewAudio"/>
     <slot/>
   </div>
 </template>
@@ -27,6 +27,7 @@ export default {
   computed: {
     ...mapState({
       audioConfig: (state) => state.audio.audioConfig,
+      loadingNewAudio: (state) => state.audio.loadingNewAudio,
     }),
   },
 
