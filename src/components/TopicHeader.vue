@@ -3,7 +3,7 @@
     <b-card overlay :img-src="currentImageUrl" img-alt="Card Image"
       class="header-card">
       <b-card-text class="header-card-text">
-        <h4> {{currentTopic.name}}</h4>
+         <h3>{{currentTopic.name}}</h3>
       </b-card-text>
 
     </b-card>
@@ -51,6 +51,20 @@ export default {
   left: 60px;
   padding: 15px
 }
+
+@media (max-width: 800px)  {
+  .header-card-text {
+  background: black;
+  opacity: .6;
+  color: white;
+  width: fit-content;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px
+}
+}
+
 .card-wrapper {
   margin: auto;
   position: relative;
@@ -58,7 +72,7 @@ export default {
 }
 .header-card {
   max-width: 1000px;
-  min-width: 320px;
+  // min-width: 320px;
   border: none;
 }
 </style>

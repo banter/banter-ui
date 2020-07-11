@@ -72,7 +72,7 @@ export default {
   }
 }
 
-.hero-card-test{
+.hero-card-3d{
 
   height: 100%;
   width: auto;
@@ -93,13 +93,14 @@ export default {
   }
 
   .topic-label {
+    position: absolute;
     font-style: normal;
     font-weight: 250;
-    font-size: 22px;
+    font-size: 16px;
     text-align: center;
-    line-height: 22px;
+    line-height: 18px;
     height: 100%;
-    padding: 20px 0px;
+    padding: 15px 0px;
   }
 
 }

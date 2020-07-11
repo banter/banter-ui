@@ -15,7 +15,7 @@
         :count="topics.length"
         :controls-visible="true">
         <slide v-for="(topic, i) in topics" :key="topic.id" :topic="topic" :index="i">
-          <TopicCard type="hero-card-test" :key="topic.id" :topic="topic" :index="i" />
+          <TopicCard type="hero-card-3d" :key="topic.id" :topic="topic" :index="i" />
         </slide>
       </carousel-3d>
     </div>
@@ -31,43 +31,22 @@ import TopicCard from '../components/TopicCard.vue';
 
 export default {
   name: 'TopicHero',
-  data() {
-    return {
-      heroSize: 300,
-    };
-  },
   props: {
     topics: {
       type: Array,
       required: true,
       default: () => [],
     },
+    heroSize: {
+      type: Number,
+      required: true,
+      default: () => 300,
+    },
   },
   components: {
     TopicCard,
     Slide,
     Carousel3d,
-  },
-  mounted() {
-    window.addEventListener('resize', this.myEventHandler);
-    this.myEventHandler();
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.myEventHandler);
-  },
-  methods: {
-    myEventHandler() {
-      const screenWidth = window.innerWidth;
-      if (screenWidth < 360) {
-        this.heroSize = 150;
-      } else if (screenWidth < 750) {
-        this.heroSize = 200;
-      } else if (screenWidth < 1200) {
-        this.heroSize = 350;
-      } else {
-        this.heroSize = 500;
-      }
-    },
   },
 };
 </script>

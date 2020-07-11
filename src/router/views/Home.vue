@@ -2,9 +2,9 @@
   <div class="main-content">
     <TopicHero
       v-if="!isRequestingTrending && getTrendingTopicTags.length > 0"
-      :topics="getTrendingTopicTags"/>
+      :topics="getTrendingTopicTags" :heroSize="heroSize"/>
     <div v-for="(collection, index) in collections" :key="`carousel-${index}`">
-      <TopicCarouselScroll :collection="collection"/>
+      <TopicCarouselScroll :collection="collection" :isMobile="isMobile"/>
     </div>
   </div>
 
@@ -21,6 +21,12 @@ export default {
   components: {
     TopicHero,
     TopicCarouselScroll,
+  },
+  data() {
+    return {
+      heroSize: 300,
+      isMobile: false,
+    };
   },
   props: {
     loginSuccess: {
@@ -42,6 +48,26 @@ export default {
         autoHideDelay: 5000,
       });
     }
+    window.addEventListener('resize', this.myEventHandler);
+    this.myEventHandler();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.myEventHandler);
+  },
+  methods: {
+    myEventHandler() {
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 380) {
+        this.heroSize = 200;
+        this.isMobile = true;
+      } else if (screenWidth < 750) {
+        this.heroSize = 300;
+      } else if (screenWidth < 1200) {
+        this.heroSize = 350;
+      } else {
+        this.heroSize = 500;
+      }
+    },
   },
   computed: {
     ...mapGetters(['getTrendingTopicTags']),

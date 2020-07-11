@@ -12,10 +12,12 @@
               :src="discussion.podcastThumbnailUrl">
               </b-card-img>
             <b-iconstack scale="3" class="discussion-icon">
-              <b-icon stacked icon="circle-fill" variant="white"></b-icon>
+               <b-icon stacked icon="circle-fill" variant="white"></b-icon>
               <b-icon stacked :icon="audioIcon" variant="black"></b-icon>
               <b-icon stacked icon="circle" variant="white"></b-icon>
             </b-iconstack>
+            <span v-if="audioIcon=='loading'" class="discussion-icon">
+            <LoadingSpinner /></span>
             <div class="discussion-timestamp"
               :style="discussionTime(discussion)=='' ? {} : {'background-color':'black'}" >
               <p class="discussion-timestamp-text" style="margin-bottom:0px">
@@ -56,14 +58,18 @@
 
 <script>
 import { mapState } from 'vuex';
+import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
   name: 'DiscussionCard',
+  components: {
+    LoadingSpinner,
+  },
   props: {
     isActiveDiscussion: {
       type: Boolean,
       required: true,
-      default: () => false,
+      default: false,
     },
     discussion: {
       type: Object,
@@ -82,6 +88,9 @@ export default {
       isLoading: (state) => state.audio.isRequesting,
     }),
     audioIcon() {
+      // loading isnt a valid icon, however, this makes the icon not visible, allowing us
+      // to display the loading spinner
+      if (this.isActiveDiscussion && this.isLoading) { return 'loading'; }
       return (this.isPlaying && this.isActiveDiscussion) ? 'pause' : 'play';
     },
     audioAction() {
@@ -184,6 +193,7 @@ color: #030303;
     left: 85%;
     opacity: .80;
     opacity: .95;
+    border-radius: 5px;
     // background-color: black;
     color: white;
     padding: 3px;
@@ -194,7 +204,7 @@ color: #030303;
 
   .discussion-timestamp-text {
     font-style: normal;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 14px;
     text-align: center;
     height: 100%;
