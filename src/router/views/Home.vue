@@ -57,9 +57,11 @@ export default {
   methods: {
     myEventHandler() {
       const screenWidth = window.innerWidth;
-      if (screenWidth < 380) {
-        this.heroSize = 200;
+      if (screenWidth < 420) {
+        this.heroSize = 180;
         this.isMobile = true;
+      } else if (screenWidth < 600) {
+        this.heroSize = 270;
       } else if (screenWidth < 750) {
         this.heroSize = 300;
       } else if (screenWidth < 1200) {

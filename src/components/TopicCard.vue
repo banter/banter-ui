@@ -3,10 +3,12 @@
     <router-link :to="`/topics/${topic.value}`">
       <div :class="`image-card ${type}`">
         <b-img class="topic-image" :src="`${topic.imageUrl || 'http://placeimg.com/450/450'}`" />
+        <div class = "topic-content-wrapper">
         <div class="topic-descriptor">
           <p class="topic-label">
             {{topic.value}}
           </p>
+        </div>
         </div>
       </div>
     </router-link>
@@ -83,8 +85,9 @@ export default {
     position: absolute;
     background-color: black;
     color: white;
-    width: 50%;
-    height: 65px;
+    // width: 50%;
+    width: fit-content;
+    height: 50px;
     left: 0;
     bottom: 20px;
     display: flex;
@@ -93,14 +96,14 @@ export default {
   }
 
   .topic-label {
-    position: absolute;
+    // position: absolute;
     font-style: normal;
     font-weight: 250;
     font-size: 16px;
     text-align: center;
-    line-height: 18px;
-    height: 100%;
-    padding: 15px 0px;
+    // line-height: 18px;
+    height: auto;
+    padding: 5px 10px;
   }
 
 }
@@ -129,7 +132,7 @@ export default {
     font-weight: 300;
     font-size: 26px;
     text-align: center;
-    line-height: 22px;
+    // line-height: 22px;
     height: 100%;
     padding: 20px 0px;
   }
