@@ -3,8 +3,7 @@ node_modules
 /dist
 functions-build/
 
-package-lock.json
-
+*package-lock.json
 # local env files
 .env.local
 .env.*.local
