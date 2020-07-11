@@ -1,5 +1,5 @@
 import API from '../../constants/api';
-import apiRequest from '../helpers';
+import apiRequest from '../helpers/api-request';
 
 export default {
   state: {
