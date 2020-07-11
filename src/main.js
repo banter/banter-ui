@@ -16,7 +16,7 @@ Vue.use(IconsPlugin)
 Vue.use(Vuex)
 
 Vue.use(VueAnalytics, {
-  id: 'UA-172119455-1',
+  id: 'UA-172462319-1',
   router
 })
 
