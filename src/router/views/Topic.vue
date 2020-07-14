@@ -35,8 +35,6 @@ export default {
   async mounted() {
     if (this.$route.params.topicName !== this.currentTopic.name) {
       await this.fetchTopic(this.$route.params.topicName);
-      const newPlaylist = this.currentTopic?.playlist;
-      this.createAudio(newPlaylist[0]);
     }
   },
   data() {
@@ -100,6 +98,7 @@ a {
   margin: auto;
   width: 80%;
   margin-top: 50px;
+  margin-bottom: 100px;
 }
 .loading-body {
     position: relative;

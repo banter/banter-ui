@@ -1,12 +1,15 @@
-import { Howl } from 'howler';
+import generateHowl from '../helpers/howl-generator';
 
 export default {
   state: {
     currentAudio: null,
     currentDiscussion: null,
     audioConfig: null,
+    nextDiscussion: null,
     isRequesting: false,
+    loadingNewAudio: false,
     timestampRemaining: 0,
+    audioIcon: 'play',
   },
   actions: {
     playAudio({ commit, dispatch }, discussion) {
@@ -23,43 +26,38 @@ export default {
     resumeAudio({ commit }) {
       commit('resumeAudioRequest');
     },
-    createAudio({
-      commit, rootState, state, dispatch,
+    prepareNextItem({
+      commit, rootState, state,
+    }) {
+      const { playlist } = rootState.topics.currentTopic;
+      const startPoint = playlist.findIndex(
+        (playlistItem) => playlistItem.discussionId === state.currentDiscussion.discussionId,
+      ) || 0;
+      commit('queueNextItem', playlist[startPoint + 1]);
+    },
+    async createAudio({
+      commit, state, dispatch,
     }, discussion) {
-      commit('killAudioRequest');
-      commit('createAudioRequest', discussion);
+      commit('killAudioRequest', true);
+      commit('createAudioRequest');
+
       state.currentDiscussion = discussion;
 
-      const { episodePlaybackUrl, startTimeMillis, endTimeMillis } = state.currentDiscussion;
+      if (state.nextDiscussion?.discussion?.discussionId === discussion.discussionId) {
+        state.audioConfig = state.nextDiscussion.howl;
+      } else {
+        state.audioConfig = generateHowl(state.currentDiscussion);
+      }
+      state.currentAudio = await state.audioConfig.play('clip');
+      commit('audioRequestSuccess');
 
-      const audioInfo = new Audio(episodePlaybackUrl);
-      audioInfo.onloadedmetadata = () => {
-        state.currentDiscussion.endTimeMillis = endTimeMillis || (audioInfo.duration * 1000);
-
-        state.audioConfig = new Howl({
-          html5: true,
-          src: episodePlaybackUrl,
-          sprite: {
-            // fix this for END
-            clip: [startTimeMillis, (state.currentDiscussion.endTimeMillis - startTimeMillis)],
-          },
-        });
-
-        state.currentAudio = state.audioConfig.play('clip');
-        commit('audioRequestSuccess');
-
-        // only use sprite if there's an endtime provided
-        state.audioConfig.on('end', () => {
-          const { playlist } = rootState.topics.currentTopic;
-
-          const nextItemIndex = playlist
-            .findIndex((item) => item.discussionId === state.currentDiscussion.discussionId) + 1;
-          const nextDiscussion = playlist[nextItemIndex];
-
-          // If there is a next discussion, createAudio, otheriwse killAudio?
-          return nextDiscussion ? dispatch('createAudio', nextDiscussion) : dispatch('killAudio');
-        });
-      };
+      dispatch('prepareNextItem');
+      dispatch('setupAutoplay');
+    },
+    setupAutoplay({ dispatch, state }) {
+      state.audioConfig.on(
+        'end', () => (state.nextDiscussion ? dispatch('createAudio', state.nextDiscussion.discussion) : dispatch('killAudio')),
+      );
     },
     goToEndOfDiscussion({ commit }) {
       commit('endOfDiscussionRequest');
@@ -85,17 +83,28 @@ export default {
   },
   // Edits the data
   mutations: {
+    queueNextItem(state, nextItem) {
+      state.nextDiscussion = {
+        howl: generateHowl(nextItem),
+        discussion: nextItem,
+      };
+    },
     createAudioRequest(state) {
       state.isRequesting = true;
+      state.audioIcon = 'loading';
     },
     audioRequestSuccess(state) {
       state.isRequesting = false;
+      state.audioIcon = 'pause';
+      state.loadingNewAudio = false;
     },
     pauseAudioRequest(state) {
       state.audioConfig.pause(state.currentAudio);
+      state.audioIcon = 'play';
     },
     resumeAudioRequest(state) {
       state.audioConfig.play(state.currentAudio);
+      state.audioIcon = 'pause';
     },
     back15SecondsRequest(state) {
       const newTimestamp = (+state.audioConfig.seek() || 0) - 15;
@@ -116,11 +125,13 @@ export default {
       const fiveSecondsLeft = state.currentDiscussion.endTimeMillis / 1000 - 5;
       state.audioConfig.seek(fiveSecondsLeft, state.currentAudio);
     },
-    killAudioRequest(state) {
+    killAudioRequest(state, newAudioLoading) {
       if (state.audioConfig) {
         state.audioConfig.unload(this.currentAudio);
+        state.loadingNewAudio = !!newAudioLoading;
         state.currentAudio = null;
         state.audioConfig = null;
+        state.audioIcon = 'play';
       }
     },
     updateTimestamp(state) {

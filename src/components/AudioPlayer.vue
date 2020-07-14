@@ -9,8 +9,8 @@
               <b-icon font-scale="1" :icon="'arrow-counterclockwise'" /></b></a>
         </b-navbar-nav>
         <b-navbar-nav>
-          <b-icon @click="() => audioAction()" font-scale="3" class="discussion-icon"
-            :icon="audioIcon"></b-icon>
+          <div class="audio-icon loader" v-if="audioIcon === 'loading'"><LoadingSpinner /></div>
+          <b-icon v-else @click="audioAction" font-scale="3" class="audio-icon" :icon="audioIcon"/>
         </b-navbar-nav>
         <b-navbar-nav>
           <a title="Fast Forward 15 seconds" @click="() => goForward15Seconds()" font-scale="3"
@@ -28,8 +28,6 @@
       <b-collapse id="audio-collapse" is-nav>
 
         <b-navbar-nav class="navbar-nav w-100 justify-content-center">
-          <span v-if="!isPlaying && isLoading">
-            <LoadingSpinner /></span>
           <span v-if="isPlaying">({{remainingTime ? remainingTime   : ''}})</span>
         </b-navbar-nav>
 
@@ -82,11 +80,9 @@ export default {
       audioConfig: (state) => state.audio.audioConfig,
       currentAudio: (state) => state.audio.currentAudio,
       discussion: (state) => state.audio.currentDiscussion,
+      audioIcon: (state) => state.audio.audioIcon,
       chosenTopic: (state) => state.topics.currentTopic,
     }),
-    audioIcon() {
-      return this.isPlaying ? 'pause' : 'play';
-    },
     audioAction() {
       return this.isPlaying ? this.pauseAudio : this.playAudio;
     },
@@ -143,8 +139,9 @@ export default {
     margin: auto;
   }
 
-  .discussion-icon {
+  .audio-icon {
     cursor: pointer;
+    width: 50px;
   }
 
   .player-controls {
@@ -184,5 +181,9 @@ export default {
 
   a.audio-icon {
     cursor: pointer;
+  }
+
+  .loader {
+    text-align: center;
   }
 </style>
