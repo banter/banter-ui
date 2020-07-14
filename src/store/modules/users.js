@@ -1,7 +1,7 @@
-import API from "../../constants/api";
-import {apiRequest} from "../helpers"
+import API from '../../constants/api';
+import apiRequest from '../helpers/api-request';
 
-export const UserModule = {
+export default {
   state: {
     currentUser: {},
     isRequesting: false,
@@ -10,48 +10,48 @@ export const UserModule = {
   },
   actions: {
     loginUser({
-      commit
-    }, {authEmail, authPassword}) {
+      commit,
+    }, { authEmail, authPassword }) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.LOGIN}`,
         method: 'POST',
-        data: {email: authEmail, password: authPassword}
-      }
+        data: { email: authEmail, password: authPassword },
+      };
       const mutations = {
-        preCommit: "fetchCurrentUserRequest",
-        successCommit: "fetchCurrentUserSuccess",
-        errorCommit: "authUserError"
-      }
-      return apiRequest({requestData, mutations, commit})
+        preCommit: 'fetchCurrentUserRequest',
+        successCommit: 'fetchCurrentUserSuccess',
+        errorCommit: 'authUserError',
+      };
+      return apiRequest({ requestData, mutations, commit });
     },
     signupUser({
-      commit
-    }, {authName, authEmail, authPassword}) {
+      commit,
+    }, { authName, authEmail, authPassword }) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.REGISTER}`,
         method: 'POST',
-        data: {name: authName, email: authEmail, password: authPassword}
-      }
+        data: { name: authName, email: authEmail, password: authPassword },
+      };
       const mutations = {
-        preCommit: "fetchCurrentUserRequest",
-        successCommit: "fetchCurrentUserSuccess",
-        errorCommit: "authUserError"
-      }
-      return apiRequest({requestData, mutations, commit})
+        preCommit: 'fetchCurrentUserRequest',
+        successCommit: 'fetchCurrentUserSuccess',
+        errorCommit: 'authUserError',
+      };
+      return apiRequest({ requestData, mutations, commit });
     },
     fetchCurrentUser({
-      commit
+      commit,
     }) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}`
-      }
+        url: `${API.BASE_URL}${API.USERS}${API.ME}`,
+      };
       const mutations = {
-        preCommit: "fetchCurrentUserRequest",
-        successCommit: "fetchCurrentUserSuccess",
-        errorCommit: "currentUserError"
-      }
-      return apiRequest({requestData, mutations, commit})
-    }
+        preCommit: 'fetchCurrentUserRequest',
+        successCommit: 'fetchCurrentUserSuccess',
+        errorCommit: 'currentUserError',
+      };
+      return apiRequest({ requestData, mutations, commit });
+    },
   },
   mutations: {
     fetchCurrentUserRequest(state) {
@@ -70,6 +70,6 @@ export const UserModule = {
       state.isRequesting = false;
       state.errored = true;
       state.error = error.message;
-    }
-  }
+    },
+  },
 };

@@ -2,11 +2,13 @@
   <div :class="`card-wrapper ${type}-wrapper`">
     <router-link :to="`/topics/${topic.value}`">
       <div :class="`image-card ${type}`">
-        <b-img class="topic-image" :src="`${topic.imageUrl || 'http://placeimg.com/450/450'}`"/>
+        <b-img class="topic-image" :src="`${topic.imageUrl || 'http://placeimg.com/450/450'}`" />
+        <div class = "topic-content-wrapper">
         <div class="topic-descriptor">
           <p class="topic-label">
             {{topic.value}}
           </p>
+        </div>
         </div>
       </div>
     </router-link>
@@ -20,20 +22,20 @@ export default {
     index: {
       type: Number,
       required: true,
-      default: 0
+      default: 0,
     },
     topic: {
       type: Object,
       required: true,
-      default: () => {return {}}
+      default: () => ({}),
     },
     type: {
       type: String,
       required: true,
-      default: () => ""
-    }
-  }
-}
+      default: () => '',
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -41,12 +43,14 @@ export default {
   margin: 0 10px;
   position: relative;
   cursor: pointer;
+  height:100%;
 }
 
 // The hover overlay
 .image-card {
   position: relative;
   overflow: hidden;
+  height:100%;
   &:hover {
     .topic-image {
       background:rgba(0,0,0,0.6);
@@ -63,13 +67,46 @@ export default {
     max-width: 100%;
     width: 100%;
     height: 100%;
-    top: 50%;     
+    top: 50%;
     left: 50%;
     transform: translate( -50%, -50%);
     border-radius: 25px;
   }
 }
 
+.hero-card-3d{
+
+  height: 100%;
+  width: auto;
+  min-height: auto;
+  min-width: auto;
+
+    .topic-descriptor {
+    position: absolute;
+    background-color: black;
+    color: white;
+    // width: 50%;
+    width: fit-content;
+    height: 50px;
+    left: 0;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .topic-label {
+    // position: absolute;
+    font-style: normal;
+    font-weight: 250;
+    font-size: 16px;
+    text-align: center;
+    // line-height: 18px;
+    height: auto;
+    padding: 5px 10px;
+  }
+
+}
 // Hero Card styles
 .hero-card {
   height: 25vw;
@@ -95,17 +132,21 @@ export default {
     font-weight: 300;
     font-size: 26px;
     text-align: center;
-    line-height: 22px;
+    // line-height: 22px;
     height: 100%;
     padding: 20px 0px;
   }
 }
 
-// Carousel Card styles
+// // Carousel Card styles
 .carousel-card-wrapper {
   width: 250px;
   height: 250px;
+  margin: auto;
   .carousel-card {
+      height: 200px;
+      width: 200px;
+
     min-height: 250px;
     max-height: 350px;
     min-width: 250px;
@@ -117,7 +158,7 @@ export default {
         background-color :black;
       }
     }
-    
+
     &::after{
       border-radius: 25px;
     }
