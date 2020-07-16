@@ -14,48 +14,22 @@
       </b-dropdown-item>
     </b-nav-item-dropdown>
     <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
-      <div class="sign-up-form">
-        <div class="sign-up-switch-container">
-          Sign Up
-          <b-form-checkbox v-model="returningUser" class="sign-up-switch" name="check-button"
-            size="lg" switch />
-          Sign In
-        </div>
-        <h2 class="signin-header">{{returningUser ? 'Sign In' : 'Sign Up'}}</h2>
-        <div v-if="!returningUser" class="input-group form-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <b-icon :icon="'person-fill'" /></span>
-          </div>
-          <b-input type="text" v-model="authName" class="form-control" placeholder="name" />
-        </div>
-        <div class="input-group form-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <b-icon :icon="'envelope-fill'" /></span>
-          </div>
-          <b-input type="email" v-model="authEmail" class="form-control" placeholder="email" />
-        </div>
-        <div class="input-group form-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <b-icon :icon="'lock-fill'" /></span>
-          </div>
-          <b-input type="password" v-model="authPassword" class="form-control"
-            placeholder="password" />
-        </div>
-        <div class="input-group form-group">
-          <b-button :disabled="isRequesting" :variant="'primary'" @click="authAction">
-            <div v-if="isRequesting">
-              <LoadingSpinner :variant="'secondary'" />
-            </div>
-            <p v-if="!isRequesting" id="nav-signup-text">{{returningUser ? 'Log In' : 'Sign Up'}}
-            </p>
-          </b-button>
-        </div>
-        <div v-if="error" class="error-display">
-          <p>{{error}}</p>
-        </div>
+      <h2 class="signin-header">{{returningUser ? 'Welcome Back' : 'Welcome to Banter'}}</h2>
+      <div class="user-auth-switch">
+        <p v-if="returningUser">Don't have an account?
+          <a
+            href="#"
+            class="auth-link"
+            @click="() => returningUser = false">Sign Up
+          </a>
+        </p>
+        <p v-if="!returningUser">Already have an account?
+          <a
+            href="#"
+            class="auth-link"
+            @click="() => returningUser = true">Sign In
+          </a>
+        </p>
       </div>
       <div class="social-logins">
         <a v-for="oauthProvider in OAUTH" class="btn btn-outline-dark social-login" role="button"
@@ -64,9 +38,60 @@
             oauthProvider.name === 'twitter' ? '1' : '2'
           }/authorization/${oauthProvider.name}?redirect_uri=${API.REDIRECT_URL}`">
           <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
-          <span>{{returningUser ? 'Log in' : 'Sign up'}} with <span
+          <span class="login-text">{{returningUser ? 'Log in' : 'Sign up'}} with <span
               class="brand-name">{{oauthProvider.name}}</span></span>
         </a>
+        <div class="login-divider">Or</div>
+        <a
+          @click="() => showEmailLogin = true"
+          class="btn btn-outline-dark social-login use-email-button"
+          role="button">
+          <b-icon :icon="'person-fill'" class="use-email-icon"/>
+          <span class="use-email-text">Use Email</span>
+        </a>
+      </div>
+      <div v-if="showEmailLogin" class="sign-up-form">
+        <div v-if="!returningUser" class="input-group form-group">
+          <b-input
+            type="text"
+            v-model="authName"
+            class="form-control auth-form-field"
+            placeholder="Name" />
+        </div>
+        <div class="input-group form-group">
+          <b-input
+            type="email"
+            v-model="authEmail"
+            class="form-control auth-form-field"
+            placeholder="Email" />
+        </div>
+        <div class="input-group form-group">
+          <b-input
+            type="password"
+            v-model="authPassword"
+            class="form-control auth-form-field"
+            placeholder="Password" />
+        </div>
+        <div class="input-group form-group">
+          <b-button
+            :disabled="isRequesting || formInvalid"
+            class="auth-button"
+            :variant="'primary'"
+            @click="authAction">
+            <div v-if="isRequesting">
+              <LoadingSpinner :variant="'secondary'" />
+            </div>
+            <p v-if="!isRequesting" class="auth-button-text">
+              {{returningUser ? 'Log In' : 'Sign Up'}}
+            </p>
+          </b-button>
+        </div>
+        <div v-if="error" class="error-display">
+          <p>{{error}}</p>
+        </div>
+        <div v-if="localError" class="error-display">
+          <p>{{localError}}</p>
+        </div>
       </div>
     </b-modal>
   </div>
@@ -76,6 +101,7 @@
 import { mapActions, mapState } from 'vuex';
 import OAUTH from '../constants/oauth-providers';
 import API from '../constants/api';
+import REGEX from '../constants/regex';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
@@ -86,6 +112,13 @@ export default {
       error: (state) => state.users.error,
       isRequesting: (state) => state.users.isRequesting,
     }),
+    formInvalid() {
+      if (!this.authPassword || !this.authEmail) return true;
+      if (!this.returningUser) {
+        if (!this.authName) return true;
+      }
+      return false;
+    },
   },
   components: {
     LoadingSpinner,
@@ -97,6 +130,13 @@ export default {
     },
     async authAction() {
       const { authName, authEmail, authPassword } = this;
+
+      if (!REGEX.VALID_EMAIL.test(authEmail)) {
+        this.localError = 'Your email appears invalid';
+        return;
+      }
+
+      this.localError = null;
       await (this.returningUser
         ? this.loginUser({ authEmail, authPassword })
         : this.signupUser({ authName, authEmail, authPassword }));
@@ -110,9 +150,11 @@ export default {
   data() {
     return {
       returningUser: true,
+      showEmailLogin: false,
       authEmail: '',
       authPassword: '',
       authName: '',
+      localError: null,
       OAUTH,
       API,
     };
@@ -120,7 +162,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 #nav-search-group {
   padding: 0px 6px;
   background: rgba(129, 134, 140, 0.25);
@@ -172,7 +214,9 @@ export default {
 
 .social-login {
   margin: 5px;
-  max-width: 250px;
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .brand-name {
@@ -185,19 +229,72 @@ export default {
   margin-right: 5px;
 }
 
-.sign-up-switch {
-  margin: 0 15px;
-}
-
-.sign-up-switch-container {
-    display: flex;
-    margin: 10px auto;
-    justify-content: center;
-}
-
 .signin-header {
   text-align: center;
   margin: 30px;
+}
+
+.sign-up-form {
+  margin-top: 25px;
+}
+
+span.login-text {
+    margin: 0px 50px;
+}
+
+.use-email-button {
+  .use-email-icon {
+    margin-left: 7px;
+    float: left;
+    margin-top: 3px;
+  }
+  &:hover {
+    .use-email-icon {
+      color: white;
+    }
+  }
+
+  &:hover {
+    .use-email-text {
+      color: white;
+    }
+  }
+
+  .use-email-text {
+    margin: auto;
+  }
+}
+
+a.auth-link:hover {
+  color: #00a8ff;
+  text-decoration: none;
+}
+
+.user-auth-switch {
+    text-align: center;
+}
+
+.login-divider {
+  padding: 10px 0;
+  font-weight: bolder;
+}
+
+.auth-button {
+margin: auto;
+width: 35%;
+min-width: 150px;
+
+  .auth-button-text {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    margin: auto;
+  }
+}
+
+.error-display {
+  text-align: center;
+  font-weight: bold;
 }
 
 </style>

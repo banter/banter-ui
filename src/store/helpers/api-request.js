@@ -23,10 +23,10 @@ export default async function apiRequest({ requestData, mutations, commit }) {
       } else {
         reject(response);
       }
-    })
-      .catch((error) => {
-        commit(errorCommit, error);
-        reject(error);
-      });
+    }).catch((error) => {
+      const errorMessage = error?.response?.data?.message || 'We were unable to authenticate you, please contact support.';
+      commit(errorCommit, errorMessage);
+      reject(errorMessage);
+    });
   });
 }
