@@ -20,23 +20,16 @@
             <b-input-group-prepend>
               <b-icon id="nav-search-icon" font-scale="2" icon="search" />
             </b-input-group-prepend>
-            <b-form-input
-              list="matched-tags"
-              id="nav-search-input"
-              class="mr-sm-2 shadow-none"
-              type="search"
-              autofill="off"
-              autocomplete="off"
-              placeholder="Search"
-              @input="(val) => {return val.length > 0 ? queryTopics(val) : clearTopicList()}"
-              v-model="searchText" />
-            <ul v-if="matchedTags.length > 0" id="autocomplete-options" class="dropdown-menu">
-              <li @click="clearTopicList()" :key="tag.id" v-for="tag in matchedTags">
-                <router-link class="dropdown-item" :to="`/topics/${tag.value}`">
-                  {{ tag.value }}
-                </router-link>
-              </li>
-            </ul>
+            <v-select
+              @search="(val) => {return val.length > 0 ? queryTopics(val) : clearTopicList()}"
+              @input="selectItem"
+              class="search-select"
+              :options="matchedTags.map(tag => ({label: tag.value})) || []"
+              placeholder="Search">
+              <template #open-indicator="{ attributes }">
+                <span v-bind="attributes"></span>
+              </template>
+            </v-select>
           </b-input-group>
         </b-form>
       </b-collapse>
@@ -65,6 +58,9 @@ export default {
       this.clearTopicQuery();
       this.searchText = '';
     },
+    selectItem(tag) {
+      this.$router.push(`/topics/${tag.label}`);
+    },
   },
   data() {
     return {
@@ -75,7 +71,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 #nav-search-group {
   padding: 0px 6px;
   background: rgba(129, 134, 140, 0.25);
@@ -114,5 +110,24 @@ export default {
   width: 20px;
   margin-bottom: 3px;
   margin-right: 5px;
+}
+
+.search-select {
+  height: calc(1.5em + 1rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  min-width: 250px;
+
+  .vs__search {
+    color: grey;
+  }
+  .vs__dropdown-toggle {
+    border: none;
+  }
+
+  .vs__actions {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
