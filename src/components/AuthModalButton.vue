@@ -2,19 +2,17 @@
   <div>
     <b-button v-if="!currentUser.email" v-b-modal.login-modal size="sm" id="nav-signup"
       type="submit">
-      <p id="nav-signup-text">Sign Up</p>
+      <p id="nav-signup-text">Log In</p>
     </b-button>
-    <b-nav-item-dropdown v-if="currentUser.email" right>
-      <template v-slot:button-content>
-        <em>{{currentUser.email}}</em>
-      </template>
-      <b-dropdown-item href="#">Profile</b-dropdown-item>
-      <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
-        Sign Out
-      </b-dropdown-item>
-    </b-nav-item-dropdown>
+    <b-nav>
+      <b-nav-item-dropdown v-if="currentUser.email" :text="currentUser.email">
+        <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
+          Sign Out
+        </b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-nav>
     <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
-      <h2 class="signin-header">{{returningUser ? 'Welcome Back' : 'Welcome to Banter'}}</h2>
+      <h2 class="signin-header">{{returningUser ? 'Log In' : 'Create Account'}}</h2>
       <div class="user-auth-switch">
         <p v-if="returningUser">Don't have an account?
           <a
@@ -27,7 +25,7 @@
           <a
             href="#"
             class="auth-link"
-            @click="() => returningUser = true">Sign In
+            @click="() => returningUser = true">Log In
           </a>
         </p>
       </div>
@@ -50,7 +48,7 @@
           <span class="use-email-text">Use Email</span>
         </a>
       </div>
-      <div v-if="showEmailLogin" class="sign-up-form">
+      <b-form @submit="authAction" v-if="showEmailLogin" class="sign-up-form">
         <div v-if="!returningUser" class="input-group form-group">
           <b-input
             type="text"
@@ -62,12 +60,14 @@
           <b-input
             type="email"
             v-model="authEmail"
+            autocomplete="username"
             class="form-control auth-form-field"
             placeholder="Email" />
         </div>
         <div class="input-group form-group">
           <b-input
             type="password"
+            :autocomplete="returningUser ? 'current-password' : 'new-password'"
             v-model="authPassword"
             class="form-control auth-form-field"
             placeholder="Password" />
@@ -77,7 +77,7 @@
             :disabled="isRequesting || formInvalid"
             class="auth-button"
             :variant="'primary'"
-            @click="authAction">
+            type="submit">
             <div v-if="isRequesting">
               <LoadingSpinner :variant="'secondary'" />
             </div>
@@ -92,7 +92,7 @@
         <div v-if="localError" class="error-display">
           <p>{{localError}}</p>
         </div>
-      </div>
+      </b-form>
     </b-modal>
   </div>
 </template>
@@ -105,7 +105,7 @@ import REGEX from '../constants/regex';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
-  name: 'SignUp',
+  name: 'AuthModalButton',
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
@@ -128,7 +128,8 @@ export default {
     clearTopicList() {
       this.clearTopicQuery();
     },
-    async authAction() {
+    async authAction(evt) {
+      evt.preventDefault();
       const { authName, authEmail, authPassword } = this;
 
       if (!REGEX.VALID_EMAIL.test(authEmail)) {
@@ -137,13 +138,24 @@ export default {
       }
 
       this.localError = null;
-      await (this.returningUser
-        ? this.loginUser({ authEmail, authPassword })
-        : this.signupUser({ authName, authEmail, authPassword }));
+      try {
+        if (this.returningUser) {
+          await this.loginUser({ authEmail, authPassword });
+        } else {
+          await this.signupUser({ authName, authEmail, authPassword });
+        }
 
-      this.closeModal('login-modal');
+        this.closeModal('login-modal');
+
+        if (this?.currentUser?.email) {
+          this.$router.push('/home');
+        }
+      } catch (error) {
+        this.localError = error;
+      }
     },
     closeModal(modal) {
+      Object.assign(this, { authEmail: null, authPassword: null, authName: null });
       this.$root.$emit('bv::hide::modal', modal);
     },
   },

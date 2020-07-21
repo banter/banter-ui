@@ -2,7 +2,11 @@
   <div :class="`card-wrapper ${type}-wrapper`">
     <router-link :to="`/topics/${topic.value}`">
       <div :class="`image-card ${type}`">
-        <b-img class="topic-image" :src="`${topic.imageUrl || 'http://placeimg.com/450/450'}`" />
+        <b-img v-if="topic.imageUrl" class="topic-image" :src="topic.imageUrl" />
+        <b-img
+          v-else
+          class="fallback-image topic-image"
+          :src="require('../assets/Banter_logo_dark.png')"/>
         <div class = "topic-content-wrapper">
         <div class="topic-descriptor">
           <p class="topic-label">
@@ -71,6 +75,9 @@ export default {
     left: 50%;
     transform: translate( -50%, -50%);
     border-radius: 25px;
+  }
+  .topic-image.fallback-image {
+    object-fit: contain;
   }
 }
 

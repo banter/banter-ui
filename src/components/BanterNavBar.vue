@@ -12,10 +12,10 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <div class="form-inline my-2 my-lg-0">
-          <SignUp></SignUp>
+          <AuthModalButton></AuthModalButton>
         </div>
 
-        <form class="form-inline my-2 my-lg-0">
+        <b-form class="form-inline my-2 my-lg-0">
           <b-input-group id="nav-search-group" size="lg">
             <b-input-group-prepend>
               <b-icon id="nav-search-icon" font-scale="2" icon="search" />
@@ -38,7 +38,7 @@
               </li>
             </ul>
           </b-input-group>
-        </form>
+        </b-form>
       </b-collapse>
     </b-navbar>
   </div>
@@ -46,7 +46,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import SignUp from './SignUp.vue';
+import AuthModalButton from './AuthModalButton.vue';
 
 export default {
   name: 'BanterNavBar',
@@ -57,7 +57,7 @@ export default {
     }),
   },
   components: {
-    SignUp,
+    AuthModalButton,
   },
   methods: {
     ...mapActions(['queryTopics', 'clearTopicQuery']),

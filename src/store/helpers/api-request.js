@@ -17,7 +17,7 @@ export default async function apiRequest({ requestData, mutations, commit }) {
       method,
       data,
     }).then((response) => {
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         commit(successCommit, response.data);
         resolve(response.data.original);
       } else {

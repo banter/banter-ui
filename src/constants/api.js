@@ -11,6 +11,7 @@ const CONSTANTS = {
   },
 };
 const ENV = process.env.NODE_ENV.toUpperCase();
+console.log(process.env);
 
 const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],
@@ -22,8 +23,8 @@ const API = {
   COLLECTIONS: 'collections/',
   USERS: 'users/',
   ME: 'me',
-  LOGIN: 'login',
-  REGISTER: 'register',
+  LOGIN: `login?redirect_uri=${CONSTANTS.REDIRECT_URLS[ENV]}/home`,
+  REGISTER: `register?redirect_uri=${CONSTANTS.REDIRECT_URLS[ENV]}/home`,
   LOGOUT: `logout?redirect_uri=${CONSTANTS.REDIRECT_URLS[ENV]}`,
 };
 
