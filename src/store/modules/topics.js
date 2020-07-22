@@ -1,4 +1,3 @@
-import { useDebounce } from '@vueuse/core';
 import API from '../../constants/api';
 import apiRequest from '../helpers/api-request';
 
@@ -89,7 +88,7 @@ export default {
         errorCommit: 'queryTopicsError',
       };
 
-      return useDebounce(apiRequest({ requestData, mutations, commit }));
+      return apiRequest({ requestData, mutations, commit });
     },
     clearTopicQuery({ commit }) {
       commit('clearTopicsQueryRequest');

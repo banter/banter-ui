@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "es6-promise": "^4.2.8",
     "howler": "^2.2.0",
+    "lodash": "^4.17.19",
     "moment": "^2.26.0",
     "vue": "^2.6.11",
     "vue-analytics": "5.22.1",

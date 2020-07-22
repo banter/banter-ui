@@ -21,13 +21,17 @@
               <b-icon id="nav-search-icon" font-scale="2" icon="search" />
             </b-input-group-prepend>
             <v-select
-              @search="(val) => {return val.length > 0 ? queryTopics(val) : clearTopicList()}"
+              @search="searchItems"
               @input="selectItem"
               class="search-select"
-              :options="matchedTags.map(tag => ({label: tag.value})) || []"
+              :filterable="false"
+              :options="foundTags"
               placeholder="Search">
               <template #open-indicator="{ attributes }">
                 <span v-bind="attributes"></span>
+              </template>
+              <template v-if="!loading" #no-options="{ search, searching, loading }">
+                {{search.length === 0 ? "Enter a search term" : "No results found."}}
               </template>
             </v-select>
           </b-input-group>
@@ -39,10 +43,17 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import _ from 'lodash';
 import AuthModalButton from './AuthModalButton.vue';
 
 export default {
   name: 'BanterNavBar',
+  watch: {
+    matchedTags(newVal) {
+      this.foundTags = newVal.map((tag) => ({ label: tag.value })) || [];
+      this.loadingSpinner(false);
+    },
+  },
   computed: {
     ...mapState({
       matchedTags: (state) => state.topics.tagMatches,
@@ -58,6 +69,19 @@ export default {
       this.clearTopicQuery();
       this.searchText = '';
     },
+    searchItems(search, loading) {
+      this.loadingSpinner = loading;
+      this.loadingSpinner(true);
+      this.updateAutocomplete(search, loading, this);
+    },
+    updateAutocomplete: _.debounce(async (search, loading, vm) => {
+      if (search.length > 0) {
+        await vm.queryTopics(search);
+      } else {
+        vm.clearTopicList();
+        vm.loadingSpinner(false);
+      }
+    }, 250),
     selectItem(tag) {
       this.$router.push(`/topics/${tag.label}`);
     },
@@ -65,6 +89,8 @@ export default {
   data() {
     return {
       searchText: '',
+      foundTags: [],
+      loadingSpinner: () => {},
     };
   },
 };
