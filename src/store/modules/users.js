@@ -69,7 +69,7 @@ export default {
     authUserError(state, error) {
       state.isRequesting = false;
       state.errored = true;
-      state.error = error.message;
+      state.error = error;
     },
   },
 };
