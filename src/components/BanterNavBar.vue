@@ -154,5 +154,26 @@ export default {
     display: flex;
     align-items: center;
   }
+
+  .vs__dropdown-menu {
+    font-size: initial;
+    font-weight: initial;
+    color: initial;
+    // .vs__dropdown-option {
+    //   &:hover {
+    //     background-color: #f8f9fa;
+    //     color: initial;
+    //   }
+    //   &:focus {
+    //     background-color: #f8f9fa;
+    //     color: initial;
+    //   }
+    // }
+  }
+  .vs__dropdown-option--highlight {
+    background: #f8f9fa;
+    color: initial;
+  }
+
 }
 </style>
