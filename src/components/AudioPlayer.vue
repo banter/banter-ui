@@ -84,7 +84,7 @@ export default {
       chosenTopic: (state) => state.topics.currentTopic,
     }),
     audioAction() {
-      return this.isPlaying ? this.pauseAudio : this.playAudio;
+      return this.isPlaying ? this.pauseAudio : this.resumeAudio;
     },
     episodeDate() {
       if (this?.discussion?.episodePublishDate) {
@@ -103,7 +103,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['playAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
+    ...mapActions(['resumeAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
   },
 };
 </script>
