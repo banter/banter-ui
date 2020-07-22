@@ -8,16 +8,19 @@
         </router-link>
       </b-navbar-brand>
 
-      <b-navbar-nav class="ml-auto">
-        <b-nav-text class="mr-sm-4">About</b-nav-text>
-        <b-nav-text class="mr-sm-4">Pricing</b-nav-text>
-      </b-navbar-nav>
+      <b-collapse id="nav-collapse" is-nav>
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+          <AuthModalButton></AuthModalButton>
+        </div>
+      </b-collapse>
     </b-navbar>
     <div class="landing-content">
       <h1 class="marketing-message"> The New Way to Listen to Sports Talk</h1>
       <router-link class="landing-image" to="/home">
       <b-button size="sm" id="nav-signup" type="submit" style="margin:auto">
-      <p id="nav-signup-text">Begin</p>
+      <p id="nav-signup-text">Explore</p>
     </b-button>
       </router-link>
       <b-img fluid class="landing-image" :src="require('../../assets/radio.png')" alt="Radio"/>
@@ -27,13 +30,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import AuthModalButton from '../../components/AuthModalButton.vue';
+
 export default {
   name: 'Landing',
+  components: {
+    AuthModalButton,
+  },
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.users.currentUser,
+    }),
+  },
+  async mounted() {
+    await this.$store.dispatch('fetchCurrentUser');
+    if (this?.currentUser?.email) {
+      this.$router.push('/home');
+    }
+  },
 };
 </script>
 
 <style scoped>
-
 .landing-home {
   background-color: #F8ECDC;
   position: fixed;

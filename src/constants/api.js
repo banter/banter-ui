@@ -11,6 +11,7 @@ const CONSTANTS = {
   },
 };
 const ENV = process.env.NODE_ENV.toUpperCase();
+console.log(process.env);
 
 const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],

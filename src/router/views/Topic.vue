@@ -56,15 +56,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchTopic', 'pauseAudio', 'createAudio', 'playAudio']),
+    ...mapActions(['fetchTopic', 'pauseAudio', 'resumeAudio', 'createAudio', 'playAudio']),
     audioAction(discussion) {
-      let action;
       if (this.currentDiscussion?.discussionId === discussion?.discussionId) {
-        action = this.audioConfig.playing() ? this.pauseAudio : this.playAudio;
+        if (this.audioConfig.playing()) {
+          this.pauseAudio();
+        } else {
+          this.resumeAudio();
+        }
       } else {
-        action = this.createAudio;
+        this.createAudio(discussion);
       }
-      action(discussion);
     },
     discussionDate(discussion) {
       if (discussion?.episodePublishDate) {

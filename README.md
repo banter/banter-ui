@@ -6,7 +6,7 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
-`npm run dev` for Local, `npm run serve` for Prod
+`npm run local` to use with a local API at localhost:8080, `npm run dev` to use the prod API.
 
 ### Compiles and minifies for production
 ```

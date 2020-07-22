@@ -127,7 +127,7 @@ export default {
     },
     killAudioRequest(state, newAudioLoading) {
       if (state.audioConfig) {
-        state.audioConfig.unload(this.currentAudio);
+        if (state.currentAudio) state.audioConfig.unload(state.currentAudio);
         state.loadingNewAudio = !!newAudioLoading;
         state.currentAudio = null;
         state.audioConfig = null;
