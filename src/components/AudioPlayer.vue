@@ -169,6 +169,16 @@ export default {
     white-space: nowrap;
     font-style: italic;
   }
+    @media (max-width: 800px)  {
+  .now-playing-description {
+    max-width: 850px;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal;
+    font-style: italic;
+}
+}
 
   .podcast-thumbnail {
     width: 50px;
