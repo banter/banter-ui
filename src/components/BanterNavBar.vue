@@ -30,7 +30,7 @@
               <template #open-indicator="{ attributes }">
                 <span v-bind="attributes"></span>
               </template>
-              <template v-if="!loading" #no-options="{ search, searching, loading }">
+              <template #no-options="{ search }">
                 {{search.length === 0 ? "Enter a search term" : "No results found."}}
               </template>
             </v-select>
@@ -159,16 +159,6 @@ export default {
     font-size: initial;
     font-weight: initial;
     color: initial;
-    // .vs__dropdown-option {
-    //   &:hover {
-    //     background-color: #f8f9fa;
-    //     color: initial;
-    //   }
-    //   &:focus {
-    //     background-color: #f8f9fa;
-    //     color: initial;
-    //   }
-    // }
   }
   .vs__dropdown-option--highlight {
     background: #f8f9fa;
