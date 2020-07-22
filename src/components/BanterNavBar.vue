@@ -81,7 +81,7 @@ export default {
         vm.clearTopicList();
         vm.loadingSpinner(false);
       }
-    }, 250),
+    }, 100),
     selectItem(tag) {
       this.$router.push(`/topics/${tag.label}`);
     },
