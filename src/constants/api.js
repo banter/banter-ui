@@ -4,19 +4,13 @@ const CONSTANTS = {
     DEVELOPMENT: 'https://api.banteraudio.com',
     PRODUCTION: 'https://api.banteraudio.com',
   },
-  REDIRECT_URLS: {
-    LOCAL: 'http://localhost:8081',
-    DEVELOPMENT: 'https://banteraudio.com',
-    PRODUCTION: 'https://banteraudio.com',
-  },
 };
 const ENV = process.env.NODE_ENV.toUpperCase();
-console.log(process.env);
 
 const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],
   BASE_URL: `${CONSTANTS.API_BASE_URLS[ENV]}/v1/`,
-  REDIRECT_URL: CONSTANTS.REDIRECT_URLS[ENV],
+  REDIRECT_URL: `${window.location.origin}/home`,
   TOPICS: 'topics/',
   GENRES: 'genres/',
   TRENDING: 'trending/',
@@ -25,7 +19,7 @@ const API = {
   ME: 'me',
   LOGIN: 'login',
   REGISTER: 'register',
-  LOGOUT: `logout?redirect_uri=${CONSTANTS.REDIRECT_URLS[ENV]}`,
+  LOGOUT: `logout?redirect_uri=${window.location.origin}/home`,
 };
 
 export default API;
