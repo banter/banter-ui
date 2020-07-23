@@ -10,7 +10,7 @@ const ENV = process.env.NODE_ENV.toUpperCase();
 const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],
   BASE_URL: `${CONSTANTS.API_BASE_URLS[ENV]}/v1/`,
-  REDIRECT_URL: window.location.origin,
+  REDIRECT_URL: `${window.location.origin}/home`,
   TOPICS: 'topics/',
   GENRES: 'genres/',
   TRENDING: 'trending/',
@@ -19,7 +19,7 @@ const API = {
   ME: 'me',
   LOGIN: 'login',
   REGISTER: 'register',
-  LOGOUT: `logout?redirect_uri=${window.location.origin}`,
+  LOGOUT: `logout?redirect_uri=${window.location.origin}/home`,
 };
 
 export default API;
