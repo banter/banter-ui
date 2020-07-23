@@ -12,7 +12,7 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <div class="form-inline my-2 my-lg-0">
-          <AuthModalButton></AuthModalButton>
+          <AuthModalButton v-if="showLogin"/>
         </div>
       </b-collapse>
     </b-navbar>
@@ -44,10 +44,17 @@ export default {
     }),
   },
   async mounted() {
-    await this.$store.dispatch('fetchCurrentUser');
-    if (this?.currentUser?.email) {
+    try {
+      await this.$store.dispatch('fetchCurrentUser');
       this.$router.push('/home');
+    } catch (e) {
+      this.showLogin = true;
     }
+  },
+  data() {
+    return {
+      showLogin: false,
+    };
   },
 };
 </script>
