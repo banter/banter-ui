@@ -4,10 +4,18 @@ const CONSTANTS = {
     PRODUCTION: 'https://api.banteraudio.com'
   },
   REDIRECT_URLS: {
+<<<<<<< Updated upstream
     DEVELOPMENT: 'http://localhost:8081',
     PRODUCTION: 'https://banteraudio.com'
   }
 }
+=======
+    LOCAL: 'http://localhost:8081',
+    DEVELOPMENT: 'http://localhost:8081',
+    PRODUCTION: 'https://banteraudio.com',
+  },
+};
+>>>>>>> Stashed changes
 const ENV = process.env.NODE_ENV.toUpperCase();
 
 const API = {
