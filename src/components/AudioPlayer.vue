@@ -103,7 +103,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
+    ...mapActions(['resumeAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds',
+      'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion',
+    ]),
   },
 };
 </script>

@@ -3,7 +3,8 @@
     <b-card overlay :img-src="currentImageUrl" img-alt="Card Image"
       class="header-card">
       <b-card-text class="header-card-text">
-         <h3>{{currentTopic.name}}</h3>
+         <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
+         <FollowButton class="header-follow"/>
       </b-card-text>
 
     </b-card>
@@ -11,9 +12,13 @@
 </template>
 
 <script>
+import FollowButton from './FollowButton.vue';
 
 export default {
   name: 'TopicHeader',
+  components: {
+    FollowButton,
+  },
   props: {
     currentTopic: {
       type: Object,
@@ -43,13 +48,17 @@ export default {
 
 .header-card-text {
   background: black;
-  opacity: .6;
   color: white;
   width: fit-content;
   position: absolute;
   bottom: 30px;
   left: 60px;
-  padding: 15px
+  padding: 15px;
+  display: flex;
+}
+
+.header-card-text-content {
+  opacity: .6;
 }
 
 @media (max-width: 800px)  {
@@ -74,5 +83,9 @@ export default {
   max-width: 1000px;
   // min-width: 320px;
   border: none;
+}
+
+.header-follow {
+  margin: 0 15px;
 }
 </style>
