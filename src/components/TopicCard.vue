@@ -2,11 +2,11 @@
   <div :class="`card-wrapper ${type}-wrapper`">
     <router-link :to="`/topics/${topic.value}`">
       <div :class="`image-card ${type}`">
-        <b-img v-if="topic.imageUrl" class="topic-image" :src="topic.imageUrl" />
-        <b-img
-          v-else
+        <b-img v-if="imageLoadingError"
           class="fallback-image topic-image"
-          :src="require('../assets/Banter_logo_dark.png')"/>
+          :src="require('../assets/Banter_logo_sound.png')"/>
+        <b-img-lazy v-else class="topic-image" :src="topic.imageUrl"
+        @error.native="imageLoadError" />
         <div class = "topic-content-wrapper">
         <div class="topic-descriptor">
           <p class="topic-label">
@@ -22,6 +22,16 @@
 <script>
 export default {
   name: 'TopicCard',
+  data() {
+    return {
+      imageLoadingError: false,
+    };
+  },
+  methods: {
+    imageLoadError() {
+      this.imageLoadingError = true;
+    },
+  },
   props: {
     index: {
       type: Number,
