@@ -19,6 +19,7 @@ export default {
     this.$store.dispatch('fetchTrendingTopics');
     this.$store.dispatch('fetchCollections');
     this.$store.dispatch('fetchCurrentUser');
+    this.$store.dispatch('fetchTopicsFollowed');
   },
   components: {
     BanterNavBar,

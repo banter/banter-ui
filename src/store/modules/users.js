@@ -54,7 +54,7 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
-    fetchTopicsFollow({
+    fetchTopicsFollowed({
       commit,
     }) {
       const requestData = {
@@ -69,9 +69,9 @@ export default {
     },
     followTopic({
       commit,
-    }, { topicId }) {
+    }, { id }) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topicId}/${API.FOLLOW}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${id}/${API.FOLLOW}`,
         method: 'POST',
       };
       const mutations = {
@@ -83,9 +83,9 @@ export default {
     },
     unfollowTopic({
       commit,
-    }, { topicId }) {
+    }, { id }) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topicId}/${API.UNFOLLOW}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${id}/${API.UNFOLLOW}`,
         method: 'POST',
       };
       const mutations = {
@@ -110,7 +110,7 @@ export default {
       state.topicsRequesting = true;
     },
     fetchFollowTopicSuccess(state, payload) {
-      state.followedTopics = payload;
+      state.followedTopics = payload.tags;
     },
     fetchFollowTopicError(state, error) {
       state.topicsRequesting = false;

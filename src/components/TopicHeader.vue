@@ -8,7 +8,7 @@
      @error="imageLoadError" />
       <b-card-text class="header-card-text">
          <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
-         <FollowButton class="header-follow"/>
+         <FollowButton :topic="currentTopic.primaryTag" class="header-follow"/>
       </b-card-text>
 
     </b-card>

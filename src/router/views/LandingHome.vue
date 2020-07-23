@@ -42,6 +42,9 @@ export default {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
     }),
+    currentTopic() {
+      return this.chosenTopic;
+    },
   },
   async mounted() {
     try {
