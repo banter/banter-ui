@@ -1,7 +1,11 @@
 <template>
   <div class="header-card card-wrapper">
-    <b-card overlay :img-src="currentImageUrl" img-alt="Card Image"
-      class="header-card">
+    <b-card no-body>
+    <b-img v-if="imageLoadingError" class="header-card"
+     :src="require('../assets/Banter_logo_dark.png')"/>
+     <b-img v-else class="header-card"
+     :src="currentImageUrl"
+     @error="imageLoadError" />
       <b-card-text class="header-card-text">
          <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
          <FollowButton class="header-follow"/>
@@ -19,6 +23,11 @@ export default {
   components: {
     FollowButton,
   },
+  data() {
+    return {
+      imageLoadingError: false,
+    };
+  },
   props: {
     currentTopic: {
       type: Object,
@@ -29,6 +38,11 @@ export default {
   computed: {
     currentImageUrl() {
       return this.currentTopic?.primaryTag?.imageUrl;
+    },
+  },
+  methods: {
+    imageLoadError() {
+      this.imageLoadingError = true;
     },
   },
 };
