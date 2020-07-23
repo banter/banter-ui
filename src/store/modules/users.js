@@ -93,6 +93,7 @@ export default {
         successCommit: 'unfollowTopicSuccess',
         errorCommit: 'unfollowTopicError',
       };
+
       return apiRequest({ requestData, mutations, commit });
     },
   },
@@ -110,6 +111,7 @@ export default {
       state.topicsRequesting = true;
     },
     fetchFollowTopicSuccess(state, payload) {
+      state.topicsRequesting = false;
       state.followedTopics = payload.tags;
     },
     fetchFollowTopicError(state, error) {

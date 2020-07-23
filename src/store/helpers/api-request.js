@@ -2,7 +2,9 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-export default async function apiRequest({ requestData, mutations, commit }) {
+export default async function apiRequest({
+  requestData, mutations, commit,
+}) {
   const {
     url, queries = {}, method = 'GET', data = {},
   } = requestData;
@@ -18,7 +20,7 @@ export default async function apiRequest({ requestData, mutations, commit }) {
       data,
     }).then((response) => {
       if (response.status >= 200 && response.status < 300) {
-        commit(successCommit, response.data);
+        commit(successCommit, response?.data);
         resolve(response.data.original);
       } else {
         reject(response);
