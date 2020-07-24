@@ -23,7 +23,6 @@
       </router-link>
       <b-img fluid class="landing-image" :src="require('../../assets/radio.png')" alt="Radio" />
     </div>
-    <ContactUsForm/>
   </div>
 
 </template>
@@ -31,13 +30,11 @@
 <script>
 import { mapState } from 'vuex';
 import AuthModalButton from '../../components/AuthModalButton.vue';
-import ContactUsForm from '../../components/ContactUsForm.vue';
 
 export default {
   name: 'Landing',
   components: {
     AuthModalButton,
-    ContactUsForm,
   },
   computed: {
     ...mapState({
