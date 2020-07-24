@@ -49,6 +49,7 @@ export default {
 
 .card {
     background: none;
+    border: none;
 
 }
 
@@ -92,6 +93,7 @@ export default {
 }
 .header-card {
   max-width: 1000px;
+  // width: 100%;
   // min-width: 320px;
   border: none;
 }
