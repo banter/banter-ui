@@ -131,12 +131,6 @@ export default {
   text-transform: capitalize;
 }
 
-.provider-logo {
-  width: 20px;
-  margin-bottom: 3px;
-  margin-right: 5px;
-}
-
 .search-select {
   height: calc(1.5em + 1rem + 2px);
   padding: 0.5rem 1rem;

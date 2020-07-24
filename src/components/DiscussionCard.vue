@@ -36,7 +36,7 @@
             <b-row>
               <b-card-text class="podcast-name-text">
                 {{`${discussion.podcastTitle}`}} •
-                {{`${discussionDate(discussion) && discussionDate(discussion).fromNow()}`}}
+                {{`${discussionAge(discussion)}`}}
               </b-card-text>
             </b-row>
             <b-row>
@@ -103,9 +103,17 @@ export default {
   },
 
   methods: {
-    discussionDate(discussion) {
+    discussionAge(discussion) {
       if (discussion?.episodePublishDate) {
-        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`);
+        const dateObject = new Date(
+          `${discussion.episodePublishDate.year}/${discussion.episodePublishDate.monthValue}/${discussion.episodePublishDate.dayOfMonth}`,
+        );
+        const dateString = dateObject.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+        return this.$moment(dateString).fromNow();
       }
       return null;
     },

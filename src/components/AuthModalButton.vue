@@ -239,6 +239,8 @@ export default {
   width: 20px;
   margin-bottom: 3px;
   margin-right: 5px;
+  height: 20px;
+  width: 20px;
 }
 
 .signin-header {

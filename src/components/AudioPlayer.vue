@@ -18,8 +18,15 @@
         </b-navbar-nav>
         <b-navbar-nav>
           <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"
-            class="audio-icon ml-sm-2"><b>
+            class="next-discussion audio-icon ml-sm-2"><b>
               <b-icon :icon="'skip-end-fill'" /></b></a>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <b-select
+            class="rate-speed"
+            @change="adjustRate"
+            :value="audioRate"
+            :options="rateOptions"/>
         </b-navbar-nav>
       </b-navbar-brand>
       <b-navbar-toggle target="audio-collapse"></b-navbar-toggle>
@@ -49,7 +56,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
@@ -60,7 +67,7 @@ export default {
   mounted() {
     this.trackInterval = setInterval(() => {
       this.getRemainingTime();
-    }, 750);
+    }, 500);
     this.getRemainingTime();
   },
   destroyed() {
@@ -80,6 +87,7 @@ export default {
       currentAudio: (state) => state.audio.currentAudio,
       discussion: (state) => state.audio.currentDiscussion,
       audioIcon: (state) => state.audio.audioIcon,
+      audioRate: (state) => state.audio.audioRate,
       chosenTopic: (state) => state.topics.currentTopic,
     }),
     audioAction() {
@@ -99,17 +107,23 @@ export default {
   data() {
     return {
       remainingTime: '00:00:00',
+      rateOptions: [
+        { text: '.5x', value: 0.5 },
+        { text: '.75x', value: 0.75 },
+        { text: '1x', value: 1 },
+        { text: '1.25x', value: 1.25 },
+        { text: '1.5x', value: 1.5 },
+        { text: '2x', value: 2 }],
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds',
-      'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion',
-    ]),
+    ...mapActions(['resumeAudio', 'pauseAudio']),
+    ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .fixed-bottom {
   position: fixed;
   right: 0;
@@ -142,6 +156,10 @@ export default {
 .audio-icon {
   cursor: pointer;
   width: 50px;
+}
+
+.audio-icon.next-discussion {
+  width: 20px;
 }
 
 .player-controls {
@@ -196,5 +214,20 @@ a.audio-icon {
 
 .loader {
   text-align: center;
+}
+
+.rate-speed {
+  background: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  cursor: pointer;
+  margin: auto;
+  font-weight: bold;
+  font-size: 20px;
+  width: initial;
+
+  &:focus {
+    border: none;
+    box-shadow: none;
+  }
 }
 </style>
