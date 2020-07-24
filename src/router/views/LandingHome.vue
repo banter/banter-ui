@@ -13,6 +13,7 @@
         <AuthModalButton></AuthModalButton>
       </div>
     </b-navbar>
+
     <div class="landing-content">
       <h1 class="marketing-message"> The New Way to Listen to Sports Talk</h1>
       <router-link class="landing-image" to="/home">
@@ -21,8 +22,8 @@
         </b-button>
       </router-link>
       <b-img fluid class="landing-image" :src="require('../../assets/radio.png')" alt="Radio" />
-      <ContactUsForm/>
     </div>
+    <ContactUsForm/>
   </div>
 
 </template>
@@ -55,7 +56,7 @@ export default {
 <style scoped>
 .landing-home {
   background-color: #F8ECDC;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   min-width: 100%;

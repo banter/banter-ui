@@ -1,26 +1,65 @@
 <template>
   <div>
-    <!-- <form name="contact" method="POST" data-netlify="true">
-      <p>
-        <label>Your Name: <input type="text" name="name" /></label>
-      </p>
-      <p>
-        <label>Your Email: <input type="email" name="email" /></label>
-      </p>
-      <p>
-        <label>Your Role: <select name="role[]" multiple>
-            <option value="leader">Leader</option>
-            <option value="follower">Follower</option>
-          </select></label>
-      </p>
-      <p>
-        <label>Message: <textarea name="message"></textarea></label>
-      </p>
-      <p>
-        <button type="submit">Send</button>
-      </p>
-    </form> -->
-    Yo
+    <form
+      name="contact-form"
+      method="post"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      data-netlify-recaptcha="true"
+    >
+      <input type="hidden" name="form-name" value="contact-form">
+      <div>
+        <label
+          for="email"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          v-model="email"
+          name="email"
+          type="email"
+          placeholder="satoshi@nakamoto.com"
+          data-hj-whitelist
+        >
+      </div>
+      <div>
+        <label
+          for="name"
+        >
+          Name
+        </label>
+        <input
+          id="name"
+          v-model="name"
+          name="name"
+          type="text"
+          placeholder="Satoshi Nakamoto"
+          data-hj-whitelist
+        >
+      </div>
+      <label>
+        <label
+          for="message"
+        >
+          Message
+        </label>
+        <textarea
+          id="message"
+          v-model="message"
+          name="message"
+          rows="3"
+          placeholder="Enter your message here..."
+          data-hj-whitelist
+        />
+      </label>
+
+      <div>
+        <button type="submit">
+          Submit
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
