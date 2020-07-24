@@ -127,69 +127,70 @@ export default {
 <style scoped lang="scss">
 
 .fixed-bottom {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1030;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
 }
 
-  .audio-player {
-    margin: auto;
-  }
+.audio-player {
+  margin: auto;
+}
 
-  .audio-icon {
-    margin:auto;
-  }
+.audio-icon {
+  margin: auto;
+}
 
-  .audio-player-container {
-    padding: 0;
-    display: flex;
-  }
+.audio-player-container {
+  padding: 0;
+  display: flex;
+}
 
-  .audio-description {
-    display: flex;
-  }
+.audio-description {
+  display: flex;
+}
 
-  .audio-player-container div {
-    margin: auto;
-  }
+.audio-player-container div {
+  margin: auto;
+}
 
-  .audio-icon {
-    cursor: pointer;
-    width: 50px;
-  }
+.audio-icon {
+  cursor: pointer;
+  width: 50px;
+}
 
-  .audio-icon.next-discussion {
-    width: 20px;
-  }
+.audio-icon.next-discussion {
+  width: 20px;
+}
 
-  .player-controls {
-    display: flex;
-    position: relative;
-    height: 100%;
-    cursor: pointer;
-  }
+.player-controls {
+  display: flex;
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+}
 
-  .player-controls-container {
-    display: flex;
-    min-width: 275px;
-  }
+.player-controls-container {
+  display: flex;
+  min-width: 275px;
+}
 
-  .now-playing-title {
-    font-size: 16px;
-    font-weight: bold;
-  }
+.now-playing-title {
+  font-size: 16px;
+  font-weight: bold;
+}
 
-  .now-playing-description {
-    max-width: 850px;
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-style: italic;
-  }
-    @media (max-width: 800px)  {
+.now-playing-description {
+  max-width: 850px;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+@media (max-width: 800px) {
   .now-playing-description {
     max-width: 850px;
     display: block;
@@ -197,37 +198,37 @@ export default {
     overflow: hidden;
     white-space: normal;
     font-style: italic;
+  }
 }
+
+.podcast-thumbnail {
+  width: 50px;
+  height: auto;
 }
 
-  .podcast-thumbnail {
-    width: 50px;
-    height: auto;
-  }
+.audio-content {
+  padding-left: 15px;
+}
 
-  .audio-content {
-    padding-left: 15px;
-  }
+a.audio-icon {
+  cursor: pointer;
+}
 
-  a.audio-icon {
-    cursor: pointer;
-  }
+.loader {
+  text-align: center;
+}
+.rate-speed {
+  background: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  cursor: pointer;
+  margin: auto;
+  font-weight: bold;
+  font-size: 20px;
+  width: initial;
 
-  .loader {
-    text-align: center;
+  &:focus{
+    border: none;
+    box-shadow: none;
   }
-  .rate-speed {
-    background: #f8f9fa;
-    border: 1px solid #f8f9fa;
-    cursor: pointer;
-    margin: auto;
-    font-weight: bold;
-    font-size: 20px;
-    width: initial;
-
-    &:focus{
-      border: none;
-      box-shadow: none;
-    }
-  }
+}
 </style>
