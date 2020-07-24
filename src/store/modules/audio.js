@@ -9,12 +9,13 @@ export default {
     isRequesting: false,
     loadingNewAudio: false,
     timestampRemaining: 0,
+    audioRate: 1,
     audioIcon: 'play',
   },
   actions: {
     playAudio({ commit, dispatch }, discussion) {
       if (discussion) { // if we pass a specific discussion, play it
-        commit('killAudioRequest');
+        commit('killAudio');
         dispatch('createAudio', discussion);
       } else {
         dispatch('resumeAudio', discussion); // play paused audio
@@ -38,7 +39,7 @@ export default {
     async createAudio({
       commit, state, dispatch,
     }, discussion) {
-      commit('killAudioRequest', true);
+      commit('killAudio', true);
       commit('createAudioRequest');
 
       state.currentDiscussion = discussion;
@@ -49,6 +50,8 @@ export default {
         state.audioConfig = generateHowl(state.currentDiscussion);
       }
       state.currentAudio = await state.audioConfig.play('clip');
+      state.audioConfig.rate(state.audioRate);
+
       commit('audioRequestSuccess');
 
       dispatch('prepareNextItem');
@@ -58,27 +61,6 @@ export default {
       state.audioConfig.on(
         'end', () => (state.nextDiscussion ? dispatch('createAudio', state.nextDiscussion.discussion) : dispatch('killAudio')),
       );
-    },
-    goToEndOfDiscussion({ commit }) {
-      commit('endOfDiscussionRequest');
-    },
-    goTostartOfDiscussion({ commit }) {
-      commit('startOfDiscussionRequest');
-    },
-    goBack15Seconds({ commit }) {
-      commit('back15SecondsRequest');
-    },
-    goForward15Seconds({ commit }) {
-      commit('forward15SecondsRequest');
-    },
-    goToNextDiscussion({ commit }) {
-      commit('nextDiscussionRequest');
-    },
-    killAudio({ commit }) {
-      commit('killAudioRequest');
-    },
-    getRemainingTime({ commit }) {
-      commit('updateTimestamp');
     },
   },
   // Edits the data
@@ -106,26 +88,30 @@ export default {
       state.audioConfig.play(state.currentAudio);
       state.audioIcon = 'pause';
     },
-    back15SecondsRequest(state) {
+    goBack15Seconds(state) {
       const newTimestamp = (+state.audioConfig.seek() || 0) - 15;
       state.audioConfig.seek(Math.max(newTimestamp, 0), state.currentAudio);
     },
-    forward15SecondsRequest(state) {
+    goForward15Seconds(state) {
       const newTimestamp = (+state.audioConfig.seek() || 0) + 15;
       const seekSpot = Math.min(newTimestamp, state.currentDiscussion.endTimeMillis);
       state.audioConfig.seek(seekSpot, state.currentAudio);
     },
-    startOfDiscussionRequest(state) {
+    goTostartOfDiscussion(state) {
       state.audioConfig.seek(0, state.currentAudio);
     },
-    nextDiscussionRequest(state) {
+    goToNextDiscussion(state) {
       state.audioConfig.seek(state.currentDiscussion.endTimeMillis, state.currentAudio);
     },
-    endOfDiscussionRequest(state) {
+    adjustRate(state, newRate) {
+      state.audioRate = newRate;
+      state.audioConfig.rate(state.audioRate);
+    },
+    goToEndOfDiscussion(state) {
       const fiveSecondsLeft = state.currentDiscussion.endTimeMillis / 1000 - 5;
       state.audioConfig.seek(fiveSecondsLeft, state.currentAudio);
     },
-    killAudioRequest(state, newAudioLoading) {
+    killAudio(state, newAudioLoading) {
       if (state.audioConfig) {
         if (state.currentAudio) state.audioConfig.unload(state.currentAudio);
         state.loadingNewAudio = !!newAudioLoading;
@@ -134,7 +120,7 @@ export default {
         state.audioIcon = 'play';
       }
     },
-    updateTimestamp(state) {
+    getRemainingTime(state) {
       const { endTimeMillis } = state.currentDiscussion;
       let currentTime;
       try {

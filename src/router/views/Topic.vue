@@ -68,12 +68,6 @@ export default {
         this.createAudio(discussion);
       }
     },
-    discussionDate(discussion) {
-      if (discussion?.episodePublishDate) {
-        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`);
-      }
-      return null;
-    },
     isActiveDiscussion(discussion) {
       if (!discussion?.discussionId || !this.currentDiscussion?.discussionId) return false;
       return this.currentDiscussion.discussionId === discussion.discussionId;

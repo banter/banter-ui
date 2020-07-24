@@ -19,8 +19,15 @@
         </b-navbar-nav>
         <b-navbar-nav>
           <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"
-            class="audio-icon ml-sm-2"><b>
+            class="next-discussion audio-icon ml-sm-2"><b>
               <b-icon :icon="'skip-end-fill'" /></b></a>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <b-select
+            class="rate-speed"
+            @change="adjustRate"
+            :value="audioRate"
+            :options="rateOptions"/>
         </b-navbar-nav>
       </b-navbar-brand>
       <b-navbar-toggle target="audio-collapse"></b-navbar-toggle>
@@ -50,7 +57,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
@@ -61,7 +68,7 @@ export default {
   mounted() {
     this.trackInterval = setInterval(() => {
       this.getRemainingTime();
-    }, 750);
+    }, 500);
     this.getRemainingTime();
   },
   destroyed() {
@@ -81,6 +88,7 @@ export default {
       currentAudio: (state) => state.audio.currentAudio,
       discussion: (state) => state.audio.currentDiscussion,
       audioIcon: (state) => state.audio.audioIcon,
+      audioRate: (state) => state.audio.audioRate,
       chosenTopic: (state) => state.topics.currentTopic,
     }),
     audioAction() {
@@ -100,90 +108,127 @@ export default {
   data() {
     return {
       remainingTime: '00:00:00',
+      rateOptions: [
+        { text: '.5x', value: 0.5 },
+        { text: '.75x', value: 0.75 },
+        { text: '1x', value: 1 },
+        { text: '1.25x', value: 1.25 },
+        { text: '1.5x', value: 1.5 },
+        { text: '2x', value: 2 }],
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
+    ...mapActions(['resumeAudio', 'pauseAudio']),
+    ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .fixed-bottom {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1030;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
 }
 
-  .audio-player {
-    margin: auto;
-  }
+.audio-player {
+  margin: auto;
+}
 
-  .audio-icon {
-    margin:auto;
-  }
+.audio-icon {
+  margin: auto;
+}
 
-  .audio-player-container {
-    padding: 0;
-    display: flex;
-  }
+.audio-player-container {
+  padding: 0;
+  display: flex;
+}
 
-  .audio-description {
-    display: flex;
-  }
+.audio-description {
+  display: flex;
+}
 
-  .audio-player-container div {
-    margin: auto;
-  }
+.audio-player-container div {
+  margin: auto;
+}
 
-  .audio-icon {
-    cursor: pointer;
-    width: 50px;
-  }
+.audio-icon {
+  cursor: pointer;
+  width: 50px;
+}
 
-  .player-controls {
-    display: flex;
-    position: relative;
-    height: 100%;
-    cursor: pointer;
-  }
+.audio-icon.next-discussion {
+  width: 20px;
+}
 
-  .player-controls-container {
-    display: flex;
-    min-width: 275px;
-  }
+.player-controls {
+  display: flex;
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+}
 
-  .now-playing-title {
-    font-size: 16px;
-    font-weight: bold;
-  }
+.player-controls-container {
+  display: flex;
+  min-width: 275px;
+}
 
+.now-playing-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.now-playing-description {
+  max-width: 850px;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+@media (max-width: 800px) {
   .now-playing-description {
     max-width: 850px;
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
     font-style: italic;
   }
+}
 
-  .podcast-thumbnail {
-    width: 50px;
-    height: auto;
-  }
+.podcast-thumbnail {
+  width: 50px;
+  height: auto;
+}
 
-  .audio-content {
-    padding-left: 15px;
-  }
+.audio-content {
+  padding-left: 15px;
+}
 
-  a.audio-icon {
-    cursor: pointer;
-  }
+a.audio-icon {
+  cursor: pointer;
+}
 
-  .loader {
-    text-align: center;
+.loader {
+  text-align: center;
+}
+.rate-speed {
+  background: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  cursor: pointer;
+  margin: auto;
+  font-weight: bold;
+  font-size: 20px;
+  width: initial;
+
+  &:focus{
+    border: none;
+    box-shadow: none;
   }
+}
 </style>
