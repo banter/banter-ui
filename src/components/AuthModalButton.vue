@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button v-if="!currentUser.email" v-b-modal.login-modal size="sm" id="nav-signup"
+    <b-button v-if="!currentUser.email" v-b-modal.auth-modal size="sm" id="nav-signup"
       type="submit">
       <p id="nav-signup-text">Log In</p>
     </b-button>
@@ -11,165 +11,29 @@
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-nav>
-    <b-modal id="login-modal" hide-footer hide-header title="Login Modal">
-      <h2 class="signin-header">{{returningUser ? 'Log In' : 'Create Account'}}</h2>
-      <div class="user-auth-switch">
-        <p v-if="returningUser">Don't have an account?
-          <a
-            href="#"
-            class="auth-link"
-            @click="() => returningUser = false">Sign Up
-          </a>
-        </p>
-        <p v-if="!returningUser">Already have an account?
-          <a
-            href="#"
-            class="auth-link"
-            @click="() => returningUser = true">Log In
-          </a>
-        </p>
-      </div>
-      <div class="social-logins">
-        <a v-for="oauthProvider in OAUTH" class="btn btn-outline-dark social-login" role="button"
-          :key="`${oauthProvider.name}-login`"
-          :href="`${API.OAUTH_BASE_URL}/oauth${
-            oauthProvider.name === 'twitter' ? '1' : '2'
-          }/authorization/${oauthProvider.name}?redirect_uri=${API.REDIRECT_URL}`">
-          <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
-          <span class="login-text">{{returningUser ? 'Log in' : 'Sign up'}} with <span
-              class="brand-name">{{oauthProvider.name}}</span></span>
-        </a>
-        <div class="login-divider">Or</div>
-        <a
-          @click="() => showEmailLogin = true"
-          class="btn btn-outline-dark social-login use-email-button"
-          role="button">
-          <b-icon :icon="'person-fill'" class="use-email-icon"/>
-          <span class="use-email-text">Use Email</span>
-        </a>
-      </div>
-      <b-form @submit="authAction" v-if="showEmailLogin" class="sign-up-form">
-        <div v-if="!returningUser" class="input-group form-group">
-          <b-input
-            type="text"
-            v-model="authName"
-            class="form-control auth-form-field"
-            placeholder="Name" />
-        </div>
-        <div class="input-group form-group">
-          <b-input
-            type="email"
-            v-model="authEmail"
-            autocomplete="username"
-            class="form-control auth-form-field"
-            placeholder="Email" />
-        </div>
-        <div class="input-group form-group">
-          <b-input
-            type="password"
-            :autocomplete="returningUser ? 'current-password' : 'new-password'"
-            v-model="authPassword"
-            class="form-control auth-form-field"
-            placeholder="Password" />
-        </div>
-        <div class="input-group form-group">
-          <b-button
-            :disabled="isRequesting || formInvalid"
-            class="auth-button"
-            :variant="'primary'"
-            type="submit">
-            <div v-if="isRequesting">
-              <LoadingSpinner :variant="'secondary'" />
-            </div>
-            <p v-if="!isRequesting" class="auth-button-text">
-              {{returningUser ? 'Log In' : 'Sign Up'}}
-            </p>
-          </b-button>
-        </div>
-        <div v-if="error" class="error-display">
-          <p>{{error}}</p>
-        </div>
-        <div v-if="localError" class="error-display">
-          <p>{{localError}}</p>
-        </div>
-      </b-form>
-    </b-modal>
+    <auth-modal></auth-modal>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import OAUTH from '../constants/oauth-providers';
-import API from '../constants/api';
-import REGEX from '../constants/regex';
-import LoadingSpinner from './LoadingSpinner.vue';
+
+import { mapState } from 'vuex';
+import AuthModal from './modals/AuthModal.vue';
 
 export default {
   name: 'AuthModalButton',
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
-      error: (state) => state.users.error,
-      isRequesting: (state) => state.users.isRequesting,
     }),
-    formInvalid() {
-      if (!this.authPassword || !this.authEmail) return true;
-      if (!this.returningUser) {
-        if (!this.authName) return true;
-      }
-      return false;
-    },
   },
   components: {
-    LoadingSpinner,
+    AuthModal,
   },
   methods: {
-    ...mapActions(['loginUser', 'signupUser']),
-    clearTopicList() {
-      this.clearTopicQuery();
+    showModal() {
+      this.$bvModal.show('auth-modal');
     },
-    async authAction(evt) {
-      evt.preventDefault();
-      const { authName, authEmail, authPassword } = this;
-
-      if (!REGEX.VALID_EMAIL.test(authEmail)) {
-        this.localError = 'Your email appears invalid';
-        return;
-      }
-
-      this.localError = null;
-      try {
-        if (this.returningUser) {
-          await this.loginUser({ authEmail, authPassword });
-        } else {
-          await this.signupUser({ authName, authEmail, authPassword });
-        }
-
-        this.closeModal('login-modal');
-
-        if (this?.currentUser?.email) {
-          this.$router.push('/home');
-        }
-      } catch (error) {
-        this.localError = error;
-      }
-    },
-    closeModal(modal) {
-      Object.assign(this, { authEmail: null, authPassword: null, authName: null });
-      this.$root.$emit('bv::hide::modal', modal);
-    },
-  },
-  data() {
-    return {
-      returningUser: true,
-      showEmailLogin: false,
-      authEmail: '',
-      authPassword: '',
-      authName: '',
-      localError: null,
-      OAUTH,
-      API,
-    };
   },
 };
 </script>

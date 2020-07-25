@@ -14,7 +14,6 @@
         <div class="form-inline my-2 my-lg-0">
           <AuthModalButton></AuthModalButton>
         </div>
-
         <b-form class="form-inline my-2 my-lg-0">
           <b-input-group id="nav-search-group" size="lg">
             <b-input-group-prepend>
@@ -69,6 +68,9 @@ export default {
       this.clearTopicQuery();
       this.searchText = '';
     },
+    openModal() {
+      this.modalOpen = !this.modalOpen;
+    },
     searchItems(search, loading) {
       this.loadingSpinner = loading;
       this.loadingSpinner(true);
@@ -91,6 +93,7 @@ export default {
       searchText: '',
       foundTags: [],
       loadingSpinner: () => {},
+      modalOpen: false,
     };
   },
 };
