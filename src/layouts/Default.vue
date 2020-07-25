@@ -15,7 +15,6 @@ import AudioPlayer from '../components/AudioPlayer.vue';
 export default {
   name: 'Banter',
   created() {
-    this.$store.dispatch('fetchGenres');
     this.$store.dispatch('fetchTrendingTopics');
     this.$store.dispatch('fetchCollections');
     this.$store.dispatch('fetchCurrentUser');

@@ -3,7 +3,6 @@ import apiRequest from '../helpers/api-request';
 
 export default {
   state: {
-    topics: [],
     collections: [],
     tagMatches: [],
     trendingTopics: [],
@@ -15,17 +14,6 @@ export default {
     error: '',
   },
   actions: {
-    fetchGenres({
-      commit,
-    }) {
-      const requestData = { url: `${API.BASE_URL}${API.GENRES}` };
-      const mutations = {
-        preCommit: 'fetchGenresRequest',
-        successCommit: 'fetchGenresSuccess',
-        errorCommit: 'topicsError',
-      };
-      return apiRequest({ requestData, mutations, commit });
-    },
     fetchTopic({ commit }, topic) {
       const requestData = { url: `${API.BASE_URL}${API.TOPICS}${topic}` };
       const mutations = {
@@ -95,13 +83,6 @@ export default {
     },
   },
   mutations: {
-    fetchGenresRequest(state) {
-      state.isRequesting = true;
-    },
-    fetchGenresSuccess(state, payload) {
-      state.topics = payload;
-      state.isRequesting = false;
-    },
     topicsError(state, error) {
       state.isRequesting = false;
       state.errored = true;
