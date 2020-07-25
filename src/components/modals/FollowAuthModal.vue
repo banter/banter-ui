@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal id="follow-auth-modal" hide-footer hide-header title="Login Modal">
+    <b-modal id="follow-auth-modal" hide-footer hide-header title="Follow Modal">
       <base-auth-modal
       loginHeader="Login to Follow"
       signUpHeader="Sign up to Follow">

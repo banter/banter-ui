@@ -68,9 +68,6 @@ export default {
       this.clearTopicQuery();
       this.searchText = '';
     },
-    openModal() {
-      this.modalOpen = !this.modalOpen;
-    },
     searchItems(search, loading) {
       this.loadingSpinner = loading;
       this.loadingSpinner(true);
@@ -93,7 +90,6 @@ export default {
       searchText: '',
       foundTags: [],
       loadingSpinner: () => {},
-      modalOpen: false,
     };
   },
 };
