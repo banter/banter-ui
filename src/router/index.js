@@ -4,7 +4,6 @@ import Router from 'vue-router';
 import {
   Home,
   Topic,
-  Genres,
   TermsAndConditions,
   PrivacyPolicy,
   Landing,
@@ -31,11 +30,6 @@ export default new Router({
       path: '/topics/:topicName',
       name: 'Topic',
       component: Topic,
-    },
-    {
-      path: '/genres',
-      name: 'Genres',
-      component: Genres,
     },
     {
       path: '/privacy',

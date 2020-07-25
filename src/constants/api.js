@@ -12,7 +12,6 @@ const API = {
   BASE_URL: `${CONSTANTS.API_BASE_URLS[ENV]}/v1/`,
   REDIRECT_URL: `${window.location.origin}/home`,
   TOPICS: 'topics/',
-  GENRES: 'genres/',
   TRENDING: 'trending/',
   COLLECTIONS: 'collections/',
   USERS: 'users/',
