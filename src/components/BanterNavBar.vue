@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import AuthModalButton from './AuthModalButton.vue';
 import SearchBar from './commons/SearchBar.vue';
 
@@ -43,12 +44,10 @@ export default {
     AuthModalButton,
     SearchBar,
   },
-  props: {
-    isMobile: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
+  computed: {
+    ...mapState({
+      isMobile: (state) => state.sizing.isMobile,
+    }),
   },
 };
 </script>

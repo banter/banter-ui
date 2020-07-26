@@ -72,13 +72,6 @@ export default {
       loadingSpinner: () => {},
     };
   },
-  props: {
-    isMobile: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-  },
 };
 </script>
 

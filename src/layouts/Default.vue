@@ -1,6 +1,6 @@
 <template>
   <div id="banter-app">
-    <BanterNavBar :isMobile="isMobile"/>
+    <BanterNavBar/>
     <BanterBottomNavBar></BanterBottomNavBar>
     <slot/>
   </div>
@@ -8,7 +8,7 @@
 
 <script>
 
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import BanterNavBar from '../components/BanterNavBar.vue';
 import BanterBottomNavBar from '../components/BanterBottomNavBar.vue';
 
@@ -42,14 +42,6 @@ export default {
   methods: {
     ...mapActions(['resizeWindow']),
   },
-  computed: {
-    ...mapState({
-      audioConfig: (state) => state.audio.audioConfig,
-      loadingNewAudio: (state) => state.audio.loadingNewAudio,
-      isMobile: (state) => state.sizing.isMobile,
-    }),
-  },
-
 };
 </script>
 

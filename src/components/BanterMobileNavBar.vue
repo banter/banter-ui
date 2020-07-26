@@ -9,10 +9,7 @@
         </router-link>
       </b-navbar-brand>
       <b-navbar-brand class="navbar-brand d-flex m-auto">
-        <router-link :to="'/home'" class="navbar-brand d-flex m-auto">
-          <b-icon icon="collection" font-scale="1.2" style="margin:auto"> </b-icon>
-          My Banters
-        </router-link>
+        <MyFeedButton></MyFeedButton>
       </b-navbar-brand>
       <b-navbar-nav class="navbar-brand d-flex m-auto ">
         <router-link :to="'/explore'" class="navbar-brand d-flex m-auto">
@@ -27,10 +24,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import MyFeedButton from './commons/MyFeedButton.vue';
 
 export default {
   name: 'BanterMobileNavBar',
   components: {
+    MyFeedButton,
   },
   computed: {
     ...mapState({
@@ -58,98 +57,12 @@ export default {
   background: lightgray;
 }
 
-.audio-icon {
-  margin: auto;
-}
-
 .mobile-nav-bar-container {
   padding: 0;
   display: flex;
 }
 
-.audio-description {
-  display: flex;
-}
-
 .mobile-nav-bar-container div {
   margin: auto;
-}
-
-.audio-icon {
-  cursor: pointer;
-  width: 50px;
-}
-
-.audio-icon.next-discussion {
-  width: 20px;
-}
-
-.player-controls {
-  display: flex;
-  position: relative;
-  height: 100%;
-  cursor: pointer;
-}
-
-.player-controls-container {
-  display: flex;
-  min-width: 275px;
-}
-
-.now-playing-title {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.now-playing-description {
-  max-width: 850px;
-  display: block;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-style: italic;
-}
-
-@media (max-width: 800px) {
-  .now-playing-description {
-    max-width: 850px;
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: normal;
-    font-style: italic;
-  }
-}
-
-.podcast-thumbnail {
-  width: 50px;
-  height: auto;
-}
-
-.audio-content {
-  padding-left: 15px;
-}
-
-a.audio-icon {
-  cursor: pointer;
-}
-
-.loader {
-  text-align: center;
-}
-
-.rate-speed {
-  background: #f8f9fa;
-  border: 1px solid #f8f9fa;
-  cursor: pointer;
-  margin: auto;
-  font-weight: bold;
-  font-size: 20px;
-  width: initial;
-
-  &:focus {
-    border: none;
-    box-shadow: none;
-  }
 }
 </style>
