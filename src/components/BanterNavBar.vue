@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="light" variant="faded">
+    <b-navbar v-if="!isMobile" toggleable="lg" type="light" variant="faded">
       <b-navbar-brand>
         <router-link :to="'/home'">
           <b-img height="60" :src="require('../assets/Banter_logo_dark.png')"
@@ -37,6 +37,19 @@
         </b-form>
       </b-collapse>
     </b-navbar>
+
+<b-navbar v-else toggleable="lg" type="light" variant="faded">
+      <b-navbar-brand margin="auto">
+        <router-link :to="'/home'">
+          <b-img height="60" :src="require('../assets/Banter_logo_dark.png')"
+          alt="Banter Logo"></b-img>
+        </router-link>
+      </b-navbar-brand>
+              <div class="form-inline my-2 my-lg-0">
+          <AuthModalButton></AuthModalButton>
+        </div>
+    </b-navbar>
+
   </div>
 </template>
 
@@ -91,6 +104,13 @@ export default {
       foundTags: [],
       loadingSpinner: () => {},
     };
+  },
+  props: {
+    isMobile: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
 };
 </script>

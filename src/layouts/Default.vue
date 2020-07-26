@@ -1,16 +1,16 @@
 <template>
   <div id="banter-app">
-    <BanterNavBar/>
-    <AudioPlayer v-if="audioConfig || loadingNewAudio"/>
+    <BanterNavBar :isMobile="isMobile"/>
+    <BanterBottomNavBar></BanterBottomNavBar>
     <slot/>
   </div>
 </template>
 
 <script>
 
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import BanterNavBar from '../components/BanterNavBar.vue';
-import AudioPlayer from '../components/AudioPlayer.vue';
+import BanterBottomNavBar from '../components/BanterBottomNavBar.vue';
 
 export default {
   name: 'Banter',
@@ -23,12 +23,30 @@ export default {
   },
   components: {
     BanterNavBar,
-    AudioPlayer,
+    BanterBottomNavBar,
+  },
+  mounted() {
+    if (this.loginError) {
+      this.$bvToast.toast(this.loginError, {
+        title: 'Login Error',
+        variant: 'warning',
+        autoHideDelay: 5000,
+      });
+    }
+    window.addEventListener('resize', this.resizeWindow);
+    this.resizeWindow();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeWindow);
+  },
+  methods: {
+    ...mapActions(['resizeWindow']),
   },
   computed: {
     ...mapState({
       audioConfig: (state) => state.audio.audioConfig,
       loadingNewAudio: (state) => state.audio.loadingNewAudio,
+      isMobile: (state) => state.sizing.isMobile,
     }),
   },
 
