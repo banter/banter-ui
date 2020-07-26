@@ -8,6 +8,7 @@ import {
   TermsAndConditions,
   PrivacyPolicy,
   Landing,
+  Explore,
 } from './views/index';
 
 Vue.use(Router);
@@ -31,6 +32,11 @@ export default new Router({
       path: '/topics/:topicName',
       name: 'Topic',
       component: Topic,
+    },
+    {
+      path: '/explore',
+      name: 'Explore',
+      component: Explore,
     },
     {
       path: '/genres',

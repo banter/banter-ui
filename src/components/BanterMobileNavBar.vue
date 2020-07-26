@@ -15,7 +15,7 @@
         </router-link>
       </b-navbar-brand>
       <b-navbar-nav class="navbar-brand d-flex m-auto ">
-        <router-link :to="'/home'" class="navbar-brand d-flex m-auto">
+        <router-link :to="'/explore'" class="navbar-brand d-flex m-auto">
           <b-icon icon="search" font-scale="1.2" style="margin:auto"> </b-icon>
           Search
         </router-link>
