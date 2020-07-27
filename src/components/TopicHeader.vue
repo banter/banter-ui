@@ -1,13 +1,11 @@
 <template>
   <div class="header-card card-wrapper">
     <b-card no-body>
-    <b-img v-if="imageLoadingError" class="header-card card-img"
-     :src="require('../assets/Banter_Default_header.png')"/>
-     <b-img v-else class="header-card card-img "
-     :src="currentImageUrl"
-     @error="imageLoadError" />
+    <b-img v-if="loadError" class="header-card" :src="require('../assets/Banter_logo_dark.png')"/>
+    <b-img v-else class="header-card" :src="currentImageUrl" @error="imageLoadError" />
       <b-card-text class="header-card-text">
-         <h3>{{currentTopic.name}}</h3>
+         <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
+         <FollowButton :topic="currentTopic.primaryTag" class="header-follow"/>
       </b-card-text>
 
     </b-card>
@@ -15,12 +13,16 @@
 </template>
 
 <script>
+import FollowButton from './FollowButton.vue';
 
 export default {
   name: 'TopicHeader',
+  components: {
+    FollowButton,
+  },
   data() {
     return {
-      imageLoadingError: false,
+      loadError: false,
     };
   },
   props: {
@@ -37,7 +39,7 @@ export default {
   },
   methods: {
     imageLoadError() {
-      this.imageLoadingError = true;
+      this.loadError = true;
     },
   },
 };
@@ -58,13 +60,17 @@ export default {
 
 .header-card-text {
   background: black;
-  opacity: .6;
   color: white;
   width: fit-content;
   position: absolute;
   bottom: 30px;
   left: 60px;
-  padding: 15px
+  padding: 15px;
+  display: flex;
+}
+
+.header-card-text-content {
+  opacity: .6;
 }
 
 @media (max-width: 800px)  {
@@ -90,5 +96,9 @@ export default {
   // width: 100%;
   // min-width: 320px;
   border: none;
+}
+
+.header-follow {
+  margin: 0 15px;
 }
 </style>

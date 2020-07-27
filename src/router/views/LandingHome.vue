@@ -40,12 +40,22 @@ export default {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
     }),
+    currentTopic() {
+      return this.chosenTopic;
+    },
   },
   async mounted() {
-    await this.$store.dispatch('fetchCurrentUser');
-    if (this?.currentUser?.email) {
+    try {
+      await this.$store.dispatch('fetchCurrentUser');
       this.$router.push('/home');
+    } catch (e) {
+      this.showLogin = true;
     }
+  },
+  data() {
+    return {
+      showLogin: false,
+    };
   },
 };
 </script>

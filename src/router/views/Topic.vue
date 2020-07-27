@@ -4,9 +4,7 @@
       <LoadingSpinner :variant="'secondary'"/>
     </div>
     <div v-if="!isLoading">
-      <div>
-        <TopicHeader :currentTopic="currentTopic" />
-      </div>
+      <TopicHeader :currentTopic="currentTopic"/>
       <b-list-group-item style="border: none" v-for="(discussion, index) in currentTopic.playlist"
         :key="`discussion-${index}`">
         <div>
