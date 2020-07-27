@@ -1,5 +1,7 @@
 # banter-ui
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8967197e-96d8-4df5-9be3-ff5ba71ce142/deploy-status)](https://app.netlify.com/sites/banter/deploys)
+
 ## Project setup
 ```
 npm install
