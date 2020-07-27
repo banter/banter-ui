@@ -8,7 +8,7 @@
       <b-icon icon="collection" font-scale="1.2" style="margin:auto"> </b-icon>
       My Feed
     </div>
-    <my-feed-auth-modal refs="myFeedModal"></my-feed-auth-modal>
+    <my-feed-auth-modal ref="myFeedAuthModal"></my-feed-auth-modal>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$bvModal.show(this.$refs.myFeedModal.modalName);
+      this.$bvModal.show(this.$refs.myFeedAuthModal.modalName);
     },
   },
 };
