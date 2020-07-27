@@ -27,7 +27,7 @@ export default async function apiRequest({
       }
     }).catch((error) => {
       const errorMessage = error?.response?.data?.message || 'We were unable to authenticate you, please contact support.';
-      commit(errorCommit, errorMessage);
+      commit(errorCommit, error.response.status === 401 ? '' : errorMessage);
       reject(errorMessage);
     });
   });

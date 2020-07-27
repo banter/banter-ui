@@ -26,10 +26,7 @@
         <b-icon :icon="'person-fill'" class="use-email-icon" />
         <span class="use-email-text">Use Email</span>
       </a>
-      <slot>
-        <a href="#" class="auth-link" @click="$bvModal.hide('auth-modal')">Continue as Guest
-        </a>
-      </slot>
+      <slot name="footer"/>
     </div>
     <b-form @submit="authAction" v-if="showEmailLogin" class="sign-up-form">
       <div v-if="!returningUser" class="input-group form-group">
@@ -100,6 +97,11 @@ export default {
       required: false,
       default: () => 'Sign Up',
     },
+    modalName: {
+      type: String,
+      required: true,
+      default: 'auth-modal',
+    },
   },
   components: {
     LoadingSpinner,
@@ -126,7 +128,7 @@ export default {
           await this.signupUser({ authName, authEmail, authPassword });
         }
 
-        this.closeModal('auth-modal');
+        this.closeModal(this.modalName);
 
         if (this?.currentUser?.email) {
           this.$router.push('/home');

@@ -7,7 +7,7 @@
       </div>
       <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
   </b-button>
-  <follow-auth-modal></follow-auth-modal>
+  <follow-auth-modal ref="followModal"></follow-auth-modal>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
     ...mapActions(['followTopic', 'unfollowTopic']),
     async handleClick() {
       if (!this.currentUser.email) {
-        this.$bvModal.show('follow-auth-modal');
+        this.$bvModal.show(this.$refs.followModal.modalName);
       } else {
         if (this.isFollowing) {
           await this.unfollowTopic(this.topic);

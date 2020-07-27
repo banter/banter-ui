@@ -11,7 +11,7 @@
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-nav>
-    <auth-modal></auth-modal>
+    <auth-modal ref="modal"></auth-modal>
   </div>
 </template>
 
@@ -19,6 +19,7 @@
 
 import { mapState } from 'vuex';
 import AuthModal from './modals/AuthModal.vue';
+import API from '../constants/api';
 
 export default {
   name: 'AuthModalButton',
@@ -30,11 +31,7 @@ export default {
   components: {
     AuthModal,
   },
-  methods: {
-    showModal() {
-      this.$bvModal.show('auth-modal');
-    },
-  },
+  data() { return { API }; },
 };
 </script>
 
