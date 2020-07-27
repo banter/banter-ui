@@ -5,8 +5,7 @@
         <b-img v-if="imageLoadingError"
           class="fallback-image topic-image"
           :src="require('../assets/Banter_logo_sound.png')"/>
-        <b-img v-else class="topic-image" :src="topic.imageUrl"
-        @error="imageLoadError" />
+        <b-img v-else class="topic-image" :src="topic.imageUrl" @error="imageLoadError" />
         <div class = "topic-content-wrapper">
         <div class="topic-descriptor">
           <p class="topic-label">

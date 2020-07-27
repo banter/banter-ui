@@ -1,7 +1,6 @@
 <template>
   <div class="audio-player">
-
-    <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center fixed-bottom">
+    <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center">
       <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
         <b-navbar-nav>
           <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3"
@@ -125,7 +124,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .fixed-bottom {
   position: fixed;
   right: 0;
@@ -217,6 +215,7 @@ a.audio-icon {
 .loader {
   text-align: center;
 }
+
 .rate-speed {
   background: #f8f9fa;
   border: 1px solid #f8f9fa;
@@ -226,7 +225,7 @@ a.audio-icon {
   font-size: 20px;
   width: initial;
 
-  &:focus{
+  &:focus {
     border: none;
     box-shadow: none;
   }

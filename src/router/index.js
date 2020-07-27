@@ -7,6 +7,7 @@ import {
   TermsAndConditions,
   PrivacyPolicy,
   Landing,
+  Explore,
 } from './views/index';
 
 Vue.use(Router);
@@ -32,6 +33,10 @@ export default new Router({
       component: Topic,
     },
     {
+      path: '/explore',
+      name: 'Explore',
+      component: Explore,
+    },
       path: '/privacy',
       name: 'Privacy Policy',
       component: PrivacyPolicy,
