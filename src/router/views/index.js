@@ -1,6 +1,5 @@
 export { default as Landing } from './LandingHome.vue';
 export { default as Home } from './Home.vue';
-export { default as Genres } from './Genres.vue';
 export { default as Topic } from './Topic.vue';
 export { default as Explore } from './Explore.vue';
 export { default as PrivacyPolicy } from './PrivacyPolicy.vue';
