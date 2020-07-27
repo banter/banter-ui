@@ -1,36 +1,27 @@
 const CONSTANTS = {
   API_BASE_URLS: {
-    DEVELOPMENT: 'http://bante-loadb-ylobkweh6xeq-909332376.us-east-1.elb.amazonaws.com',
-    PRODUCTION: 'https://api.banteraudio.com'
-  },
-  REDIRECT_URLS: {
-<<<<<<< Updated upstream
-    DEVELOPMENT: 'http://localhost:8081',
-    PRODUCTION: 'https://banteraudio.com'
-  }
-}
-=======
-    LOCAL: 'http://localhost:8081',
-    DEVELOPMENT: 'http://localhost:8081',
-    PRODUCTION: 'https://banteraudio.com',
+    LOCAL: 'http://localhost:8080',
+    DEVELOPMENT: 'https://api.banteraudio.com',
+    PRODUCTION: 'https://api.banteraudio.com',
   },
 };
->>>>>>> Stashed changes
 const ENV = process.env.NODE_ENV.toUpperCase();
 
 const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],
   BASE_URL: `${CONSTANTS.API_BASE_URLS[ENV]}/v1/`,
-  REDIRECT_URL: CONSTANTS.REDIRECT_URLS[ENV],
-  TOPICS: "topics/",
-  GENRES: "genres/",
-  TRENDING: "trending/",
-  COLLECTIONS: "collections/",
-  USERS: "users/",
-  ME: "me",
-  LOGIN: "login",
-  REGISTER: "register",
-  LOGOUT: `logout?redirect_uri=${CONSTANTS.REDIRECT_URLS[ENV]}`,
+  REDIRECT_URL: `${window.location.origin}/home`,
+  TOPICS: 'topics/',
+  TRENDING: 'trending/',
+  COLLECTIONS: 'collections/',
+  USERS: 'users/',
+  ME: 'me/',
+  FOLLOWING: 'following/',
+  FOLLOW: 'follow',
+  UNFOLLOW: 'unfollow',
+  LOGIN: 'login',
+  REGISTER: 'register',
+  LOGOUT: `logout?redirect_uri=${window.location.origin}/home`,
 };
 
 export default API;

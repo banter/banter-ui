@@ -1,32 +1,61 @@
-import Vue from 'vue'
-import App from './App.vue'
-import Vuex from 'vuex'
-import { store } from "./store/index.js";
-import { router } from "./router/index.js";
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import moment from 'moment';
+import Carousel3d from 'vue-carousel-3d';
+import {
+  BootstrapVue,
+  IconsPlugin,
+} from 'bootstrap-vue';
+
+// Analytics
+import Hotjar from 'vue-hotjar';
 import VueAnalytics from 'vue-analytics';
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import moment from 'moment'
+import vSelect from 'vue-select';
+import store from './store/index';
+import router from './router/index';
+import App from './App.vue';
 
+import Default from './layouts/Default.vue';
+import Landing from './layouts/Landing.vue';
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
-Vue.use(Vuex)
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'vue-select/dist/vue-select.css';
+
+Vue.use(Hotjar, {
+  id: '1897223',
+  isProduction: process.env.NODE_ENV.toUpperCase() === 'PRODUCTION',
+});
 
 Vue.use(VueAnalytics, {
   id: 'UA-172462319-1',
-  router
-})
+  router,
+});
 
-Vue.config.productionTip = false
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+Vue.use(Vuex);
+Vue.use(Carousel3d);
 
-moment.locale("en-us");
-Object.defineProperty(Vue.prototype, "$moment", { value: moment });
+Vue.config.productionTip = false;
+
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+Vue.use(Vuex);
+Vue.config.productionTip = false;
+
+moment.locale('en-us');
+Object.defineProperty(Vue.prototype, '$moment', {
+  value: moment,
+});
+
+Vue.component('default-layout', Default);
+Vue.component('landing-layout', Landing);
+Vue.component('v-select', vSelect);
 
 new Vue({
   store,
   router,
-  render: h => h(App),
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount('#app');

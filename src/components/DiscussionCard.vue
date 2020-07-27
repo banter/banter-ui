@@ -1,7 +1,10 @@
 <template>
   <div class="discussion-card-wrapper">
     <!-- border-variant="dark"  -->
-    <b-card no-body class="overflow-hidden discussion-card" :style="isActiveDiscussion ? {'background':'lightgrey'} : {}" align="left">
+    <b-card no-body
+      class="overflow-hidden discussion-card"
+      :style="isActiveDiscussion ? {'background':'lightgrey'} : {}"
+      align="left">
       <b-row no-gutters>
         <b-col md="3">
           <div style="position:relative">
@@ -10,10 +13,13 @@
               </b-card-img>
             <b-iconstack scale="3" class="discussion-icon">
               <b-icon stacked icon="circle-fill" variant="white"></b-icon>
-              <b-icon stacked :icon="audioIcon" variant="black"></b-icon>
+              <b-icon stacked :icon="cardAudioIcon" variant="black"></b-icon>
               <b-icon stacked icon="circle" variant="white"></b-icon>
-            </b-iconstack> 
-            <div class="discussion-timestamp" :style="discussionTime(discussion)=='' ? {} : {'background-color':'black'}" >
+            </b-iconstack>
+            <span v-if="cardAudioIcon === 'loading'" class="discussion-icon">
+            <LoadingSpinner /></span>
+            <div class="discussion-timestamp"
+              :style="discussionTime(discussion)=='' ? {} : {'background-color':'black'}" >
               <p class="discussion-timestamp-text" style="margin-bottom:0px">
                 {{`${discussionTime(discussion)}`}}
               </p>
@@ -30,7 +36,7 @@
             <b-row>
               <b-card-text class="podcast-name-text">
                 {{`${discussion.podcastTitle}`}} •
-                {{`${discussionDate(discussion) && discussionDate(discussion).fromNow()}`}}
+                {{`${discussionAge(discussion)}`}}
               </b-card-text>
             </b-row>
             <b-row>
@@ -50,56 +56,73 @@
   </div>
 </template>
 
-
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import LoadingSpinner from './LoadingSpinner.vue';
+
 export default {
   name: 'DiscussionCard',
+  components: {
+    LoadingSpinner,
+  },
   props: {
     isActiveDiscussion: {
       type: Boolean,
       required: true,
-      default: () => false
+      default: false,
     },
-      
     discussion: {
-    type: Object,
-    required: true,
-    default: () => ({})
-}
-  },  
-
-    computed: {
-      ...mapState({
-        isLoading: state => state.audio.isRequesting,
-        audioConfig: state => state.audio.audioConfig,
-      }),
-      audioIcon: function() {
-        return this.isPlaying && this.isActiveDiscussion==true ? 'pause' : 'play'
-      },
-      audioAction: function() {
-        return this.isPlaying ? this.pauseAudio : this.playAudio
-      },
-      isPlaying: function() {
-        return !!(this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio))
-      }
+      type: Object,
+      required: true,
+      default: () => ({}),
     },
+    audioConfig: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+  },
 
+  computed: {
+    ...mapState({
+      isLoading: (state) => state.audio.isRequesting,
+      audioIcon: (state) => state.audio.audioIcon,
+    }),
+    cardAudioIcon() {
+      if (!this.isActiveDiscussion) return 'play';
+      return this.audioIcon;
+    },
+    audioAction() {
+      return this.isPlaying ? this.pauseAudio : this.playAudio;
+    },
+    isPlaying() {
+      return !!(
+        this.audioConfig && this.audioConfig.playing && this.audioConfig.playing(this.currentAudio)
+      );
+    },
+  },
 
   methods: {
-    discussionDate(discussion){
+    discussionAge(discussion) {
       if (discussion?.episodePublishDate) {
-        return this.$moment(`${discussion.episodePublishDate.monthValue}-${discussion.episodePublishDate.dayOfMonth}-${discussion.episodePublishDate.year}`)
-      } else {
-        return null
+        const dateObject = new Date(
+          `${discussion.episodePublishDate.year}/${discussion.episodePublishDate.monthValue}/${discussion.episodePublishDate.dayOfMonth}`,
+        );
+        const dateString = dateObject.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+        return this.$moment(dateString).fromNow();
       }
+      return null;
     },
-    discussionTime(discussion){
-      var duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss')
-      return duration === "0:00" ? '' : duration 
-    }
-  }
-}
+    discussionTime(discussion) {
+      const duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss');
+      return duration === '0:00' ? '' : duration;
+    },
+  },
+};
 
 </script>
 
@@ -152,7 +175,6 @@ letter-spacing: 0.2px;
 color: #030303;
 }
 
-
 .card-img.discussion-card-image {
   object-fit: contain;
   position: relative;
@@ -164,7 +186,7 @@ color: #030303;
     max-width: 100%;
     width: 100%;
     height: 100%;
-    top: 50%;     
+    top: 50%;
     left: 50%;
     transform: translate( -50%, -50%);
     border-radius: 25px;
@@ -178,6 +200,7 @@ color: #030303;
     left: 85%;
     opacity: .80;
     opacity: .95;
+    border-radius: 5px;
     // background-color: black;
     color: white;
     padding: 3px;
@@ -188,7 +211,7 @@ color: #030303;
 
   .discussion-timestamp-text {
     font-style: normal;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 14px;
     text-align: center;
     height: 100%;
@@ -212,6 +235,5 @@ color: #030303;
 .tag-display span {
   margin: 2px;
 }
-
 
 </style>
