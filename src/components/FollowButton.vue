@@ -1,15 +1,20 @@
 <template>
-  <b-button :disabled="topicsRequesting" @click="handleClick" variant="outline-primary">
+<div>
+  <b-button :disabled="topicsRequesting"
+  @click="handleClick" variant="outline-primary">
       <div v-if="topicsRequesting">
         <LoadingSpinner :variant="'secondary'" />
       </div>
       <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
   </b-button>
+  <follow-auth-modal ref="followModal"></follow-auth-modal>
+  </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
+import FollowAuthModal from './modals/FollowAuthModal.vue';
 
 export default {
   name: 'FollowButton',
@@ -22,6 +27,7 @@ export default {
   },
   components: {
     LoadingSpinner,
+    FollowAuthModal,
   },
   computed: {
     ...mapState({
@@ -37,7 +43,7 @@ export default {
     ...mapActions(['followTopic', 'unfollowTopic']),
     async handleClick() {
       if (!this.currentUser.email) {
-        alert('pop auth modal');
+        this.$bvModal.show(this.$refs.followModal.modalName);
       } else {
         if (this.isFollowing) {
           await this.unfollowTopic(this.topic);

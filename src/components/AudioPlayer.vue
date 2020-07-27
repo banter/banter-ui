@@ -1,6 +1,6 @@
 <template>
   <div class="audio-player">
-    <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center fixed-bottom">
+    <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center">
       <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
         <b-navbar-nav>
           <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3"
