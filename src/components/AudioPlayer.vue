@@ -3,7 +3,7 @@
     <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center">
       <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
         <b-navbar-nav>
-          <a title="Rewind 15 seconds" @click="() => handleGoBack15Seconds()" font-scale="3"
+          <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3"
             class="audio-icon"><b>15
               <b-icon font-scale="1" :icon="'arrow-counterclockwise'" /></b></a>
         </b-navbar-nav>
@@ -13,11 +13,11 @@
         </b-navbar-nav>
         <b-navbar-nav>
           <a title="Fast Forward 15 seconds"
-          @click="() => handleGoForward15Seconds()" font-scale="3" class="audio-icon"><b>
+          @click="() => goForward15Seconds()" font-scale="3" class="audio-icon"><b>
               <b-icon font-scale="1" :icon="'arrow-clockwise'" />15</b></a>
         </b-navbar-nav>
         <b-navbar-nav>
-          <a title="Next discussion" @click="() => handleNextDiscussionClick()" font-scale="3"
+          <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"
             class="next-discussion audio-icon ml-sm-2"><b>
               <b-icon :icon="'skip-end-fill'" /></b></a>
         </b-navbar-nav>
@@ -125,29 +125,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio', 'audioListenUpdate']),
-    ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'getRemainingTime']),
-    handleNextDiscussionClick() {
-      this.goToNextDiscussion();
-      this.audioListenUpdate();
-    },
-
-    handleGoForward15Seconds() {
-      // From Testing this DOESNT go forward and then submit api request
-      // The values don't indicate "15 seconds" later by having goForward15seconds first
-      // I made this first because user doesnt care about our api request
-      this.goForward15Seconds();
-      this.audioListenUpdate();
-    },
-
-    handleGoBack15Seconds() {
-      this.goBack15Seconds();
-      this.audioListenUpdate();
-    },
+    ...mapActions(['resumeAudio', 'pauseAudio', 'audioListenUpdate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion']),
+    ...mapMutations(['adjustRate', 'getRemainingTime']),
 
     leaveBanterHandler() {
       // API Request on Page Leave
-      this.audioListenUpdate();
+      this.audioListenUpdate({});
     },
   },
 };
