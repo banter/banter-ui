@@ -40,11 +40,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-.navbar {
-    padding:none;
-}
-
 .navbar-brand{
     flex-direction:column
 }

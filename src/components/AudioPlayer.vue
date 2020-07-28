@@ -129,7 +129,7 @@ export default {
     ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'getRemainingTime']),
     handleNextDiscussionClick() {
       this.goToNextDiscussion();
-      this.handleAudioListenUpdate();
+      this.audioListenUpdate();
     },
 
     handleGoForward15Seconds() {
@@ -137,34 +137,17 @@ export default {
       // The values don't indicate "15 seconds" later by having goForward15seconds first
       // I made this first because user doesnt care about our api request
       this.goForward15Seconds();
-      this.handleAudioListenUpdate();
+      this.audioListenUpdate();
     },
 
     handleGoBack15Seconds() {
       this.goBack15Seconds();
-      this.handleAudioListenUpdate();
-    },
-
-    handleAudioListenUpdate() {
-      this.audioListenUpdate({
-        discussionId: this.discussion.discussionId,
-        progressMillis: this.audioProgress(),
-        completed: this.isDiscussionCompleted(this.timestampRemaining),
-      });
-    },
-
-    audioProgress() {
-      const durationMillis = this.$moment.utc(this.$moment.duration(this.discussion.duration).as('milliseconds'));
-      return this.timestampRemaining === 0 ? 0 : durationMillis - this.timestampRemaining;
-    },
-
-    isDiscussionCompleted(timestampRemaining) {
-      return timestampRemaining < 10000 && timestampRemaining !== 0;
+      this.audioListenUpdate();
     },
 
     leaveBanterHandler() {
       // API Request on Page Leave
-      this.handleAudioListenUpdate();
+      this.audioListenUpdate();
     },
   },
 };

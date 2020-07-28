@@ -1,6 +1,17 @@
+import moment from 'moment';
 import generateHowl from '../helpers/howl-generator';
 import API from '../../constants/api';
 import apiRequest from '../helpers/api-request';
+
+function isCurrentDiscussionCompleted(state) {
+  return state.timestampRemaining < 10000 && state.timestampRemaining !== 0;
+}
+
+function getAudioProgress(state) {
+  const durationMillis = moment.utc(moment.duration(state.currentDiscussion.duration).as('milliseconds'));
+  return state.timestampRemaining === 0
+    ? 0 : durationMillis - state.timestampRemaining;
+}
 
 export default {
   state: {
@@ -23,8 +34,9 @@ export default {
         dispatch('resumeAudio', discussion); // play paused audio
       } // TODO - if neither, start from top of playlist
     },
-    pauseAudio({ commit }) {
+    pauseAudio({ commit, dispatch }) {
       commit('pauseAudioRequest');
+      dispatch('audioListenUpdate');
     },
     resumeAudio({ commit }) {
       commit('resumeAudioRequest');
@@ -41,6 +53,9 @@ export default {
     async createAudio({
       commit, state, dispatch,
     }, discussion) {
+      // TODO Handle start of discussion, for some reason
+      // this breaks it
+      // dispatch('audioListenUpdate');
       commit('killAudio', true);
       commit('createAudioRequest');
 
@@ -65,12 +80,15 @@ export default {
       );
     },
     audioListenUpdate({
-      commit,
-    }, { discussionId, progressMillis, completed }) {
+      commit, state,
+    }) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LISTENS}${discussionId}/${API.UPDATE}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LISTENS}${state.discussionId}/${API.UPDATE}`,
         method: 'POST',
-        data: { progressMillis, completed },
+        data: {
+          progressMillis: getAudioProgress(state),
+          completed: isCurrentDiscussionCompleted(state),
+        },
       };
       const mutations = {
         preCommit: 'audioListenUpdateRequest',
