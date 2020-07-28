@@ -1,4 +1,6 @@
 import generateHowl from '../helpers/howl-generator';
+import API from '../../constants/api';
+import apiRequest from '../helpers/api-request';
 
 export default {
   state: {
@@ -62,9 +64,33 @@ export default {
         'end', () => (state.nextDiscussion ? dispatch('createAudio', state.nextDiscussion.discussion) : dispatch('killAudio')),
       );
     },
+    audioListenUpdate({
+      commit,
+    }, { discussionId, progressMillis, completed }) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LISTENS}${discussionId}/${API.UPDATE}`,
+        method: 'POST',
+        data: { progressMillis, completed },
+      };
+      const mutations = {
+        preCommit: 'audioListenUpdateRequest',
+        successCommit: 'audioListenUpdateSuccess',
+        errorCommit: 'audioListenUpdateError',
+      };
+
+      return apiRequest({ requestData, mutations, commit });
+    },
   },
   // Edits the data
   mutations: {
+
+    audioListenUpdateRequest() {
+    },
+    audioListenUpdateSuccess() {
+    },
+    audioListenUpdateError() {
+    },
+
     queueNextItem(state, nextItem) {
       state.nextDiscussion = {
         howl: generateHowl(nextItem),

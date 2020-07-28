@@ -3,7 +3,7 @@
     <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center">
       <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
         <b-navbar-nav>
-          <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3"
+          <a title="Rewind 15 seconds" @click="() => handleGoBack15Seconds()" font-scale="3"
             class="audio-icon"><b>15
               <b-icon font-scale="1" :icon="'arrow-counterclockwise'" /></b></a>
         </b-navbar-nav>
@@ -12,12 +12,12 @@
           <b-icon v-else @click="audioAction" font-scale="3" class="audio-icon" :icon="audioIcon"/>
         </b-navbar-nav>
         <b-navbar-nav>
-          <a title="Fast Forward 15 seconds" @click="() => goForward15Seconds()" font-scale="3"
-            class="audio-icon"><b>
+          <a title="Fast Forward 15 seconds"
+          @click="() => handleGoForward15Seconds()" font-scale="3" class="audio-icon"><b>
               <b-icon font-scale="1" :icon="'arrow-clockwise'" />15</b></a>
         </b-navbar-nav>
         <b-navbar-nav>
-          <a title="Next discussion" @click="() => goToNextDiscussion()" font-scale="3"
+          <a title="Next discussion" @click="() => handleNextDiscussionClick()" font-scale="3"
             class="next-discussion audio-icon ml-sm-2"><b>
               <b-icon :icon="'skip-end-fill'" /></b></a>
         </b-navbar-nav>
@@ -64,6 +64,12 @@ export default {
   components: {
     LoadingSpinner,
   },
+  beforeMount() {
+    window.addEventListener('beforeunload', this.leaveBanterHandler);
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('beforeunload', this.leaveBanterHandler);
+    });
+  },
   mounted() {
     this.trackInterval = setInterval(() => {
       this.getRemainingTime();
@@ -91,6 +97,8 @@ export default {
       chosenTopic: (state) => state.topics.currentTopic,
     }),
     audioAction() {
+      // TODO Integrate with Audio Action, chain actions
+      // in pauseAudio/resumeAudio?
       return this.isPlaying ? this.pauseAudio : this.resumeAudio;
     },
     episodeDate() {
@@ -117,8 +125,47 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio']),
-    ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
+    ...mapActions(['resumeAudio', 'pauseAudio', 'audioListenUpdate']),
+    ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'getRemainingTime']),
+    handleNextDiscussionClick() {
+      this.goToNextDiscussion();
+      this.handleAudioListenUpdate();
+    },
+
+    handleGoForward15Seconds() {
+      // From Testing this DOESNT go forward and then submit api request
+      // The values don't indicate "15 seconds" later by having goForward15seconds first
+      // I made this first because user doesnt care about our api request
+      this.goForward15Seconds();
+      this.handleAudioListenUpdate();
+    },
+
+    handleGoBack15Seconds() {
+      this.goBack15Seconds();
+      this.handleAudioListenUpdate();
+    },
+
+    handleAudioListenUpdate() {
+      this.audioListenUpdate({
+        discussionId: this.discussion.discussionId,
+        progressMillis: this.audioProgress(),
+        completed: this.isDiscussionCompleted(this.timestampRemaining),
+      });
+    },
+
+    audioProgress() {
+      const durationMillis = this.$moment.utc(this.$moment.duration(this.discussion.duration).as('milliseconds'));
+      return this.timestampRemaining === 0 ? 0 : durationMillis - this.timestampRemaining;
+    },
+
+    isDiscussionCompleted(timestampRemaining) {
+      return timestampRemaining < 10000 && timestampRemaining !== 0;
+    },
+
+    leaveBanterHandler() {
+      // API Request on Page Leave
+      this.handleAudioListenUpdate();
+    },
   },
 };
 </script>
