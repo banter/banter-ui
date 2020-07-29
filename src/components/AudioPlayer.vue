@@ -28,6 +28,9 @@
             :value="audioRate"
             :options="rateOptions"/>
         </b-navbar-nav>
+        <b-navbar-nav>
+          <like-button :discussion='discussion'></like-button>
+        </b-navbar-nav>
       </b-navbar-brand>
       <b-navbar-toggle target="audio-collapse"></b-navbar-toggle>
 
@@ -58,11 +61,13 @@
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
+import LikeButton from './commons/LikeButton.vue';
 
 export default {
   name: 'AudioPlayer',
   components: {
     LoadingSpinner,
+    LikeButton,
   },
   beforeMount() {
     window.addEventListener('beforeunload', this.leaveBanterHandler);
