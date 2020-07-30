@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div @click="handleClick" class="navbar-brand d-flex m-auto">
-      <b-icon :icon="type" font-scale="1.2" style="margin:auto"></b-icon>
+    <div :aria-disabled="likesRequesting" @click="handleClick" class="navbar-brand d-flex m-auto">
+        <div v-if="likesRequesting">
+        <LoadingSpinner :variant="'secondary'" />
+      </div>
+      <b-icon v-else :icon="type" font-scale="1.2" style="margin:auto"></b-icon>
         {{isLiked ? 'Unlike' : 'Like'}}
     </div>
     <like-auth-modal ref="likeAuthModal"></like-auth-modal>
@@ -12,11 +15,13 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import LikeAuthModal from '../modals/LikeAuthModal.vue';
+import LoadingSpinner from '../LoadingSpinner.vue';
 
 export default {
   name: 'LikeButton',
   components: {
     LikeAuthModal,
+    LoadingSpinner,
   },
   props: {
     type: {

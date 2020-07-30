@@ -61,7 +61,7 @@ export default {
     },
     fetchDiscussionsLikedSuccess(state, payload) {
       state.likesRequesting = false;
-      state.followedTopics = payload.tags;
+      state.discussionsLiked = payload.discussions;
     },
     fetchDiscussionsLikedError(state, error) {
       state.likesRequesting = false;

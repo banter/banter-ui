@@ -10,7 +10,7 @@ const ENV = process.env.NODE_ENV.toUpperCase();
 const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],
   BASE_URL: `${CONSTANTS.API_BASE_URLS[ENV]}/v1/`,
-  REDIRECT_URL: `${window.location.origin}/home`,
+  REDIRECT_URL: `${window.location}`,
   TOPICS: 'topics/',
   TRENDING: 'trending/',
   COLLECTIONS: 'collections/',
