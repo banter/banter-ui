@@ -242,6 +242,7 @@ a.audio-icon {
   font-weight: bold;
   font-size: 20px;
   width: initial;
+  padding:0.375rem 0.5rem 0.375rem 0.5rem;
 
   &:focus {
     border: none;
