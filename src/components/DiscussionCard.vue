@@ -47,6 +47,10 @@
                     {{tag.value}}
                   </router-link>
                 </b-badge>
+                Play Count:{{discussion.playedCount}}
+                Liked Count: {{discussion.likedCount}}
+                <!-- Mark Listened: {{discussion.userListenProgress.markListened}}
+                Progress Millis: {{discussion.userListenProgress.progressMillis}} -->
               </div>
             </b-row>
           </b-card-body>

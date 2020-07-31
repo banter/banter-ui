@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="like-button-wrapper">
     <div :aria-disabled="likesRequesting" @click="handleClick" class="navbar-brand d-flex m-auto">
         <div v-if="likesRequesting">
         <LoadingSpinner :variant="'secondary'" />
       </div>
-      <b-icon v-else :icon="type" font-scale="1.2" style="margin:auto"></b-icon>
-        {{isLiked ? 'Unlike' : 'Like'}}
+      <b-icon v-else :icon="isLiked ? 'heart-fill':'heart'"
+      font-scale="1.2" :class="isLiked ? 'red-like-button':'black-like-button'"></b-icon>
+        <!-- {{isLiked ? 'Unlike' : 'Like'}} -->
     </div>
     <like-auth-modal ref="likeAuthModal"></like-auth-modal>
 
@@ -70,6 +71,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.like-button-wrapper{
+  margin:auto;
+}
+
+.red-like-button {
+margin: auto;
+color: red;
+}
+.black-like-button {
+margin: auto;
+color: black;
+}
+
 .navbar-brand{
     flex-direction:column
 }
