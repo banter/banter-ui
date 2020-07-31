@@ -1,5 +1,6 @@
 import API from '../../constants/api';
 import apiRequest from '../helpers/api-request';
+import apiRequestChain from '../helpers/api-request-chain';
 
 export default {
   state: {
@@ -52,7 +53,9 @@ export default {
         successCommit: 'fetchCurrentUserSuccess',
         errorCommit: 'currentUserError',
       };
-      return apiRequest({ requestData, mutations, commit });
+      return apiRequestChain({
+        requestData, mutations, commit,
+      });
     },
     fetchTopicsFollowed({
       commit,

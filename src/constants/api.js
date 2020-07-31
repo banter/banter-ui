@@ -25,6 +25,7 @@ const API = {
   LIKE: 'like',
   UNLIKE: 'unlike',
   LOGIN: 'login',
+  LOGIN_ANON: 'loginAnonymous',
   REGISTER: 'register',
   LOGOUT: `logout?redirect_uri=${window.location.origin}/home`,
 };
