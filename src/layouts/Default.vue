@@ -18,8 +18,6 @@ export default {
     this.$store.dispatch('fetchTrendingTopics');
     this.$store.dispatch('fetchCollections');
     this.$store.dispatch('fetchCurrentUser');
-    this.$store.dispatch('fetchTopicsFollowed');
-    this.$store.dispatch('fetchDiscussionsLiked');
   },
   components: {
     BanterNavBar,

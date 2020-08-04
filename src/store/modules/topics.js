@@ -167,9 +167,6 @@ export default {
       state.errored = true;
       state.error = error.message;
     },
-    clearFollowingTopics(state) {
-      state.followingTopics = {};
-    },
   },
   getters: {
     getTrendingTopicTags(state) {

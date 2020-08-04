@@ -1,6 +1,5 @@
 import API from '../../constants/api';
 import apiRequest from '../helpers/api-request';
-import apiRequestChain from '../helpers/api-request-chain';
 
 export default {
   state: {
@@ -27,6 +26,24 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
+    loginAnonUser({
+      commit, state,
+    }) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.USERS}${API.LOGIN_ANON}`,
+        method: 'POST',
+        data: state.anonId ? {} : { id: state.anonId },
+      };
+      const mutations = {
+        preCommit: 'anonLoginRequest',
+        successCommit: 'anonLoginSuccess',
+        errorCommit: 'anonLoginError',
+      };
+
+      return apiRequest({
+        requestData, mutations, commit,
+      });
+    },
     signupUser({
       commit,
     }, { authName, authEmail, authPassword }) {
@@ -43,7 +60,7 @@ export default {
       return apiRequest({ requestData, mutations, commit });
     },
     fetchCurrentUser({
-      commit,
+      commit, dispatch,
     }) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.ME}`,
@@ -53,8 +70,12 @@ export default {
         successCommit: 'fetchCurrentUserSuccess',
         errorCommit: 'currentUserError',
       };
-      return apiRequestChain({
-        requestData, mutations, commit,
+      const actions = {
+        successDispatches: ['fetchTopicsFollowed', 'fetchDiscussionsLiked'],
+        errorDispatches: ['loginAnonUser'],
+      };
+      return apiRequest({
+        requestData, mutations, commit, dispatch, actions,
       });
     },
     fetchTopicsFollowed({
@@ -129,6 +150,7 @@ export default {
       state.isRequesting = false;
       state.errored = true;
       state.error = error;
+      state.anonId = window.localStorage.getItem('banter-temporary-login-id');
     },
     followTopicRequest(state) {
       state.topicsRequesting = true;
@@ -151,6 +173,16 @@ export default {
       state.topicsRequesting = false;
       state.errored = true;
       state.error = error;
+    },
+    anonLoginRequest(state) {
+      state.isRequesting = true;
+    },
+    anonLoginSuccess(state, payload) {
+      window.localStorage.setItem('banter-temporary-login-id', payload.data.id);
+      state.isRequesting = false;
+    },
+    anonLoginError(state) {
+      state.isRequesting = false;
     },
   },
 };
