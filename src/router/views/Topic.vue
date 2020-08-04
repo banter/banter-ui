@@ -4,7 +4,7 @@
       <LoadingSpinner :variant="'secondary'"/>
     </div>
     <div v-if="!isLoading">
-      <div v-if="currentTopic.playlist.length > 0">
+      <div v-if="playlistExists > 0">
       <TopicHeader :currentTopic="currentTopic"/>
       <b-list-group-item style="border: none" v-for="(discussion, index) in currentTopic.playlist"
         :key="`discussion-${index}`">
@@ -58,6 +58,9 @@ export default {
     }),
     currentTopic() {
       return this.chosenTopic;
+    },
+    playlistExists() {
+      return !!this.currentTopic?.playlist?.length;
     },
   },
   methods: {

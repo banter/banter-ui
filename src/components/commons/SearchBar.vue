@@ -62,7 +62,7 @@ export default {
       }
     }, 100),
     selectItem(tag) {
-      this.$router.push(`/topics/${tag.label}`);
+      this.$router.push(`/topics/${tag?.label}`);
     },
   },
   data() {

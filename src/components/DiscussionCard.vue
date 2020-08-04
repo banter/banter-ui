@@ -43,7 +43,9 @@
               <div class="tag-display">
                 <b-icon icon="tag-fill"></b-icon>
                 <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="light">
-                  <router-link :to="`/topics/${tag.value}`">
+                  <router-link
+                    @click.native="$event.stopImmediatePropagation()"
+                    :to="`/topics/${tag.value}`">
                     {{tag.value}}
                   </router-link>
                 </b-badge>
