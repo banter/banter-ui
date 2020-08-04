@@ -4,6 +4,7 @@
       <LoadingSpinner :variant="'secondary'"/>
     </div>
     <div v-if="!isLoading">
+      <div v-if="currentTopic.playlist.length > 0">
       <TopicHeader :currentTopic="currentTopic"/>
       <b-list-group-item style="border: none" v-for="(discussion, index) in currentTopic.playlist"
         :key="`discussion-${index}`">
@@ -13,6 +14,10 @@
             :isActiveDiscussion="isActiveDiscussion(discussion)"/>
         </div>
       </b-list-group-item>
+      </div>
+      <div v-else>
+        <empty-page-handler></empty-page-handler>
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +27,7 @@ import { mapActions, mapState } from 'vuex';
 import LoadingSpinner from '../../components/LoadingSpinner.vue';
 import TopicHeader from '../../components/TopicHeader.vue';
 import DiscussionCard from '../../components/DiscussionCard.vue';
+import EmptyPageHandler from '../../components/commons/EmptyPageHandler.vue';
 
 export default {
   name: 'Topic',
@@ -29,6 +35,7 @@ export default {
     LoadingSpinner,
     TopicHeader,
     DiscussionCard,
+    EmptyPageHandler,
   },
   async mounted() {
     if (this.$route.params.topicName !== this.currentTopic.name) {
