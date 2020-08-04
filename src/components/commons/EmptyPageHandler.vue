@@ -10,8 +10,10 @@
     class="mb-2"
   >
     <b-card-text>
+        <slot>
       Banter Currently has no content for this page.
       We look forward to enhancing our application in the future!
+        </slot>
     </b-card-text>
 <router-link :to="'/home'" class="navbar-brand d-flex m-auto">
 <b-button  type="submit">Go to Homepage</b-button>

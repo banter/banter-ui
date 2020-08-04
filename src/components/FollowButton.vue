@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 import FollowAuthModal from './modals/FollowAuthModal.vue';
 
@@ -41,6 +41,7 @@ export default {
   },
   methods: {
     ...mapActions(['followTopic', 'unfollowTopic']),
+    ...mapMutations(['clearFollowingTopics']),
     async handleClick() {
       if (!this.currentUser.email) {
         this.$bvModal.show(this.$refs.followModal.modalName);
@@ -50,6 +51,7 @@ export default {
         } else {
           await this.followTopic(this.topic);
         }
+        this.$store.commit('clearFollowingTopics');
         this.$store.dispatch('fetchTopicsFollowed');
       }
     },

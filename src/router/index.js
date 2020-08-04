@@ -8,6 +8,7 @@ import {
   PrivacyPolicy,
   Landing,
   Explore,
+  Following,
 } from './views/index';
 
 Vue.use(Router);
@@ -31,6 +32,11 @@ export default new Router({
       path: '/topics/:topicName',
       name: 'Topic',
       component: Topic,
+    },
+    {
+      path: '/following',
+      name: 'Following',
+      component: Following,
     },
     {
       path: '/explore',
