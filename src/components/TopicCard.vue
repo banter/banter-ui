@@ -101,7 +101,6 @@ export default {
     position: absolute;
     background-color: black;
     color: white;
-    // width: 50%;
     width: fit-content;
     height: 50px;
     left: 0;
@@ -112,12 +111,10 @@ export default {
   }
 
   .topic-label {
-    // position: absolute;
     font-style: normal;
     font-weight: 250;
     font-size: 16px;
     text-align: center;
-    // line-height: 18px;
     height: auto;
     padding: 5px 10px;
   }
@@ -148,9 +145,9 @@ export default {
     font-weight: 300;
     font-size: 26px;
     text-align: center;
-    // line-height: 22px;
-    height: 100%;
     padding: 20px 0px;
+    margin: 0 auto;
+    line-height: 1;
   }
 }
 
