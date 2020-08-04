@@ -9,7 +9,7 @@ export default async function apiRequest({
     url, queries = {}, method = 'GET', data = {},
   } = requestData;
   const { preCommit, successCommit, errorCommit } = mutations;
-  const { successDispatches, errorDispatches } = actions;
+  const { successDispatch, errorDispatch } = actions;
 
   const queryParams = Object.keys(queries).map((key) => `${key}=${encodeURIComponent(queries[key])}`).join('&');
 
@@ -22,10 +22,8 @@ export default async function apiRequest({
       data,
     }).then((response) => {
       if (response.status >= 200 && response.status < 300) {
-        if (successCommit) commit(successCommit, response?.data);
-        if (dispatch && successDispatches?.length > 0) {
-          successDispatches.forEach((action) => dispatch(action));
-        }
+        if (commit && successCommit) commit(successCommit, response?.data);
+        if (dispatch && successDispatch) dispatch(successDispatch);
 
         resolve(response.data.original);
       } else {
@@ -33,10 +31,9 @@ export default async function apiRequest({
       }
     }).catch((error) => {
       const errorMessage = error?.response?.data?.message || 'We were unable to authenticate you, please contact support.';
-      if (errorCommit) commit(errorCommit, error?.response?.status === 401 ? '' : errorMessage);
-      if (dispatch && errorDispatches?.length > 0) {
-        errorDispatches.forEach((action) => dispatch(action));
-      }
+
+      if (commit && errorCommit) commit(errorCommit, error?.response?.status === 401 ? '' : errorMessage);
+      if (dispatch && errorDispatch) dispatch(errorDispatch);
 
       reject(errorMessage);
     });

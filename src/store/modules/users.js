@@ -12,7 +12,7 @@ export default {
   },
   actions: {
     loginUser({
-      commit,
+      commit, dispatch,
     }, { authEmail, authPassword }) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.LOGIN}`,
@@ -24,7 +24,13 @@ export default {
         successCommit: 'fetchCurrentUserSuccess',
         errorCommit: 'authUserError',
       };
-      return apiRequest({ requestData, mutations, commit });
+      const actions = {
+        successDispatch: 'fetchUserPastActions',
+        errorDispatch: 'loginAnonUser',
+      };
+      return apiRequest({
+        requestData, mutations, commit, actions, dispatch,
+      });
     },
     loginAnonUser({
       commit, state,
@@ -71,12 +77,18 @@ export default {
         errorCommit: 'currentUserError',
       };
       const actions = {
-        successDispatches: ['fetchTopicsFollowed', 'fetchDiscussionsLiked'],
-        errorDispatches: ['loginAnonUser'],
+        successDispatch: 'fetchUserPastActions',
+        errorDispatch: 'loginAnonUser',
       };
       return apiRequest({
         requestData, mutations, commit, dispatch, actions,
       });
+    },
+    fetchUserPastActions({ dispatch, state }) {
+      if (state?.currentUser && !state?.currentUser?.anonymous) {
+        dispatch('fetchTopicsFollowed');
+        dispatch('fetchDiscussionsLiked');
+      }
     },
     fetchTopicsFollowed({
       commit,
@@ -89,35 +101,6 @@ export default {
         successCommit: 'fetchFollowTopicSuccess',
         errorCommit: 'fetchFollowTopicError',
       };
-      return apiRequest({ requestData, mutations, commit });
-    },
-    followTopic({
-      commit,
-    }, { id }) {
-      const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${id}/${API.FOLLOW}`,
-        method: 'POST',
-      };
-      const mutations = {
-        preCommit: 'followTopicRequest',
-        successCommit: 'followTopicSuccess',
-        errorCommit: 'followTopicError',
-      };
-      return apiRequest({ requestData, mutations, commit });
-    },
-    unfollowTopic({
-      commit,
-    }, { id }) {
-      const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${id}/${API.UNFOLLOW}`,
-        method: 'POST',
-      };
-      const mutations = {
-        preCommit: 'unfollowTopicRequest',
-        successCommit: 'unfollowTopicSuccess',
-        errorCommit: 'unfollowTopicError',
-      };
-
       return apiRequest({ requestData, mutations, commit });
     },
   },
