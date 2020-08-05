@@ -51,6 +51,7 @@ export default {
   methods: {
     ...mapActions(['likeDiscussion', 'unlikeDiscussion']),
     async handleClick() {
+      if (this.likesRequesting) return;
       if (!this.currentUser.email) {
         this.$bvModal.show(MODALS.LIKE_AUTH_MODAL);
       } else {
