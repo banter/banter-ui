@@ -6,6 +6,7 @@ export default {
     currentUser: {},
     followedTopics: [],
     topicsRequesting: false,
+    followRequesting: false,
     isRequesting: false,
     errored: false,
     error: null,
@@ -103,6 +104,35 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
+    async followTopic({
+      commit,
+    }, topic) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.FOLLOW}`,
+        method: 'POST',
+      };
+      const mutations = {
+        preCommit: 'followTopicRequest',
+        errorCommit: 'followTopicError',
+      };
+      await apiRequest({ requestData, mutations, commit });
+      commit('followTopicSuccess', topic);
+    },
+    async unfollowTopic({
+      commit,
+    }, topic) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.UNFOLLOW}`,
+        method: 'POST',
+      };
+      const mutations = {
+        preCommit: 'unfollowTopicRequest',
+        errorCommit: 'unfollowTopicError',
+      };
+
+      await apiRequest({ requestData, mutations, commit });
+      commit('unfollowTopicSuccess', topic);
+    },
   },
   mutations: {
     fetchCurrentUserRequest(state) {
@@ -136,24 +166,26 @@ export default {
       state.anonId = window.localStorage.getItem('banter-temporary-login-id');
     },
     followTopicRequest(state) {
-      state.topicsRequesting = true;
+      state.followRequesting = true;
     },
-    followTopicSuccess(state) {
-      state.topicsRequesting = false;
+    followTopicSuccess(state, topic) {
+      state.followRequesting = false;
+      state.followedTopics.push(topic);
     },
     followTopicError(state, error) {
-      state.topicsRequesting = false;
+      state.followRequesting = false;
       state.errored = true;
       state.error = error;
     },
     unfollowTopicRequest(state) {
-      state.topicsRequesting = true;
+      state.followRequesting = true;
     },
-    unfollowTopicSuccess(state) {
-      state.topicsRequesting = false;
+    unfollowTopicSuccess(state, outTopic) {
+      state.followedTopics = state.followedTopics.filter((inTopic) => inTopic.id !== outTopic.id);
+      state.followRequesting = false;
     },
     unfollowTopicError(state, error) {
-      state.topicsRequesting = false;
+      state.followRequesting = false;
       state.errored = true;
       state.error = error;
     },
