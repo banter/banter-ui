@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2 class="signin-header">{{returningUser ? loginHeader : signUpHeader}}</h2>
+
     <div class="user-auth-switch">
       <p v-if="returningUser">Don't have an account?
         <a href="#" class="auth-link" @click="() => returningUser = false">Sign Up
@@ -15,7 +16,7 @@
       <a v-for="oauthProvider in OAUTH" class="btn btn-outline-dark social-login" role="button"
         :key="`${oauthProvider.name}-login`" :href="`${API.OAUTH_BASE_URL}/oauth${
             oauthProvider.name === 'twitter' ? '1' : '2'
-          }/authorization/${oauthProvider.name}?redirect_uri=${API.REDIRECT_URL}`">
+          }/authorization/${oauthProvider.name}?redirect_uri=${windowLocation}`">
         <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
         <span class="login-text">{{returningUser ? 'Log in' : 'Sign up'}} with <span
             class="brand-name">{{oauthProvider.name}}</span></span>
@@ -154,6 +155,7 @@ export default {
       authName: '',
       localError: null,
       OAUTH,
+      windowLocation: window.location.href,
       API,
     };
   },
