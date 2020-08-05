@@ -39,6 +39,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
+      anonId: (state) => state.users.anonId,
     }),
     currentTopic() {
       return this.chosenTopic;
@@ -47,7 +48,7 @@ export default {
   async mounted() {
     try {
       await this.$store.dispatch('fetchCurrentUser');
-      this.$router.push('/home');
+      if (this.currentUser && !this.currentUser.anonymous) this.$router.push('/home');
     } catch (e) {
       this.showLogin = true;
     }
