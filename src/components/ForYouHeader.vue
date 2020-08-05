@@ -65,43 +65,8 @@ display: flex;
     max-height: 600px;
 }
 
-.header-card-text {
-  background: black;
-  color: white;
-  width: fit-content;
-  position: absolute;
-  margin: auto;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 15px;
-  display: flex;
-}
-
-@media (max-width: 800px)  {
-  .header-card-text {
-  background: black;
-  opacity: .6;
-  color: white;
-  width: fit-content;
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  padding: 5px
-}
-}
-
 .card-wrapper {
   margin: auto;
   position: relative;
-}
-.header-card {
-  max-width: 1000px;
-  max-height: 500px;
-  border: none;
-}
-
-.header-follow {
-  margin: 0 15px;
 }
 </style>
