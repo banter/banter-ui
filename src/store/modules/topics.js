@@ -16,8 +16,27 @@ export default {
     error: '',
   },
   actions: {
-    fetchTopic({ commit }, topic) {
-      const requestData = { url: `${API.BASE_URL}${API.TOPICS}${topic}` };
+    fetchTopicByName({ commit }, topic) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}`,
+        queries: {
+          name: topic,
+        },
+      };
+      const mutations = {
+        preCommit: 'fetchTopicRequest',
+        successCommit: 'fetchTopicSuccess',
+        errorCommit: 'topicError',
+      };
+      return apiRequest({ requestData, mutations, commit });
+    },
+    fetchTopicById({ commit }, id) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}`,
+        queries: {
+          id,
+        },
+      };
       const mutations = {
         preCommit: 'fetchTopicRequest',
         successCommit: 'fetchTopicSuccess',

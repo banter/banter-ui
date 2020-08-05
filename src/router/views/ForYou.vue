@@ -1,59 +1,56 @@
 <template>
   <div class="main-content">
     <div v-if="isLoading" class="loading-body">
-      <LoadingSpinner :variant="'secondary'"/>
+      <LoadingSpinner :variant="'secondary'" />
     </div>
     <div v-if="!isLoading">
       <div v-if="playlistExists > 0">
-      <TopicHeader :currentTopic="currentTopic"/>
-      <discussion-playlist :collection="currentTopic"></discussion-playlist>
+        <ForYouHeader :useDefaultImage="useDefaultImage" :currentTopic="followingTopics">
+            <h3 class="header-card-text-content">For You</h3>
+        </ForYouHeader>
+      <discussion-playlist :collection="forYou"></discussion-playlist>
       </div>
-      <div v-else>
-        <empty-page-handler></empty-page-handler>
+        <div v-else>
+          <empty-page-handler>
+              Oh No! You aren't following any topics yet. Try navigating from our homepage
+              to follow different pages.
+          </empty-page-handler>
+        </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
 import LoadingSpinner from '../../components/LoadingSpinner.vue';
-import TopicHeader from '../../components/TopicHeader.vue';
+import ForYouHeader from '../../components/ForYouHeader.vue';
 import DiscussionPlaylist from '../../containers/DiscussionPlaylist.vue';
 import EmptyPageHandler from '../../components/commons/EmptyPageHandler.vue';
 
 export default {
-  name: 'Topic',
+  name: 'ForYou',
   components: {
     LoadingSpinner,
-    TopicHeader,
+    ForYouHeader,
     DiscussionPlaylist,
     EmptyPageHandler,
   },
   async mounted() {
-    if (this.$route.params.topicName !== this.currentTopic.name) {
-      if (!this?.$route?.params?.topicId) {
-        await this.fetchTopicById(this.$route.params.topicId);
-      } else {
-        await this.fetchTopicByName(this.$route.params.topicName);
-      }
-    }
+    // TODO Discuss if this should be ran every time we visit the page?
+    await this.fetchForYou();
   },
   computed: {
     ...mapState({
       currentDiscussion: (state) => state.audio.currentDiscussion,
-      isLoading: (state) => state.topics.isRequesting,
-      chosenTopic: (state) => state.topics.currentTopic,
+      isLoading: (state) => state.forYou.isRequestingForYou,
+      forYou: (state) => state.forYou.forYou,
     }),
-    currentTopic() {
-      return this.chosenTopic;
-    },
     playlistExists() {
-      return !!this.currentTopic?.playlist?.length;
+      return !!this.forYou?.playlist?.length;
     },
   },
   methods: {
-    ...mapActions(['fetchTopicByName', 'fetchTopicById']),
+    ...mapActions(['fetchForYou']),
   },
 };
 </script>

@@ -16,6 +16,7 @@ const API = {
   USERS: 'users/',
   ME: 'me/',
   FOLLOWING: 'following/',
+  FORYOU: 'for-you',
   LIKES: 'likes/',
   LISTENS: 'listens/',
   UPDATE: 'update',
