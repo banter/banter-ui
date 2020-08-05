@@ -49,10 +49,14 @@
                     {{tag.value}}
                   </router-link>
                 </b-badge>
-                Play Count:{{discussion.playedCount}}
-                Liked Count: {{discussion.likedCount}}
-                <!-- Mark Listened: {{discussion.userListenProgress.markListened}}
-                Progress Millis: {{discussion.userListenProgress.progressMillis}} -->
+              </div>
+            </b-row>
+            <b-row align-v="start" align-h="start">
+              <div class="engagement-stats">
+                <like-button
+                  @click.native="$event.stopImmediatePropagation()"
+                  :discussion='discussion' />
+                <span class="like-count">{{discussion.likedCount}}</span>
               </div>
             </b-row>
           </b-card-body>
@@ -65,11 +69,13 @@
 <script>
 import { mapState } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
+import LikeButton from './commons/LikeButton.vue';
 
 export default {
   name: 'DiscussionCard',
   components: {
     LoadingSpinner,
+    LikeButton,
   },
   props: {
     isActiveDiscussion: {
@@ -240,6 +246,20 @@ color: #030303;
 
 .tag-display span {
   margin: 2px;
+}
+
+.engagement-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.like-count {
+  padding-left: 5px;
 }
 
 </style>

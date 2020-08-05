@@ -14,12 +14,12 @@
 </template>
 
 <script>
-
+import MODALS from '../../constants/modals';
 import BaseAuthModal from './BaseAuthModal.vue';
 
 export default {
   name: 'FollowAuthModal',
-  data() { return { modalName: 'follow-auth-modal' }; },
+  data() { return { modalName: MODALS.FOLLOW_AUTH_MODAL }; },
   components: {
     BaseAuthModal,
   },

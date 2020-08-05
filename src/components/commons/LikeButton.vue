@@ -6,22 +6,18 @@
       </div>
       <b-icon v-else :icon="isLiked ? 'heart-fill':'heart'"
       font-scale="1.2" :class="isLiked ? 'red-like-button':'black-like-button'"></b-icon>
-        <!-- {{isLiked ? 'Unlike' : 'Like'}} -->
     </div>
-    <like-auth-modal ref="likeAuthModal"></like-auth-modal>
-
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import LikeAuthModal from '../modals/LikeAuthModal.vue';
 import LoadingSpinner from '../LoadingSpinner.vue';
+import MODALS from '../../constants/modals';
 
 export default {
   name: 'LikeButton',
   components: {
-    LikeAuthModal,
     LoadingSpinner,
   },
   props: {
@@ -51,7 +47,7 @@ export default {
     ...mapActions(['likeDiscussion', 'unlikeDiscussion']),
     async handleClick() {
       if (!this.currentUser.email) {
-        this.$bvModal.show(this.$refs.likeAuthModal.modalName);
+        this.$bvModal.show(MODALS.LIKE_AUTH_MODAL);
       } else {
         if (this.isLiked) {
           await this.unlikeDiscussion(this.discussion);
@@ -73,19 +69,19 @@ export default {
 <style scoped lang="scss">
 
 .like-button-wrapper{
-  margin:auto;
+  margin: auto 0;
 }
 
 .red-like-button {
-margin: auto;
-color: red;
+  margin: auto;
+  color: red;
 }
 .black-like-button {
-margin: auto;
-color: black;
+  margin: auto;
+  color: black;
 }
 
 .navbar-brand{
-    flex-direction:column
+  flex-direction:column
 }
 </style>

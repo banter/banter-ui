@@ -3,6 +3,7 @@
     <BanterNavBar/>
     <BanterBottomNavBar></BanterBottomNavBar>
     <slot/>
+    <AllModals/>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import { mapActions } from 'vuex';
 import BanterNavBar from '../components/BanterNavBar.vue';
 import BanterBottomNavBar from '../components/BanterBottomNavBar.vue';
+import AllModals from '../components/modals/AllModals.vue';
 
 export default {
   name: 'Banter',
@@ -22,6 +24,7 @@ export default {
   components: {
     BanterNavBar,
     BanterBottomNavBar,
+    AllModals,
   },
   mounted() {
     if (this.loginError) {
