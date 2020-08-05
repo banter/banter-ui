@@ -54,9 +54,9 @@
             <b-row align-v="start" align-h="start">
               <div class="engagement-stats">
                 <like-button
-                  @click.native="$event.stopImmediatePropagation()"
+                  showLikes
+                  @click.native="$event.stopImmediatePropagation();"
                   :discussion='discussion' />
-                <span class="like-count">{{discussion.likedCount}}</span>
               </div>
             </b-row>
           </b-card-body>
@@ -94,7 +94,9 @@ export default {
       default: () => ({}),
     },
   },
+  mounted() {
 
+  },
   computed: {
     ...mapState({
       isLoading: (state) => state.audio.isRequesting,
@@ -113,7 +115,6 @@ export default {
       );
     },
   },
-
   methods: {
     discussionAge(discussion) {
       if (discussion?.episodePublishDate) {
@@ -139,13 +140,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .discussion-icon {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    opacity: .80;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  opacity: .80;
 }
 
 .discussion-card-wrapper {
@@ -155,36 +155,35 @@ export default {
   padding: 5px;
 }
 
-.discussion-card{
-    max-width: 785px;
-    min-width: 240px;
-    margin: auto;
-    background: #FFFFFF;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
+.discussion-card {
+  max-width: 785px;
+  min-width: 240px;
+  margin: auto;
+  background: #FFFFFF;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
 
 }
 
-.podcast-name-text{
-      size: 100px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 22px;
-    /* identical to box height, or 145% */
-    letter-spacing: 0.2px;
-    color: #606060;
+.podcast-name-text {
+  size: 100px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 0.2px;
+  color: #606060;
 }
+
 .podcast-description-text {
   font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 18px;
-line-height: 26px;
-margin-bottom: 12px!important;
-/* or 142% */
-letter-spacing: 0.2px;
-color: #030303;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 26px;
+  margin-bottom: 12px !important;
+  letter-spacing: 0.2px;
+  color: #030303;
 }
 
 .card-img.discussion-card-image {
@@ -193,55 +192,53 @@ color: #030303;
   padding: 15px;
 
   .podcast-image {
-        position: absolute;
+    position: absolute;
     object-fit: cover;
     max-width: 100%;
     width: 100%;
     height: 100%;
     top: 50%;
     left: 50%;
-    transform: translate( -50%, -50%);
+    transform: translate(-50%, -50%);
     border-radius: 25px;
   }
 }
 
-  .discussion-timestamp {
-      position: absolute;
-    top: 85%;
-    transform: translate(-85%, -85%);
-    left: 85%;
-    opacity: .80;
-    opacity: .95;
-    border-radius: 5px;
-    // background-color: black;
-    color: white;
-    padding: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.discussion-timestamp {
+  position: absolute;
+  top: 85%;
+  transform: translate(-85%, -85%);
+  left: 85%;
+  opacity: .80;
+  opacity: .95;
+  border-radius: 5px;
+  color: white;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .discussion-timestamp-text {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    text-align: center;
-    height: 100%;
-  }
+.discussion-timestamp-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  height: 100%;
+}
 
 .tag-display a {
   font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 17px;
-line-height: 15px;
-/* or 91% */
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 15px;
 
-display: flex;
-align-items: center;
-text-align: center;
-letter-spacing: 0.2px;
-color: #030303;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #030303;
 }
 
 .tag-display span {
@@ -257,9 +254,4 @@ color: #030303;
   right: 0;
   bottom: 0;
 }
-
-.like-count {
-  padding-left: 5px;
-}
-
 </style>

@@ -2,7 +2,6 @@
 <div>
   <b-button :disabled="followRequesting"
   @click="handleClick" variant="outline-primary">
-      <!--  -->
       <span v-if="followRequesting"
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
       <span v-else

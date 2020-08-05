@@ -1,36 +1,40 @@
 <template>
   <div class="like-button-wrapper">
     <div :aria-disabled="likesRequesting" @click="handleClick" class="navbar-brand d-flex m-auto">
-        <div v-if="likesRequesting">
-        <LoadingSpinner :variant="'secondary'" />
-      </div>
-      <b-icon v-else :icon="isLiked ? 'heart-fill':'heart'"
-      font-scale="1.2" :class="isLiked ? 'red-like-button':'black-like-button'"></b-icon>
+      <b-icon :icon="isLiked ? 'heart-fill':'heart'"
+      font-scale="1.2" :class="isLiked ? 'red-like-button':'black-like-button'"/>
+      <span v-if="showLikes" class="like-count">{{discussion.likedCount}}</span>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import LoadingSpinner from '../LoadingSpinner.vue';
 import MODALS from '../../constants/modals';
 
 export default {
   name: 'LikeButton',
-  components: {
-    LoadingSpinner,
-  },
   props: {
     type: {
       type: String,
       required: false,
       default: 'hand-thumbs-up',
     },
+    showLikes: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     discussion: {
       type: Object,
       required: true,
       default: () => ({}),
     },
+  },
+  data() {
+    return {
+      isTogglingLike: false,
+    };
   },
   computed: {
     ...mapState({
@@ -39,8 +43,9 @@ export default {
       likesRequesting: (state) => state.actions.likesRequesting,
     }),
     isLiked() {
-      // eslint-disable-next-line max-len
-      return !!this.discussionsLiked?.find((like) => like.discussionId === this.discussion.discussionId);
+      const isPreviouslyLiked = !!this.discussionsLiked
+        ?.find((like) => like.discussionId === this.discussion.discussionId);
+      return this.isTogglingLike ? !isPreviouslyLiked : isPreviouslyLiked;
     },
   },
   methods: {
@@ -50,11 +55,13 @@ export default {
         this.$bvModal.show(MODALS.LIKE_AUTH_MODAL);
       } else {
         if (this.isLiked) {
+          this.isTogglingLike = true;
           await this.unlikeDiscussion(this.discussion);
         } else {
+          this.isTogglingLike = true;
           await this.likeDiscussion(this.discussion);
         }
-        this.$store.dispatch('fetchDiscussionsLiked');
+        this.isTogglingLike = false;
       }
     },
 
@@ -68,7 +75,7 @@ export default {
 
 <style scoped lang="scss">
 
-.like-button-wrapper{
+.like-button-wrapper {
   margin: auto 0;
 }
 
@@ -76,12 +83,13 @@ export default {
   margin: auto;
   color: red;
 }
+
 .black-like-button {
   margin: auto;
   color: black;
 }
 
-.navbar-brand{
-  flex-direction:column
+.like-count {
+  padding-left: 5px;
 }
 </style>
