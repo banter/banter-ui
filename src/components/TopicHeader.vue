@@ -1,12 +1,14 @@
 <template>
   <div class="header-card card-wrapper">
     <b-card no-body>
-    <b-img v-if="loadError" class="header-card card-img"
+    <b-img v-if="loadError || useDefaultImage" class="header-card card-img"
     :src="require('../assets/Banter_logo_dark.png')"/>
     <b-img v-else class="header-card card-img" :src="currentImageUrl" @error="imageLoadError" />
       <b-card-text class="header-card-text">
-         <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
+        <slot>
          <FollowButton :topic="currentTopic.primaryTag" class="header-follow"/>
+         <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
+        </slot>
       </b-card-text>
 
     </b-card>
@@ -31,6 +33,11 @@ export default {
       type: Object,
       required: true,
       default: () => ({}),
+    },
+    useDefaultImage: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   computed: {
@@ -64,14 +71,12 @@ export default {
   color: white;
   width: fit-content;
   position: absolute;
-  bottom: 30px;
-  left: 60px;
+  margin: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 15px;
   display: flex;
-}
-
-.header-card-text-content {
-  opacity: .6;
 }
 
 @media (max-width: 800px)  {
@@ -94,8 +99,7 @@ export default {
 }
 .header-card {
   max-width: 1000px;
-  // width: 100%;
-  // min-width: 320px;
+  max-height: 500px;
   border: none;
 }
 

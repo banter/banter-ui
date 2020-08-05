@@ -12,8 +12,8 @@
           <b-icon v-else @click="audioAction" font-scale="3" class="audio-icon" :icon="audioIcon"/>
         </b-navbar-nav>
         <b-navbar-nav>
-          <a title="Fast Forward 15 seconds" @click="() => goForward15Seconds()" font-scale="3"
-            class="audio-icon"><b>
+          <a title="Fast Forward 15 seconds"
+          @click="() => goForward15Seconds()" font-scale="3" class="audio-icon"><b>
               <b-icon font-scale="1" :icon="'arrow-clockwise'" />15</b></a>
         </b-navbar-nav>
         <b-navbar-nav>
@@ -27,6 +27,9 @@
             @change="adjustRate"
             :value="audioRate"
             :options="rateOptions"/>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <like-button :discussion='discussion'></like-button>
         </b-navbar-nav>
       </b-navbar-brand>
       <b-navbar-toggle target="audio-collapse"></b-navbar-toggle>
@@ -58,11 +61,19 @@
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
+import LikeButton from './commons/LikeButton.vue';
 
 export default {
   name: 'AudioPlayer',
   components: {
     LoadingSpinner,
+    LikeButton,
+  },
+  beforeMount() {
+    window.addEventListener('beforeunload', this.leaveBanterHandler);
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('beforeunload', this.leaveBanterHandler);
+    });
   },
   mounted() {
     this.trackInterval = setInterval(() => {
@@ -91,6 +102,8 @@ export default {
       chosenTopic: (state) => state.topics.currentTopic,
     }),
     audioAction() {
+      // TODO Integrate with Audio Action, chain actions
+      // in pauseAudio/resumeAudio?
       return this.isPlaying ? this.pauseAudio : this.resumeAudio;
     },
     episodeDate() {
@@ -117,8 +130,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio']),
-    ...mapMutations(['adjustRate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'goToEndOfDiscussion', 'getRemainingTime', 'goTostartOfDiscussion']),
+    ...mapActions(['resumeAudio', 'pauseAudio', 'audioListenUpdate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion']),
+    ...mapMutations(['adjustRate', 'getRemainingTime']),
+
+    leaveBanterHandler() {
+      // API Request on Page Leave
+      this.audioListenUpdate({});
+    },
   },
 };
 </script>
@@ -224,6 +242,7 @@ a.audio-icon {
   font-weight: bold;
   font-size: 20px;
   width: initial;
+  padding:0.375rem 0.5rem 0.375rem 0.5rem;
 
   &:focus {
     border: none;

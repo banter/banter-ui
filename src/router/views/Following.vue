@@ -1,25 +1,27 @@
 <template>
   <div class="main-content">
     <div v-if="isLoading" class="loading-body">
-      <LoadingSpinner :variant="'secondary'"/>
+      <LoadingSpinner :variant="'secondary'" />
     </div>
     <div v-if="!isLoading">
-      <div v-if="playlistExists > 0">
-      <TopicHeader :currentTopic="currentTopic"/>
-      <b-list-group-item style="border: none" v-for="(discussion, index) in currentTopic.playlist"
-        :key="`discussion-${index}`">
-        <div>
-          <DiscussionCard v-on:click.native="audioAction(discussion)" :discussion="discussion"
-            :audioConfig="audioConfig"
-            :isActiveDiscussion="isActiveDiscussion(discussion)"/>
-        </div>
-      </b-list-group-item>
+      <div v-if="followingTopics.playlist && followingTopics.playlist.length > 0">
+        <TopicHeader :useDefaultImage="useDefaultImage" :currentTopic="followingTopics">
+            <h3 class="header-card-text-content">Following Page</h3>
+        </TopicHeader>
+        <b-list-group-item style="border: none" v-for="(discussion, index)
+      in followingTopics.playlist" :key="`discussion-${index}`">
+            <DiscussionCard v-on:click.native="audioAction(discussion)" :discussion="discussion"
+              :audioConfig="audioConfig" :isActiveDiscussion="isActiveDiscussion(discussion)" />
+        </b-list-group-item>
       </div>
-      <div v-else>
-        <empty-page-handler></empty-page-handler>
+        <div v-else>
+          <empty-page-handler>
+              Oh No! You aren't following any topics yet. Try navigating from our homepage
+              to follow different pages.
+          </empty-page-handler>
+        </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -30,7 +32,7 @@ import DiscussionCard from '../../components/DiscussionCard.vue';
 import EmptyPageHandler from '../../components/commons/EmptyPageHandler.vue';
 
 export default {
-  name: 'Topic',
+  name: 'Following',
   components: {
     LoadingSpinner,
     TopicHeader,
@@ -38,8 +40,9 @@ export default {
     EmptyPageHandler,
   },
   async mounted() {
-    if (this.$route.params.topicName !== this.currentTopic.name) {
-      await this.fetchTopic(this.$route.params.topicName);
+    // Checking if followingTopics has already been fetched
+    if (!this.followingTopics.playlist) {
+      await this.fetchFollowingTopics();
     }
   },
   data() {
@@ -47,24 +50,19 @@ export default {
       displayIds: false,
       displayJson: false,
       showIds: true,
+      useDefaultImage: true,
     };
   },
   computed: {
     ...mapState({
       currentDiscussion: (state) => state.audio.currentDiscussion,
-      isLoading: (state) => state.topics.isRequesting,
-      chosenTopic: (state) => state.topics.currentTopic,
+      isLoading: (state) => state.topics.isRequestingFollowing,
+      followingTopics: (state) => state.topics.followingTopics,
       audioConfig: (state) => state.audio.audioConfig,
     }),
-    currentTopic() {
-      return this.chosenTopic;
-    },
-    playlistExists() {
-      return !!this.currentTopic?.playlist?.length;
-    },
   },
   methods: {
-    ...mapActions(['fetchTopic', 'pauseAudio', 'resumeAudio', 'createAudio', 'playAudio']),
+    ...mapActions(['fetchFollowingTopics', 'pauseAudio', 'resumeAudio', 'createAudio', 'playAudio']),
     audioAction(discussion) {
       if (this.currentDiscussion?.discussionId === discussion?.discussionId) {
         if (this.audioConfig.playing()) {
@@ -84,9 +82,6 @@ export default {
 };
 </script>
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
 ul {
   list-style-type: none;
   padding: 0;

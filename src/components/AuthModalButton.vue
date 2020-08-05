@@ -1,6 +1,10 @@
 <template>
   <div>
-    <b-button v-if="!currentUser.email" v-b-modal.auth-modal size="sm" id="nav-signup"
+    <b-button
+      v-if="!currentUser.email && !isRequesting"
+      v-b-modal.auth-modal
+      size="sm"
+      id="nav-signup"
       type="submit">
       <p id="nav-signup-text">Log In</p>
     </b-button>
@@ -26,6 +30,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
+      isRequesting: (state) => state.users.isRequesting,
     }),
   },
   components: {

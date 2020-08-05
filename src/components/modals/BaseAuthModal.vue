@@ -52,10 +52,10 @@
           </p>
         </b-button>
       </div>
-      <div v-if="error" class="error-display">
+      <div v-if="error && loginAttempted" class="error-display">
         <p>{{error}}</p>
       </div>
-      <div v-if="localError" class="error-display">
+      <div v-if="localError && loginAttempted" class="error-display">
         <p>{{localError}}</p>
       </div>
     </b-form>
@@ -121,6 +121,7 @@ export default {
       }
 
       this.localError = null;
+      this.loginAttempted = true;
       try {
         if (this.returningUser) {
           await this.loginUser({ authEmail, authPassword });
@@ -138,6 +139,7 @@ export default {
       }
     },
     closeModal(modal) {
+      if (this.isRequesting) return;
       Object.assign(this, { authEmail: null, authPassword: null, authName: null });
       this.$root.$emit('bv::hide::modal', modal);
     },
@@ -145,6 +147,7 @@ export default {
   data() {
     return {
       returningUser: true,
+      loginAttempted: false,
       showEmailLogin: false,
       authEmail: '',
       authPassword: '',
