@@ -32,7 +32,7 @@ export default {
   },
   async mounted() {
     if (this.$route.params.topicName !== this.currentTopic.name) {
-      if (!this?.$route?.params?.topicId) {
+      if (this?.$route?.params?.topicId) {
         await this.fetchTopicById(this.$route.params.topicId);
       } else {
         await this.fetchTopicByName(this.$route.params.topicName);
