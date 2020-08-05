@@ -37,7 +37,6 @@ export default {
     ...mapActions(['followTopic', 'unfollowTopic']),
     async handleClick() {
       if (!this.currentUser.email) {
-        console.log(MODALS);
         this.$bvModal.show(MODALS.FOLLOW_AUTH_MODAL);
       } else if (this.isFollowing) {
         await this.unfollowTopic(this.topic);
