@@ -3,7 +3,7 @@
     <like-auth-modal :ref="MODALS.LIKE_AUTH_MODAL"/>
     <follow-auth-modal :ref="MODALS.FOLLOW_AUTH_MODAL"/>
     <auth-modal :ref="MODALS.AUTH_MODAL"/>
-    <my-feed-auth-modal :ref="MODALS.MY_FEED_AUTH_MODAL"/>
+    <for-you-auth-modal :ref="MODALS.FOR_YOU_AUTH_MODAL"/>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ import MODALS from '../../constants/modals';
 import LikeAuthModal from './LikeAuthModal.vue';
 import FollowAuthModal from './FollowAuthModal.vue';
 import AuthModal from './AuthModal.vue';
-import MyFeedAuthModal from './MyFeedAuthModal.vue';
+import ForYouAuthModal from './ForYouAuthModal.vue';
 
 export default {
   name: 'AllModals',
@@ -26,7 +26,7 @@ export default {
     FollowAuthModal,
     LikeAuthModal,
     AuthModal,
-    MyFeedAuthModal,
+    ForYouAuthModal,
   },
 };
 </script>

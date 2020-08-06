@@ -1,10 +1,10 @@
 <template>
   <div :class="`card-wrapper ${type}-wrapper`">
-    <router-link :to="`/topics/${topic.value}`">
+    <router-link :to="`/topics/${topic.value}/${topic.id}`">
       <div :class="`image-card ${type}`">
         <b-img v-if="imageLoadingError"
           class="fallback-image topic-image"
-          :src="require('../assets/Banter_logo_sound.png')"/>
+          :src="require('../assets/Favicon.png')"/>
         <b-img v-else class="topic-image" :src="topic.imageUrl" @error="imageLoadError" />
         <div class = "topic-content-wrapper">
         <div class="topic-descriptor">

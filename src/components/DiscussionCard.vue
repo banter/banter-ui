@@ -45,13 +45,13 @@
                 <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="light">
                   <router-link
                     @click.native="$event.stopImmediatePropagation()"
-                    :to="`/topics/${tag.value}`">
+                    :to="`/topics/${tag.value}/${tag.id}`">
                     {{tag.value}}
                   </router-link>
                 </b-badge>
               </div>
             </b-row>
-            <b-row align-v="start" align-h="start">
+            <b-row >
               <div class="engagement-stats">
                 <like-button
                   showLikes
@@ -249,7 +249,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  // position: absolute;
   left: 0;
   right: 0;
   bottom: 0;

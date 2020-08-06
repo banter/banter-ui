@@ -7,6 +7,7 @@
           </b-img>
         </router-link>
       </b-navbar-brand>
+      <ForYouButton v-bind:isMobile="false"></ForYouButton>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <ul class="navbar-nav mr-auto">
@@ -37,12 +38,14 @@
 import { mapState } from 'vuex';
 import AuthModalButton from './AuthModalButton.vue';
 import SearchBar from './commons/SearchBar.vue';
+import ForYouButton from './commons/ForYouButton.vue';
 
 export default {
   name: 'BanterNavBar',
   components: {
     AuthModalButton,
     SearchBar,
+    ForYouButton,
   },
   computed: {
     ...mapState({
