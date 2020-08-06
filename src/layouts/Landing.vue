@@ -1,12 +1,18 @@
 <template>
   <div id="welcome-to-banter-app">
     <slot/>
+    <AllModals/>
   </div>
 </template>
 
 <script>
+import AllModals from '../components/modals/AllModals.vue';
+
 export default {
   name: 'welcome-to-banter',
+  components: {
+    AllModals,
+  },
 };
 </script>
 

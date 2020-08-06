@@ -14,12 +14,12 @@
 </template>
 
 <script>
-
+import MODALS from '../../constants/modals';
 import BaseAuthModal from './BaseAuthModal.vue';
 
 export default {
   name: 'LikeAuthModal',
-  data() { return { modalName: 'like-auth-modal' }; },
+  data() { return { modalName: MODALS.LIKE_AUTH_MODAL }; },
   components: {
     BaseAuthModal,
   },

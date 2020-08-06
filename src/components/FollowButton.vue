@@ -2,19 +2,17 @@
 <div>
   <b-button :disabled="followRequesting"
   @click="handleClick" variant="outline-primary">
-      <!--  -->
       <span v-if="followRequesting"
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
       <span v-else
         id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
   </b-button>
-  <follow-auth-modal ref="followModal"></follow-auth-modal>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import FollowAuthModal from './modals/FollowAuthModal.vue';
+import MODALS from '../constants/modals';
 
 export default {
   name: 'FollowButton',
@@ -24,9 +22,6 @@ export default {
       required: true,
       default: () => ({}),
     },
-  },
-  components: {
-    FollowAuthModal,
   },
   computed: {
     ...mapState({
@@ -42,7 +37,7 @@ export default {
     ...mapActions(['followTopic', 'unfollowTopic']),
     async handleClick() {
       if (!this.currentUser.email) {
-        this.$bvModal.show(this.$refs.followModal.modalName);
+        this.$bvModal.show(MODALS.FOLLOW_AUTH_MODAL);
       } else if (this.isFollowing) {
         await this.unfollowTopic(this.topic);
       } else {

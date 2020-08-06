@@ -8,18 +8,16 @@
       <b-icon icon="collection" font-scale="1.2" style="margin:auto"> </b-icon>
       My Feed
     </div>
-    <my-feed-auth-modal ref="myFeedAuthModal"></my-feed-auth-modal>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import MyFeedAuthModal from '../modals/MyFeedAuthModal.vue';
+import MODALS from '../../constants/modals';
 
 export default {
   name: 'MyFeedButton',
   components: {
-    MyFeedAuthModal,
   },
   computed: {
     ...mapState({
@@ -28,7 +26,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$bvModal.show(this.$refs.myFeedAuthModal.modalName);
+      this.$bvModal.show(MODALS.MY_FEED_AUTH_MODAL);
     },
   },
 };
