@@ -4,6 +4,7 @@
     <follow-auth-modal :ref="MODALS.FOLLOW_AUTH_MODAL"/>
     <auth-modal :ref="MODALS.AUTH_MODAL"/>
     <for-you-auth-modal :ref="MODALS.FOR_YOU_AUTH_MODAL"/>
+    <passive-auth-modal :ref="MODALS.PASSIVE_AUTH_MODAL"/>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import LikeAuthModal from './LikeAuthModal.vue';
 import FollowAuthModal from './FollowAuthModal.vue';
 import AuthModal from './AuthModal.vue';
 import ForYouAuthModal from './ForYouAuthModal.vue';
+import PassiveAuthModal from './PassiveAuthModal.vue';
 
 export default {
   name: 'AllModals',
@@ -27,6 +29,7 @@ export default {
     LikeAuthModal,
     AuthModal,
     ForYouAuthModal,
+    PassiveAuthModal,
   },
 };
 </script>
