@@ -1,6 +1,7 @@
 <template>
-  <div class="audio-player">
-    <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center">
+  <div  class="audio-player">
+    <nav class="navbar navbar-light navbar-expand-md bg-light
+    justify-content-center audio-player-content">
       <b-navbar-brand class="navbar-brand d-flex mr-auto" style="width:33%">
         <b-navbar-nav>
           <a title="Rewind 15 seconds" @click="() => goBack15Seconds()" font-scale="3"
@@ -142,6 +143,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.audio-player-content {
+padding-top: 0;
+padding-bottom: 0;
+}
 .fixed-bottom {
   position: fixed;
   right: 0;

@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-nav-bar">
-    <nav class="navbar navbar-light navbar-expand-md justify-content-center">
+    <nav class="navbar navbar-light navbar-expand-md justify-content-center mobile-nav-bar-content">
       <b-navbar-brand class="navbar-brand d-flex m-auto">
         <router-link :to="'/home'" class="navbar-brand d-flex m-auto">
           <b-icon icon="house" font-scale="1.2" style="margin:auto">
@@ -44,25 +44,13 @@ export default {
     flex-direction:column
 }
 
-.fixed-bottom {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1030;
-}
-
 .mobile-nav-bar {
   margin: auto;
   background: lightgray;
 }
 
-.mobile-nav-bar-container {
+.mobile-nav-bar-content {
   padding: 0;
-  display: flex;
-}
-
-.mobile-nav-bar-container div {
-  margin: auto;
+  line-height: 1;
 }
 </style>
