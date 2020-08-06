@@ -219,6 +219,24 @@ export default {
   align-items: center;
 }
 
+@media (max-width: 800px){
+
+.discussion-timestamp {
+  position: absolute;
+  top: 75%;
+  transform: translate(-75%, -75%);
+  left: 75%;
+  opacity: .80;
+  opacity: .95;
+  border-radius: 5px;
+  color: white;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+}
+
 .discussion-timestamp-text {
   font-style: normal;
   font-weight: 500;

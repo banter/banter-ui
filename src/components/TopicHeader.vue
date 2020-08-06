@@ -65,8 +65,15 @@ export default {
     object-fit: contain;
     max-height: 600px;
 }
-
+@media (max-width: 800px)  {
+.header-card-text-content{
+  font-size: 1rem;
+}
+}
 .header-card-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: black;
   color: white;
   width: fit-content;
@@ -81,14 +88,18 @@ export default {
 
 @media (max-width: 800px)  {
   .header-card-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: black;
   opacity: .6;
   color: white;
   width: fit-content;
   position: absolute;
   bottom: 10px;
-  left: 10px;
-  padding: 5px
+  // left: 10px;
+  padding: 5px;
+  font-size: 1rem;
 }
 }
 
@@ -104,6 +115,6 @@ export default {
 }
 
 .header-follow {
-  margin: 0 15px;
+  margin-right: 15px;
 }
 </style>
