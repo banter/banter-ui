@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
     <div v-if="isLoading" class="loading-body">
-      <LoadingSpinner :variant="'secondary'" />
+      <LoadingSpinner variant="secondary" />
     </div>
     <div v-if="!isLoading">
       <div v-if="playlistExists > 0">

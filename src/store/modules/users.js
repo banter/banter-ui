@@ -181,7 +181,8 @@ export default {
       state.followRequesting = true;
     },
     unfollowTopicSuccess(state, outTopic) {
-      state.followedTopics = state.followedTopics.filter((inTopic) => inTopic.id !== outTopic.id);
+      state.followedTopics = state.followedTopics
+        .filter((inTopic) => inTopic.id !== outTopic.id);
       state.followRequesting = false;
     },
     unfollowTopicError(state, error) {

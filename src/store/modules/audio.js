@@ -21,6 +21,7 @@ export default {
     nextDiscussion: null,
     isRequesting: false,
     loadingNewAudio: false,
+    fadingOut: false,
     timestampRemaining: 0,
     audioRate: 1,
     audioIcon: 'play',
@@ -118,6 +119,12 @@ export default {
 
       return apiRequest({ requestData, mutations, commit });
     },
+    getRemainingTimeRequest({ commit, state }) {
+      commit('getRemainingTime');
+      if (state.timestampRemaining <= 5000 && state.timestampRemaining > 0 && !state.fadingOut) {
+        commit('fadeOut');
+      }
+    },
   },
   // Edits the data
   mutations: {
@@ -138,6 +145,7 @@ export default {
     createAudioRequest(state) {
       state.isRequesting = true;
       state.audioIcon = 'loading';
+      state.fadingOut = false;
     },
     audioRequestSuccess(state) {
       state.isRequesting = false;
@@ -194,6 +202,10 @@ export default {
       }
       const remainingMillis = (endTimeMillis && currentTime) ? endTimeMillis - currentTime : 0;
       state.timestampRemaining = remainingMillis;
+    },
+    fadeOut(state) {
+      state.audioConfig.fade(1, 0, state.timestampRemaining);
+      state.fadingOut = true;
     },
   },
 };

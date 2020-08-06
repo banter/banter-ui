@@ -39,7 +39,7 @@ export default new Router({
       component: Topic,
     },
     {
-      path: '/foryou',
+      path: '/for-you',
       name: 'ForYou',
       component: ForYou,
     },

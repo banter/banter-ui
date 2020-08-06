@@ -45,14 +45,18 @@
                 <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="light">
                   <router-link
                     @click.native="$event.stopImmediatePropagation()"
-                    :to="`/topics/${tag.value}`">
+                    :to="`/topics/${tag.value}/${tag.id}`">
                     {{tag.value}}
                   </router-link>
                 </b-badge>
-                Play Count:{{discussion.playedCount}}
-                Liked Count: {{discussion.likedCount}}
-                <!-- Mark Listened: {{discussion.userListenProgress.markListened}}
-                Progress Millis: {{discussion.userListenProgress.progressMillis}} -->
+              </div>
+            </b-row>
+            <b-row >
+              <div class="engagement-stats">
+                <like-button
+                  showLikes
+                  @click.native="$event.stopImmediatePropagation();"
+                  :discussion='discussion' />
               </div>
             </b-row>
           </b-card-body>
@@ -65,11 +69,13 @@
 <script>
 import { mapState } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
+import LikeButton from './commons/LikeButton.vue';
 
 export default {
   name: 'DiscussionCard',
   components: {
     LoadingSpinner,
+    LikeButton,
   },
   props: {
     isActiveDiscussion: {
@@ -88,7 +94,9 @@ export default {
       default: () => ({}),
     },
   },
+  mounted() {
 
+  },
   computed: {
     ...mapState({
       isLoading: (state) => state.audio.isRequesting,
@@ -107,7 +115,6 @@ export default {
       );
     },
   },
-
   methods: {
     discussionAge(discussion) {
       if (discussion?.episodePublishDate) {
@@ -133,13 +140,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .discussion-icon {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    opacity: .80;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  opacity: .80;
 }
 
 .discussion-card-wrapper {
@@ -149,36 +155,35 @@ export default {
   padding: 5px;
 }
 
-.discussion-card{
-    max-width: 785px;
-    min-width: 240px;
-    margin: auto;
-    background: #FFFFFF;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
+.discussion-card {
+  max-width: 785px;
+  min-width: 240px;
+  margin: auto;
+  background: #FFFFFF;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
 
 }
 
-.podcast-name-text{
-      size: 100px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 22px;
-    /* identical to box height, or 145% */
-    letter-spacing: 0.2px;
-    color: #606060;
+.podcast-name-text {
+  size: 100px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 0.2px;
+  color: #606060;
 }
+
 .podcast-description-text {
   font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 18px;
-line-height: 26px;
-margin-bottom: 12px!important;
-/* or 142% */
-letter-spacing: 0.2px;
-color: #030303;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 26px;
+  margin-bottom: 12px !important;
+  letter-spacing: 0.2px;
+  color: #030303;
 }
 
 .card-img.discussion-card-image {
@@ -187,59 +192,66 @@ color: #030303;
   padding: 15px;
 
   .podcast-image {
-        position: absolute;
+    position: absolute;
     object-fit: cover;
     max-width: 100%;
     width: 100%;
     height: 100%;
     top: 50%;
     left: 50%;
-    transform: translate( -50%, -50%);
+    transform: translate(-50%, -50%);
     border-radius: 25px;
   }
 }
 
-  .discussion-timestamp {
-      position: absolute;
-    top: 85%;
-    transform: translate(-85%, -85%);
-    left: 85%;
-    opacity: .80;
-    opacity: .95;
-    border-radius: 5px;
-    // background-color: black;
-    color: white;
-    padding: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.discussion-timestamp {
+  position: absolute;
+  top: 85%;
+  transform: translate(-85%, -85%);
+  left: 85%;
+  opacity: .80;
+  opacity: .95;
+  border-radius: 5px;
+  color: white;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .discussion-timestamp-text {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    text-align: center;
-    height: 100%;
-  }
+.discussion-timestamp-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  height: 100%;
+}
 
 .tag-display a {
   font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 17px;
-line-height: 15px;
-/* or 91% */
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 15px;
 
-display: flex;
-align-items: center;
-text-align: center;
-letter-spacing: 0.2px;
-color: #030303;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #030303;
 }
 
 .tag-display span {
   margin: 2px;
 }
 
+.engagement-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 </style>

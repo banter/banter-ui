@@ -23,39 +23,39 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
-    likeDiscussion({
+    async likeDiscussion({
       commit,
-    }, { discussionId }) {
+    }, discussion) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LIKES}${discussionId}/${API.LIKE}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LIKES}${discussion.discussionId}/${API.LIKE}`,
         method: 'POST',
       };
       const mutations = {
-        preCommit: 'likeDiscussionRequest',
-        successCommit: 'likeDiscussionSuccess',
         errorCommit: 'likeDiscussionError',
       };
-      return apiRequest({ requestData, mutations, commit });
+
+      commit('likeDiscussionRequest', discussion);
+      await apiRequest({ requestData, mutations, commit });
+      commit('likeDiscussionSuccess', discussion);
     },
-    unlikeDiscussion({
+    async unlikeDiscussion({
       commit,
-    }, { discussionId }) {
+    }, discussion) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LIKES}${discussionId}/${API.UNLIKE}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.LIKES}${discussion.discussionId}/${API.UNLIKE}`,
         method: 'POST',
       };
       const mutations = {
-        preCommit: 'unlikeDiscussionRequest',
-        successCommit: 'unlikeDiscussionSuccess',
         errorCommit: 'unlikeDiscussionError',
       };
 
-      return apiRequest({ requestData, mutations, commit });
+      commit('unlikeDiscussionRequest', discussion);
+      await apiRequest({ requestData, mutations, commit });
+      commit('unlikeDiscussionSuccess', discussion);
     },
 
   },
   mutations: {
-
     fetchDiscussionsLikedRequest(state) {
       state.likesRequesting = true;
     },
@@ -69,21 +69,30 @@ export default {
       state.error = error;
     },
 
-    likeDiscussionRequest(state) {
+    likeDiscussionRequest(state, discussion) {
       state.likesRequesting = true;
+      const currentDiscussion = this.state?.topics?.currentTopic?.playlist
+        ?.find((playDiscussion) => discussion.discussionId === playDiscussion.discussionId);
+      currentDiscussion.likedCount += 1;
     },
-    likeDiscussionSuccess(state) {
+    likeDiscussionSuccess(state, discussion) {
       state.likesRequesting = false;
+      state.discussionsLiked.push(discussion);
     },
     likeDiscussionError(state, error) {
       state.likesRequesting = false;
       state.errored = true;
       state.error = error;
     },
-    unlikeDiscussionRequest(state) {
+    unlikeDiscussionRequest(state, outDiscussion) {
       state.likesRequesting = true;
+      const currentDiscussion = this.state?.topics?.currentTopic?.playlist
+        ?.find((playDiscussion) => outDiscussion.discussionId === playDiscussion.discussionId);
+      currentDiscussion.likedCount -= 1;
     },
-    unlikeDiscussionSuccess(state) {
+    unlikeDiscussionSuccess(state, outDiscussion) {
+      state.discussionsLiked = state.discussionsLiked
+        .filter((inDiscussion) => inDiscussion.discussionId !== outDiscussion.discussionId);
       state.likesRequesting = false;
     },
     unlikeDiscussionError(state, error) {

@@ -77,9 +77,9 @@ export default {
   },
   mounted() {
     this.trackInterval = setInterval(() => {
-      this.getRemainingTime();
+      this.getRemainingTimeRequest();
     }, 500);
-    this.getRemainingTime();
+    this.getRemainingTimeRequest();
   },
   destroyed() {
     clearInterval(this.trackInterval);
@@ -130,8 +130,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['resumeAudio', 'pauseAudio', 'audioListenUpdate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion']),
-    ...mapMutations(['adjustRate', 'getRemainingTime']),
+    ...mapActions(['resumeAudio', 'pauseAudio', 'audioListenUpdate', 'goForward15Seconds', 'goBack15Seconds', 'goToNextDiscussion', 'getRemainingTimeRequest']),
+    ...mapMutations(['adjustRate']),
 
     leaveBanterHandler() {
       // API Request on Page Leave

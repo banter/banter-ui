@@ -11,12 +11,12 @@
 </template>
 
 <script>
-
+import MODALS from '../../constants/modals';
 import BaseAuthModal from './BaseAuthModal.vue';
 
 export default {
-  name: 'MyFeedAuthModal',
-  data() { return { modalName: 'my-feed-auth-modal' }; },
+  name: 'ForYouAuthModal',
+  data() { return { modalName: MODALS.FOR_YOU_AUTH_MODAL }; },
   components: {
     BaseAuthModal,
   },

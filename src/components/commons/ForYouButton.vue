@@ -1,7 +1,8 @@
 <template>
   <div>
     <div v-if="isMobile">
-      <router-link v-if="this.currentUser.email" :to="'/foryou'" class="navbar-brand d-flex m-auto">
+      <router-link v-if="this.currentUser.email" :to="'/for-you'"
+      class="navbar-brand d-flex m-auto">
         <b-icon icon="collection" font-scale="1.2" style="margin:auto"> </b-icon>
         For You
       </router-link>
@@ -11,7 +12,8 @@
       </div>
     </div>
     <div v-else>
-      <router-link v-if="this.currentUser.email" :to="'/foryou'" class="navbar-brand d-flex m-auto">
+      <router-link v-if="this.currentUser.email" :to="'/for-you'"
+      class="navbar-brand d-flex m-auto">
         <b-button size="sm" type="submit" id="nav-signup">
           <p id="nav-signup-text">For You</p>
         </b-button>
@@ -22,18 +24,16 @@
         </b-button>
       </div>
     </div>
-    <my-feed-auth-modal ref="myFeedAuthModal"></my-feed-auth-modal>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import MyFeedAuthModal from '../modals/MyFeedAuthModal.vue';
+import MODALS from '../../constants/modals';
 
 export default {
   name: 'ForYouButton',
   components: {
-    MyFeedAuthModal,
   },
   props: {
     isMobile: {
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$bvModal.show(this.$refs.myFeedAuthModal.modalName);
+      this.$bvModal.show(MODALS.FOR_YOU_AUTH_MODAL);
     },
   },
 };
