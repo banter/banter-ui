@@ -1,11 +1,5 @@
 <template>
   <div>
-    <!-- <nav class="navbar navbar-default">
-      BBB
-      </nav>
-<nav class="navbar navbar-default navbar-fixed-top">
-    AAAAA
-</nav> -->
     <b-navbar v-if="!isMobile" toggleable="lg" type="light" variant="faded">
       <b-navbar-brand>
         <router-link :to="'/home'">
