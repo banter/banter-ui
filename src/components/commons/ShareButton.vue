@@ -1,7 +1,7 @@
 <template>
   <div class="share-button-wrapper">
     <div @click="handleClick" class="navbar-brand d-flex m-auto">
-      <i class="fas fa-share-alt fa"></i>
+      <font-awesome-icon icon="share-alt" />
     </div>
   </div>
 </template>

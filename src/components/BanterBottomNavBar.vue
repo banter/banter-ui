@@ -1,5 +1,6 @@
 <template>
   <div class="fixed-bottom">
+    <feedback-button></feedback-button>
     <AudioPlayer v-if="audioConfig || loadingNewAudio" />
     <BanterMobileNavBar v-if="isMobile" />
   </div>
@@ -9,12 +10,14 @@
 import { mapState } from 'vuex';
 import BanterMobileNavBar from './BanterMobileNavBar.vue';
 import AudioPlayer from './AudioPlayer.vue';
+import FeedbackButton from './commons/FeedbackButton.vue';
 
 export default {
   name: 'BanterBottomNavBar',
   components: {
     BanterMobileNavBar,
     AudioPlayer,
+    FeedbackButton,
   },
   computed: {
     ...mapState({
