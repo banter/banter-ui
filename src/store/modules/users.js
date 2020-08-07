@@ -107,7 +107,7 @@ export default {
       return apiRequest({ requestData, mutations, commit });
     },
     async followTopic({
-      commit,
+      commit, dispatch,
     }, topic) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.FOLLOW}`,
@@ -117,11 +117,16 @@ export default {
         preCommit: 'followTopicRequest',
         errorCommit: 'followTopicError',
       };
-      await apiRequest({ requestData, mutations, commit });
+      const actions = {
+        successDispatch: 'fetchFollowing',
+      };
+      await apiRequest({
+        requestData, mutations, actions, dispatch, commit,
+      });
       commit('followTopicSuccess', topic);
     },
     async unfollowTopic({
-      commit,
+      commit, dispatch,
     }, topic) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.UNFOLLOW}`,
@@ -131,8 +136,12 @@ export default {
         preCommit: 'unfollowTopicRequest',
         errorCommit: 'unfollowTopicError',
       };
-
-      await apiRequest({ requestData, mutations, commit });
+      const actions = {
+        successDispatch: 'fetchFollowing',
+      };
+      await apiRequest({
+        requestData, mutations, actions, dispatch, commit,
+      });
       commit('unfollowTopicSuccess', topic);
     },
   },

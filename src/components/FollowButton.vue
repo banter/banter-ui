@@ -1,7 +1,8 @@
 <template>
 <div>
   <b-button :disabled="followRequesting"
-  @click="handleClick" variant="outline-primary">
+    @click="handleClick"
+    :variant="variant">
       <span v-if="followRequesting"
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
       <span v-else
@@ -21,6 +22,11 @@ export default {
       type: Object,
       required: true,
       default: () => ({}),
+    },
+    variant: {
+      type: String,
+      required: false,
+      default: 'outline-primary',
     },
   },
   computed: {

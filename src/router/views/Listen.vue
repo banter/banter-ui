@@ -14,7 +14,7 @@
         <LoadingSpinner variant="secondary" />
       </div>
       <div v-if="!isLoading">
-        <div v-if="playlistExists() > 0">
+        <div v-if="playlistExists() > 0 || !showFollowSuggestions">
           <div>
             <CustomTopicHeader :topic="activeLink">
               <h3 class="header-card-text-content">{{activeLink.text}}</h3>
@@ -68,6 +68,7 @@ export default {
         },
       ],
       activeStream: this.stream,
+      showFollowSuggestions: false,
     };
   },
   computed: {
@@ -106,6 +107,7 @@ export default {
         case 'following':
           if (this.currentUser.email && !this.playlistExists(this.activeStream)) {
             await this.fetchFollowing();
+            if (!this.playlistExists(this.activeStream)) this.showFollowSuggestions = true;
           }
           break;
         default:

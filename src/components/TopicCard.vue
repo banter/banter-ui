@@ -1,6 +1,6 @@
 <template>
   <div :class="`card-wrapper ${type}-wrapper`">
-    <router-link :to="`/topics/${topic.value}/${topic.id}`">
+    <a @click="() => goToTopic(topic)">
       <div :class="`image-card ${type}`">
         <b-img v-if="imageLoadingError" class="fallback-image topic-image"
           :src="require('../assets/Favicon.png')" />
@@ -10,14 +10,17 @@
             <p class="topic-label">
               {{topic.value}}
             </p>
-            <FollowButton
-              @click.native="$event.stopImmediatePropagation()"
-              v-if="allowFollow"
-              :topic="topic"/>
           </div>
         </div>
+        <div class="topic-card-follow">
+          <FollowButton
+            @click.native="$event.stopImmediatePropagation()"
+            variant="primary"
+            v-if="allowFollow"
+            :topic="topic"/>
+        </div>
       </div>
-    </router-link>
+    </a>
   </div>
 </template>
 
@@ -37,6 +40,9 @@ export default {
   methods: {
     imageLoadError() {
       this.imageLoadingError = true;
+    },
+    goToTopic(topic) {
+      this.$router.push({ name: `/topics/${topic.value}/${topic.id}` });
     },
   },
   props: {
@@ -211,6 +217,11 @@ export default {
       height: 100%;
       padding: 20px 0px;
     }
+  }
+  .topic-card-follow {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 }
 </style>
