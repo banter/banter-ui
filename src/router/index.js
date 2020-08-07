@@ -45,6 +45,12 @@ export default new Router({
       props: () => ({ stream: 'for-you' }),
     },
     {
+      path: '/following',
+      name: 'Following',
+      component: Listen,
+      props: () => ({ stream: 'following' }),
+    },
+    {
       path: '/explore',
       name: 'Explore',
       component: Explore,

@@ -53,6 +53,13 @@ export default {
     await this.fetchForYou();
     if (this.currentUser.email) await this.fetchFollowing();
   },
+  props: {
+    stream: {
+      type: String,
+      required: false,
+      default: 'for-you',
+    },
+  },
   data() {
     return {
       sideLinks: [
@@ -64,7 +71,7 @@ export default {
           text: 'Following', stream: 'following', inactiveIcon: 'people', activeIcon: 'people-fill', content: this.forYou,
         },
       ],
-      activeStream: 'for-you',
+      activeStream: this.stream,
     };
   },
   computed: {
@@ -77,7 +84,7 @@ export default {
       isMobile: (state) => state.sizing.isMobile,
     }),
     playlistExists() {
-      return !!this.forYou?.playlist?.length;
+      return this.streamContent(this.activeLink.stream)?.playlist?.length;
     },
     activeLink() {
       return this.sideLinks.find((link) => link.stream === this.activeStream);

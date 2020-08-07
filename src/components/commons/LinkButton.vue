@@ -33,7 +33,7 @@ export default {
     streamLinkText: {
       type: String,
       required: false,
-      default: 'For You',
+      default: 'Listen',
     },
   },
   computed: {
