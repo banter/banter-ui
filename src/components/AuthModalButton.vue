@@ -9,7 +9,13 @@
       <p id="nav-signup-text">Log In</p>
     </b-button>
     <b-nav>
-      <b-nav-item-dropdown v-if="currentUser.email" :text="currentUser.email">
+      <b-nav-item-dropdown v-if="currentUser.email">
+        <template slot="button-content">
+          <b-avatar/>
+        </template>
+        <b-dropdown-item disabled href="#">
+          {{currentUser.email}}
+        </b-dropdown-item>
         <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
           Sign Out
         </b-dropdown-item>
