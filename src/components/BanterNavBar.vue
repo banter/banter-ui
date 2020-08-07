@@ -13,6 +13,7 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <div class="form-inline my-2 my-lg-0">
+          <share-button></share-button>
           <AuthModalButton></AuthModalButton>
         </div>
         <SearchBar></SearchBar>
@@ -26,6 +27,7 @@
           </b-img>
         </router-link>
       </b-navbar-brand>
+      <share-button></share-button>
       <div class="form-inline my-2 my-lg-0">
         <AuthModalButton></AuthModalButton>
       </div>
@@ -39,6 +41,7 @@ import { mapState } from 'vuex';
 import AuthModalButton from './AuthModalButton.vue';
 import SearchBar from './commons/SearchBar.vue';
 import ForYouButton from './commons/ForYouButton.vue';
+import ShareButton from './commons/ShareButton.vue';
 
 export default {
   name: 'BanterNavBar',
@@ -46,6 +49,7 @@ export default {
     AuthModalButton,
     SearchBar,
     ForYouButton,
+    ShareButton,
   },
   computed: {
     ...mapState({

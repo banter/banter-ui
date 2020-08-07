@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import MODALS from '../../constants/modals';
 import BaseAuthModal from './BaseAuthModal.vue';
 
@@ -17,11 +16,6 @@ export default {
   data() { return { modalName: MODALS.AUTH_MODAL }; },
   components: {
     BaseAuthModal,
-  },
-  computed: {
-    ...mapState({
-      currentUser: (state) => state.users.currentUser,
-    }),
   },
 };
 </script>

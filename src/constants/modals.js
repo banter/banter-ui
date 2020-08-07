@@ -4,6 +4,7 @@ const MODALS = {
   AUTH_MODAL: 'auth-modal',
   PASSIVE_AUTH_MODAL: 'passive-auth-modal',
   FOR_YOU_AUTH_MODAL: 'for-you-auth-modal',
+  SHARE_MODAL: 'share-modal',
 };
 
 export default MODALS;

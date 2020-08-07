@@ -23,6 +23,12 @@ export default new Router({
       meta: { layout: 'landing' },
     },
     {
+      path: '/share',
+      name: 'welcome-to-banter',
+      component: Landing,
+      meta: { layout: 'landing' },
+    },
+    {
       path: '/home',
       name: 'Home',
       component: Home,

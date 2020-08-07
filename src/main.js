@@ -10,6 +10,7 @@ import {
 // Analytics
 import Hotjar from 'vue-hotjar';
 import VueAnalytics from 'vue-analytics';
+import VueSocialSharing from 'vue-social-sharing';
 
 import vSelect from 'vue-select';
 import store from './store/index';
@@ -37,9 +38,7 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Vuex);
 Vue.use(Carousel3d);
-
-Vue.config.productionTip = false;
-
+Vue.use(VueSocialSharing);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Vuex);

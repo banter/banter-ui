@@ -1,39 +1,56 @@
 <template>
   <div>
-    <b-button
-      v-if="!currentUser.email && !isRequesting"
-      v-b-modal.auth-modal
-      size="sm"
-      id="nav-signup"
-      type="submit">
-      <p id="nav-signup-text">Log In</p>
-    </b-button>
-    <b-nav>
-      <b-nav-item-dropdown v-if="currentUser.email" :text="currentUser.email">
-        <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
-          Sign Out
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
-    </b-nav>
+      <b-modal :id="modalName" hide-footer hide-header title="Share Modal">
+    <h2 class="signin-header">Share</h2>
+    <div class="social-logins">
+      <ShareNetwork
+    v-for="network in NETWORKS"
+    :network="network.network"
+    :key="network.network"
+    :url="sharing.url"
+    :title="sharing.title"
+    :description="sharing.description"
+    :quote="sharing.quote"
+    :hashtags="sharing.hashtags"
+    :twitterUser="sharing.twitterUser"
+  >
+        <a class="btn btn-outline-dark social-login" role="button">
+        <img class="provider-logo" alt="Provider sign-in" :src="network.logo" />
+        <span class="brand-name">{{network.network}}</span>
+      </a>
+  </ShareNetwork>
+    </div>
+      </b-modal>
+
   </div>
 </template>
 
 <script>
 
-import { mapState } from 'vuex';
-import API from '../constants/api';
+import SOCIALMEDIA from '../../constants/banter-social-media-accounts';
+import NETWORKS from '../../constants/banter-networks';
 
 export default {
-  name: 'AuthModalButton',
-  computed: {
-    ...mapState({
-      currentUser: (state) => state.users.currentUser,
-      isRequesting: (state) => state.users.isRequesting,
-    }),
-  },
+  name: 'ShareModal',
   components: {
   },
-  data() { return { API }; },
+  data() {
+    return {
+      returningUser: true,
+      SOCIALMEDIA,
+      NETWORKS,
+      modalName: 'share-modal',
+      sharing: {
+        url: 'https://banteraudio.com/share',
+        title: 'Say Hi to the New Way to listen to Podcasts. Go checkout Banter!',
+        description: 'Say Hi to the New Way to listen Podcasts. Go checkout Banter!',
+        quote: 'This has changed how I will listen to podcasts forever.',
+        hashtags: 'banter,theNewNormal,podcasts',
+        twitterUser: 'banteraudio',
+      },
+
+    };
+  },
 };
 </script>
 
@@ -45,9 +62,7 @@ export default {
   border-radius: 2px;
 }
 
-// this changes all buttons in Repo with this id
 #nav-signup {
-  padding: 0 0;
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;

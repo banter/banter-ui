@@ -5,6 +5,7 @@
     <auth-modal :ref="MODALS.AUTH_MODAL"/>
     <for-you-auth-modal :ref="MODALS.FOR_YOU_AUTH_MODAL"/>
     <passive-auth-modal :ref="MODALS.PASSIVE_AUTH_MODAL"/>
+    <share-modal></share-modal>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import FollowAuthModal from './FollowAuthModal.vue';
 import AuthModal from './AuthModal.vue';
 import ForYouAuthModal from './ForYouAuthModal.vue';
 import PassiveAuthModal from './PassiveAuthModal.vue';
+import ShareModal from './ShareModal.vue';
 
 export default {
   name: 'AllModals',
@@ -30,6 +32,7 @@ export default {
     AuthModal,
     ForYouAuthModal,
     PassiveAuthModal,
+    ShareModal,
   },
 };
 </script>

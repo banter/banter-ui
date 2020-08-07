@@ -147,7 +147,7 @@ export default {
   },
   data() {
     return {
-      returningUser: true,
+      returningUser: false,
       loginAttempted: false,
       showEmailLogin: false,
       authEmail: '',
