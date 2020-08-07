@@ -10,6 +10,10 @@
             <p class="topic-label">
               {{topic.value}}
             </p>
+            <FollowButton
+              @click.native="$event.stopImmediatePropagation()"
+              v-if="allowFollow"
+              :topic="topic"/>
           </div>
         </div>
       </div>
@@ -18,12 +22,17 @@
 </template>
 
 <script>
+import FollowButton from './FollowButton.vue';
+
 export default {
   name: 'TopicCard',
   data() {
     return {
       imageLoadingError: false,
     };
+  },
+  components: {
+    FollowButton,
   },
   methods: {
     imageLoadError() {
@@ -35,6 +44,11 @@ export default {
       type: Number,
       required: true,
       default: 0,
+    },
+    allowFollow: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     topic: {
       type: Object,
@@ -156,8 +170,8 @@ export default {
   height: 250px;
   margin: auto;
   .carousel-card {
-      height: 200px;
-      width: 200px;
+    height: 200px;
+    width: 200px;
 
     min-height: 250px;
     max-height: 350px;

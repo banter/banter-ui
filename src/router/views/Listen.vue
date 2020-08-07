@@ -23,10 +23,7 @@
           </div>
         </div>
         <div v-else>
-          <empty-page-handler>
-            Oh No! You aren't following any topics yet. Try navigating from our homepage
-            to follow different pages.
-          </empty-page-handler>
+          <follow-suggestion-cards/>
         </div>
       </div>
     </div>
@@ -37,8 +34,8 @@
 import { mapActions, mapState } from 'vuex';
 import LoadingSpinner from '../../components/LoadingSpinner.vue';
 import CustomTopicHeader from '../../components/CustomTopicHeader.vue';
+import FollowSuggestionCards from '../../components/FollowSuggestionCards.vue';
 import DiscussionPlaylist from '../../containers/DiscussionPlaylist.vue';
-import EmptyPageHandler from '../../components/commons/EmptyPageHandler.vue';
 
 export default {
   name: 'Listen',
@@ -46,7 +43,7 @@ export default {
     LoadingSpinner,
     CustomTopicHeader,
     DiscussionPlaylist,
-    EmptyPageHandler,
+    FollowSuggestionCards,
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
@@ -116,7 +113,10 @@ export default {
       }
     },
     switchStreams(link) {
-      this.$router.replace(link.stream);
+      if (link.stream !== this.activeStream) {
+        this.$router.replace(link.stream);
+        this.activeStream = link.stream;
+      }
     },
   },
 };
