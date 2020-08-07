@@ -1,28 +1,17 @@
 <template>
   <div>
-    <div v-if="isMobile">
-      <router-link v-if="this.currentUser.email" :to="'/for-you'"
-      class="navbar-brand d-flex m-auto">
-        <b-icon icon="collection" font-scale="1.2" style="margin:auto"> </b-icon>
-        For You
+    <div>
+      <router-link :to="'/for-you'" class="navbar-brand d-flex m-auto">
+        <div v-if="isMobile" @click="!this.currentUser.email" class="navbar-brand d-flex m-auto">
+          <b-icon icon="collection" font-scale="1.2" style="margin:auto"/>
+          {{streamLinkText}}
+        </div>
+        <div v-else @click="triggerAuthModal" class="navbar-brand d-flex m-auto">
+          <b-button size="sm" type="submit" id="nav-signup">
+            <p id="nav-signup-text">{{streamLinkText}}</p>
+          </b-button>
+        </div>
       </router-link>
-      <div v-else @click="handleClick" class="navbar-brand d-flex m-auto">
-        <b-icon icon="collection" font-scale="1.2" style="margin:auto"> </b-icon>
-        For You
-      </div>
-    </div>
-    <div v-else>
-      <router-link v-if="this.currentUser.email" :to="'/for-you'"
-      class="navbar-brand d-flex m-auto">
-        <b-button size="sm" type="submit" id="nav-signup">
-          <p id="nav-signup-text">For You</p>
-        </b-button>
-      </router-link>
-      <div v-else @click="handleClick" class="navbar-brand d-flex m-auto">
-        <b-button size="sm" type="submit" id="nav-signup">
-          <p id="nav-signup-text">For You</p>
-        </b-button>
-      </div>
     </div>
   </div>
 </template>
@@ -32,7 +21,7 @@ import { mapState } from 'vuex';
 import MODALS from '../../constants/modals';
 
 export default {
-  name: 'ForYouButton',
+  name: 'LinkButton',
   components: {
   },
   props: {
@@ -41,6 +30,11 @@ export default {
       required: false,
       default: false,
     },
+    streamLinkText: {
+      type: String,
+      required: false,
+      default: 'For You',
+    },
   },
   computed: {
     ...mapState({
@@ -48,7 +42,7 @@ export default {
     }),
   },
   methods: {
-    handleClick() {
+    triggerAuthModal() {
       this.$bvModal.show(MODALS.FOR_YOU_AUTH_MODAL);
     },
   },

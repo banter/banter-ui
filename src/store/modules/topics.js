@@ -51,7 +51,7 @@ export default {
         url: `${API.BASE_URL}${API.TOPICS}${API.TRENDING}`,
         queries: {
           sinceDaysAgo: 5,
-          limit: 3,
+          limit: 15,
         },
       };
       const mutations = {
@@ -188,7 +188,10 @@ export default {
     },
   },
   getters: {
-    getTrendingTopicTags(state) {
+    homeTopTrendingTags(state) {
+      return state.trendingTopics.map((trendingTopics) => trendingTopics?.tag).slice(0, 3);
+    },
+    suggestFollowingTrendingTags(state) {
       return state.trendingTopics.map((trendingTopics) => trendingTopics?.tag);
     },
   },

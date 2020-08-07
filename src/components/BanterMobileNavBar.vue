@@ -9,7 +9,7 @@
         </router-link>
       </b-navbar-brand>
       <b-navbar-brand class="navbar-brand d-flex m-auto">
-        <ForYouButton v-bind:isMobile="true"></ForYouButton>
+        <LinkButton v-bind:isMobile="true"></LinkButton>
       </b-navbar-brand>
       <b-navbar-nav class="navbar-brand d-flex m-auto ">
         <router-link :to="'/explore'" class="navbar-brand d-flex m-auto">
@@ -24,12 +24,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import ForYouButton from './commons/ForYouButton.vue';
+import LinkButton from './commons/LinkButton.vue';
 
 export default {
   name: 'BanterMobileNavBar',
   components: {
-    ForYouButton,
+    LinkButton,
   },
   computed: {
     ...mapState({
