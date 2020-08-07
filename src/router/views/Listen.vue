@@ -2,14 +2,10 @@
   <div>
     <div :class="isMobile ? '' : 'desktop-side-nav'">
       <b-nav :vertical="!isMobile" :class="`${isMobile ? '' : 'side-nav-content'} for-you-nav`">
-        <b-nav-item :class="isMobile ? 'mobile-nav-item' : ''" active><b-icon :icon="'house'"/>
-          <span class="nav-text">For You</span>
-        </b-nav-item>
-        <!-- <b-nav-item><b-icon :icon="'soundwave'"/>
-          <span class="nav-text">Discover</span>
-        </b-nav-item> -->
-        <b-nav-item :class="isMobile ? 'mobile-nav-item' : ''"><b-icon :icon="'people'"/>
-          <span class="nav-text">Following</span>
+        <b-nav-item v-for="(link) in sideLinks" :key="link.text" @click="activeStream = link.stream"
+          :class="isMobile ? 'mobile-nav-item' : ''" :active="link.stream === activeStream">
+          <b-icon :icon="link.stream === activeStream ? link.activeIcon : link.inactiveIcon" />
+          <span class="nav-text">{{link.text}}</span>
         </b-nav-item>
       </b-nav>
     </div>
@@ -19,15 +15,17 @@
       </div>
       <div v-if="!isLoading">
         <div v-if="playlistExists > 0">
-          <ForYouHeader>
-              <h3 class="header-card-text-content">For You</h3>
-          </ForYouHeader>
-        <discussion-playlist :collection="forYou"></discussion-playlist>
-      </div>
+          <div>
+            <CustomTopicHeader>
+              <h3 class="header-card-text-content">{{activeLink.text}}</h3>
+            </CustomTopicHeader>
+            <discussion-playlist :collection="forYou"></discussion-playlist>
+          </div>
+        </div>
         <div v-else>
           <empty-page-handler>
-              Oh No! You aren't following any topics yet. Try navigating from our homepage
-              to follow different pages.
+            Oh No! You aren't following any topics yet. Try navigating from our homepage
+            to follow different pages.
           </empty-page-handler>
         </div>
       </div>
@@ -38,21 +36,35 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import LoadingSpinner from '../../components/LoadingSpinner.vue';
-import ForYouHeader from '../../components/ForYouHeader.vue';
+import CustomTopicHeader from '../../components/CustomTopicHeader.vue';
 import DiscussionPlaylist from '../../containers/DiscussionPlaylist.vue';
 import EmptyPageHandler from '../../components/commons/EmptyPageHandler.vue';
 
 export default {
-  name: 'ForYou',
+  name: 'Listen',
   components: {
     LoadingSpinner,
-    ForYouHeader,
+    CustomTopicHeader,
     DiscussionPlaylist,
     EmptyPageHandler,
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
     await this.fetchForYou();
+  },
+  data() {
+    return {
+      sideLinks: [
+        {
+          text: 'For You', stream: 'for-you', inactiveIcon: 'house', activeIcon: 'house-fill',
+        },
+        // { text: 'Discover', inactiveIcon: 'soundwave', activeIcon: 'soundwave' },
+        {
+          text: 'Following', stream: 'following', inactiveIcon: 'people', activeIcon: 'people-fill',
+        },
+      ],
+      activeStream: 'for-you',
+    };
   },
   computed: {
     ...mapState({
@@ -63,6 +75,9 @@ export default {
     }),
     playlistExists() {
       return !!this.forYou?.playlist?.length;
+    },
+    activeLink() {
+      return this.sideLinks.find((link) => link.stream === this.activeStream);
     },
   },
   methods: {
@@ -99,7 +114,6 @@ export default {
   z-index: 1;
   .nav-link.active {
     color: #fe2c55;
-    padding-right: 1px;
   }
   .nav-link {
     color: black;
