@@ -2,7 +2,7 @@
   <div>
     <div :class="isMobile ? '' : 'desktop-side-nav'">
       <b-nav :vertical="!isMobile" :class="`${isMobile ? '' : 'side-nav-content'} for-you-nav`">
-        <b-nav-item v-for="(link) in sideLinks" :key="link.text" @click="activeStream = link.stream"
+        <b-nav-item v-for="(link) in sideLinks" :key="link.text" @click="switchStreams(link)"
           :class="isMobile ? 'mobile-nav-item' : ''" :active="link.stream === activeStream">
           <b-icon :icon="link.stream === activeStream ? link.activeIcon : link.inactiveIcon" />
           <span class="nav-text">{{link.text}}</span>
@@ -14,7 +14,7 @@
         <LoadingSpinner variant="secondary" />
       </div>
       <div v-if="!isLoading">
-        <div v-if="playlistExists > 0">
+        <div v-if="playlistExists() > 0">
           <div>
             <CustomTopicHeader :topic="activeLink">
               <h3 class="header-card-text-content">{{activeLink.text}}</h3>
@@ -50,8 +50,7 @@ export default {
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
-    await this.fetchForYou();
-    if (this.currentUser.email) await this.fetchFollowing();
+    this.fetchCurrentStream();
   },
   props: {
     stream: {
@@ -83,9 +82,6 @@ export default {
       following: (state) => state.listen.following,
       isMobile: (state) => state.sizing.isMobile,
     }),
-    playlistExists() {
-      return this.streamContent(this.activeLink.stream)?.playlist?.length;
-    },
     activeLink() {
       return this.sideLinks.find((link) => link.stream === this.activeStream);
     },
@@ -101,6 +97,26 @@ export default {
         default:
           return {};
       }
+    },
+    playlistExists(stream) {
+      return this.streamContent(stream || this.activeLink.stream)?.playlist?.length;
+    },
+    async fetchCurrentStream() {
+      switch (this.activeStream) {
+        case 'for-you':
+          if (!this.playlistExists(this.activeStream)) await this.fetchForYou();
+          break;
+        case 'following':
+          if (this.currentUser.email && !this.playlistExists(this.activeStream)) {
+            await this.fetchFollowing();
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    switchStreams(link) {
+      this.$router.replace(link.stream);
     },
   },
 };
