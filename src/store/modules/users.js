@@ -89,6 +89,8 @@ export default {
       if (state?.currentUser && !state?.currentUser?.anonymous) {
         dispatch('fetchTopicsFollowed');
         dispatch('fetchDiscussionsLiked');
+        dispatch('fetchForYou');
+        dispatch('fetchFollowing');
       }
     },
     fetchTopicsFollowed({

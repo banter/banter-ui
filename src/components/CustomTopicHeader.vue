@@ -12,7 +12,7 @@
           <b-col md="6" class="for-you-col">
             <b-card-body>
               <b-card-text class="for-you-text">
-               For You
+               {{topic.text}}
               </b-card-text>
             </b-card-body>
           </b-col>
@@ -26,6 +26,13 @@
 
 export default {
   name: 'CustomTopicHeader',
+  props: {
+    topic: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
+  },
 };
 </script>
 

@@ -16,10 +16,10 @@
       <div v-if="!isLoading">
         <div v-if="playlistExists > 0">
           <div>
-            <CustomTopicHeader>
+            <CustomTopicHeader :topic="activeLink">
               <h3 class="header-card-text-content">{{activeLink.text}}</h3>
             </CustomTopicHeader>
-            <discussion-playlist :collection="forYou"></discussion-playlist>
+            <discussion-playlist :collection="streamContent(activeLink.stream)"/>
           </div>
         </div>
         <div v-else>
@@ -51,16 +51,17 @@ export default {
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
     await this.fetchForYou();
+    if (this.currentUser.email) await this.fetchFollowing();
   },
   data() {
     return {
       sideLinks: [
         {
-          text: 'For You', stream: 'for-you', inactiveIcon: 'house', activeIcon: 'house-fill',
+          text: 'For You', stream: 'for-you', inactiveIcon: 'house', activeIcon: 'house-fill', content: this.forYou,
         },
         // { text: 'Discover', inactiveIcon: 'soundwave', activeIcon: 'soundwave' },
         {
-          text: 'Following', stream: 'following', inactiveIcon: 'people', activeIcon: 'people-fill',
+          text: 'Following', stream: 'following', inactiveIcon: 'people', activeIcon: 'people-fill', content: this.forYou,
         },
       ],
       activeStream: 'for-you',
@@ -69,8 +70,10 @@ export default {
   computed: {
     ...mapState({
       currentDiscussion: (state) => state.audio.currentDiscussion,
-      isLoading: (state) => state.forYou.isRequestingForYou,
-      forYou: (state) => state.forYou.forYou,
+      currentUser: (state) => state.users.currentUser,
+      isLoading: (state) => state.listen.isRequestingListen,
+      forYou: (state) => state.listen.forYou,
+      following: (state) => state.listen.following,
       isMobile: (state) => state.sizing.isMobile,
     }),
     playlistExists() {
@@ -81,7 +84,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchForYou']),
+    ...mapActions(['fetchForYou', 'fetchFollowing']),
+    streamContent(stream) {
+      switch (stream) {
+        case 'for-you':
+          return this.forYou;
+        case 'following':
+          return this.following;
+        default:
+          return {};
+      }
+    },
   },
 };
 </script>
