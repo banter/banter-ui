@@ -8,6 +8,7 @@ import {
   PrivacyPolicy,
   Landing,
   Explore,
+  Listen,
 } from './views/index';
 
 Vue.use(Router);
@@ -22,15 +23,41 @@ export default new Router({
       meta: { layout: 'landing' },
     },
     {
+      path: '/share',
+      name: 'welcome-to-banter',
+      component: Landing,
+      meta: { layout: 'landing' },
+    },
+    {
       path: '/home',
       name: 'Home',
       component: Home,
-      props: (route) => ({ loginSuccess: route.query.success, loginError: route.query.error }),
+      props: (route) => ({
+        loginSuccess: route.query.success === 'true',
+        loginError: route.query.error,
+      }),
     },
     {
       path: '/topics/:topicName',
       name: 'Topic',
       component: Topic,
+    },
+    {
+      path: '/topics/:topicName/:topicId',
+      name: 'Topic',
+      component: Topic,
+    },
+    {
+      path: '/for-you',
+      name: 'ForYou',
+      component: Listen,
+      props: () => ({ stream: 'for-you' }),
+    },
+    {
+      path: '/following',
+      name: 'Following',
+      component: Listen,
+      props: () => ({ stream: 'following' }),
     },
     {
       path: '/explore',

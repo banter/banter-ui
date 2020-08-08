@@ -1,20 +1,19 @@
 <template>
 <div>
-  <b-button :disabled="topicsRequesting"
-  @click="handleClick" variant="outline-primary">
-      <div v-if="topicsRequesting">
-        <LoadingSpinner :variant="'secondary'" />
-      </div>
-      <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
+  <b-button :disabled="followRequestingThisTopic"
+    @click="handleClick"
+    :variant="variant">
+      <span v-if="followRequestingThisTopic"
+        id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
+      <span v-else
+        id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
   </b-button>
-  <follow-auth-modal ref="followModal"></follow-auth-modal>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import LoadingSpinner from './LoadingSpinner.vue';
-import FollowAuthModal from './modals/FollowAuthModal.vue';
+import MODALS from '../constants/modals';
 
 export default {
   name: 'FollowButton',
@@ -24,33 +23,35 @@ export default {
       required: true,
       default: () => ({}),
     },
-  },
-  components: {
-    LoadingSpinner,
-    FollowAuthModal,
+    variant: {
+      type: String,
+      required: false,
+      default: 'outline-primary',
+    },
   },
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
       followedTopics: (state) => state.users.followedTopics,
-      topicsRequesting: (state) => state.users.topicsRequesting,
+      followRequesting: (state) => state.users.followRequesting,
+      toggledFollowTopic: (state) => state.users.toggledFollowTopic,
     }),
     isFollowing() {
       return !!this.followedTopics?.find((followedTopic) => followedTopic.id === this.topic.id);
+    },
+    followRequestingThisTopic() {
+      return this.followRequesting && this.toggledFollowTopic?.id === this.topic?.id;
     },
   },
   methods: {
     ...mapActions(['followTopic', 'unfollowTopic']),
     async handleClick() {
       if (!this.currentUser.email) {
-        this.$bvModal.show(this.$refs.followModal.modalName);
+        this.$bvModal.show(MODALS.FOLLOW_AUTH_MODAL);
+      } else if (this.isFollowing) {
+        await this.unfollowTopic(this.topic);
       } else {
-        if (this.isFollowing) {
-          await this.unfollowTopic(this.topic);
-        } else {
-          await this.followTopic(this.topic);
-        }
-        this.$store.dispatch('fetchTopicsFollowed');
+        await this.followTopic(this.topic);
       }
     },
   },

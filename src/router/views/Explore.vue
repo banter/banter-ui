@@ -1,6 +1,7 @@
 <template>
   <div class="main-content">
       <SearchBar></SearchBar>
+      <follow-cards v-bind:isSuggestions="true"/>/>
   </div>
 
 </template>
@@ -8,11 +9,13 @@
 <script>
 
 import SearchBar from '../../components/commons/SearchBar.vue';
+import FollowCards from '../../components/FollowCards.vue';
 
 export default {
-  name: 'Home',
+  name: 'Explore',
   components: {
     SearchBar,
+    FollowCards,
   },
 };
 </script>

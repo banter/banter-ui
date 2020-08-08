@@ -6,13 +6,15 @@ export default {
     currentUser: {},
     followedTopics: [],
     topicsRequesting: false,
+    followRequesting: false,
     isRequesting: false,
     errored: false,
     error: null,
+    toggledFollowTopic: null,
   },
   actions: {
     loginUser({
-      commit,
+      commit, dispatch,
     }, { authEmail, authPassword }) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.LOGIN}`,
@@ -24,7 +26,31 @@ export default {
         successCommit: 'fetchCurrentUserSuccess',
         errorCommit: 'authUserError',
       };
-      return apiRequest({ requestData, mutations, commit });
+      const actions = {
+        successDispatch: 'fetchUserPastActions',
+        errorDispatch: 'loginAnonUser',
+      };
+      return apiRequest({
+        requestData, mutations, commit, actions, dispatch,
+      });
+    },
+    loginAnonUser({
+      commit, state,
+    }) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.USERS}${API.LOGIN_ANON}`,
+        method: 'POST',
+        data: state.anonId ? {} : { id: state.anonId },
+      };
+      const mutations = {
+        preCommit: 'anonLoginRequest',
+        successCommit: 'anonLoginSuccess',
+        errorCommit: 'anonLoginError',
+      };
+
+      return apiRequest({
+        requestData, mutations, commit,
+      });
     },
     signupUser({
       commit,
@@ -42,7 +68,7 @@ export default {
       return apiRequest({ requestData, mutations, commit });
     },
     fetchCurrentUser({
-      commit,
+      commit, dispatch,
     }) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.ME}`,
@@ -52,7 +78,21 @@ export default {
         successCommit: 'fetchCurrentUserSuccess',
         errorCommit: 'currentUserError',
       };
-      return apiRequest({ requestData, mutations, commit });
+      const actions = {
+        successDispatch: 'fetchUserPastActions',
+        errorDispatch: 'loginAnonUser',
+      };
+      return apiRequest({
+        requestData, mutations, commit, dispatch, actions,
+      });
+    },
+    fetchUserPastActions({ dispatch, state }) {
+      if (state?.currentUser && !state?.currentUser?.anonymous) {
+        dispatch('fetchTopicsFollowed');
+        dispatch('fetchDiscussionsLiked');
+        dispatch('fetchForYou');
+        dispatch('fetchFollowing');
+      }
     },
     fetchTopicsFollowed({
       commit,
@@ -67,34 +107,42 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
-    followTopic({
-      commit,
-    }, { id }) {
+    async followTopic({
+      commit, dispatch,
+    }, topic) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${id}/${API.FOLLOW}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.FOLLOW}`,
         method: 'POST',
       };
       const mutations = {
-        preCommit: 'followTopicRequest',
-        successCommit: 'followTopicSuccess',
         errorCommit: 'followTopicError',
       };
-      return apiRequest({ requestData, mutations, commit });
+      commit('followTopicRequest', topic);
+      await apiRequest({
+        requestData, mutations, dispatch, commit,
+      });
+      commit('followTopicSuccess', topic);
+      dispatch('fetchForYouSilently');
+      dispatch('fetchFollowingSilently');
     },
-    unfollowTopic({
-      commit,
-    }, { id }) {
+    async unfollowTopic({
+      commit, dispatch,
+    }, topic) {
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${id}/${API.UNFOLLOW}`,
+        url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.UNFOLLOW}`,
         method: 'POST',
       };
       const mutations = {
         preCommit: 'unfollowTopicRequest',
-        successCommit: 'unfollowTopicSuccess',
         errorCommit: 'unfollowTopicError',
       };
-
-      return apiRequest({ requestData, mutations, commit });
+      commit('unfollowTopicRequest', topic);
+      await apiRequest({
+        requestData, mutations, dispatch, commit,
+      });
+      commit('unfollowTopicSuccess', topic);
+      dispatch('fetchForYouSilently');
+      dispatch('fetchFollowingSilently');
     },
   },
   mutations: {
@@ -126,28 +174,48 @@ export default {
       state.isRequesting = false;
       state.errored = true;
       state.error = error;
+      state.anonId = window.localStorage.getItem('banter-temporary-login-id');
     },
-    followTopicRequest(state) {
-      state.topicsRequesting = true;
+    followTopicRequest(state, topic) {
+      state.toggledFollowTopic = topic;
+      state.followRequesting = true;
     },
-    followTopicSuccess(state) {
-      state.topicsRequesting = false;
+    followTopicSuccess(state, topic) {
+      state.toggledFollowTopic = null;
+      state.followRequesting = false;
+      state.followedTopics.push(topic);
     },
     followTopicError(state, error) {
-      state.topicsRequesting = false;
+      state.toggledFollowTopic = null;
+      state.followRequesting = false;
       state.errored = true;
       state.error = error;
     },
-    unfollowTopicRequest(state) {
-      state.topicsRequesting = true;
+    unfollowTopicRequest(state, topic) {
+      state.toggledFollowTopic = topic;
+      state.followRequesting = true;
     },
-    unfollowTopicSuccess(state) {
-      state.topicsRequesting = false;
+    unfollowTopicSuccess(state, outTopic) {
+      state.toggledFollowTopic = null;
+      state.followedTopics = state.followedTopics
+        .filter((inTopic) => inTopic.id !== outTopic.id);
+      state.followRequesting = false;
     },
     unfollowTopicError(state, error) {
-      state.topicsRequesting = false;
+      state.toggledFollowTopic = null;
+      state.followRequesting = false;
       state.errored = true;
       state.error = error;
+    },
+    anonLoginRequest(state) {
+      state.isRequesting = true;
+    },
+    anonLoginSuccess(state, payload) {
+      window.localStorage.setItem('banter-temporary-login-id', payload.data.id);
+      state.isRequesting = false;
+    },
+    anonLoginError(state) {
+      state.isRequesting = false;
     },
   },
 };

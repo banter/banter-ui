@@ -1,24 +1,32 @@
 <template>
   <div :class="`card-wrapper ${type}-wrapper`">
-    <router-link :to="`/topics/${topic.value}`">
+    <a @click="() => goToTopic(topic)">
       <div :class="`image-card ${type}`">
-        <b-img v-if="imageLoadingError"
-          class="fallback-image topic-image"
-          :src="require('../assets/Banter_logo_sound.png')"/>
+        <b-img v-if="imageLoadingError" class="fallback-image topic-image"
+          :src="require('../assets/Favicon.png')" />
         <b-img v-else class="topic-image" :src="topic.imageUrl" @error="imageLoadError" />
-        <div class = "topic-content-wrapper">
-        <div class="topic-descriptor">
-          <p class="topic-label">
-            {{topic.value}}
-          </p>
+        <div class="topic-content-wrapper">
+          <div class="topic-descriptor">
+            <p class="topic-label">
+              {{topic.value}}
+            </p>
+          </div>
         </div>
+        <div class="topic-card-follow">
+          <FollowButton
+            @click.native="$event.stopImmediatePropagation()"
+            variant="primary"
+            v-if="allowFollow"
+            :topic="topic"/>
         </div>
       </div>
-    </router-link>
+    </a>
   </div>
 </template>
 
 <script>
+import FollowButton from './FollowButton.vue';
+
 export default {
   name: 'TopicCard',
   data() {
@@ -26,9 +34,15 @@ export default {
       imageLoadingError: false,
     };
   },
+  components: {
+    FollowButton,
+  },
   methods: {
     imageLoadError() {
       this.imageLoadingError = true;
+    },
+    goToTopic(topic) {
+      this.$router.push(`/topics/${topic.value}/${topic.id}`);
     },
   },
   props: {
@@ -36,6 +50,11 @@ export default {
       type: Number,
       required: true,
       default: 0,
+    },
+    allowFollow: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     topic: {
       type: Object,
@@ -101,7 +120,6 @@ export default {
     position: absolute;
     background-color: black;
     color: white;
-    // width: 50%;
     width: fit-content;
     height: 50px;
     left: 0;
@@ -112,12 +130,10 @@ export default {
   }
 
   .topic-label {
-    // position: absolute;
     font-style: normal;
     font-weight: 250;
     font-size: 16px;
     text-align: center;
-    // line-height: 18px;
     height: auto;
     padding: 5px 10px;
   }
@@ -148,9 +164,9 @@ export default {
     font-weight: 300;
     font-size: 26px;
     text-align: center;
-    // line-height: 22px;
-    height: 100%;
     padding: 20px 0px;
+    margin: 0 auto;
+    line-height: 1;
   }
 }
 
@@ -160,8 +176,8 @@ export default {
   height: 250px;
   margin: auto;
   .carousel-card {
-      height: 200px;
-      width: 200px;
+    height: 200px;
+    width: 200px;
 
     min-height: 250px;
     max-height: 350px;
@@ -201,6 +217,11 @@ export default {
       height: 100%;
       padding: 20px 0px;
     }
+  }
+  .topic-card-follow {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 }
 </style>

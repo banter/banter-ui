@@ -32,7 +32,7 @@ export default {
   name: 'SearchBar',
   watch: {
     matchedTags(newVal) {
-      this.foundTags = newVal.map((tag) => ({ label: tag.value })) || [];
+      this.foundTags = newVal.map((tag) => ({ label: tag.value, id: tag.id })) || [];
       this.loadingSpinner(false);
     },
   },
@@ -62,7 +62,7 @@ export default {
       }
     }, 100),
     selectItem(tag) {
-      this.$router.push(`/topics/${tag.label}`);
+      this.$router.push(`/topics/${tag?.label}/${tag?.id}`);
     },
   },
   data() {

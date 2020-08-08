@@ -8,14 +8,34 @@ export default {
     trendingTopics: [],
     currentTopic: {},
     isRequesting: false,
+    isRequestingFollowing: false,
     isRequestingQuery: false,
     isRequestingTrending: false,
     errored: false,
     error: '',
   },
   actions: {
-    fetchTopic({ commit }, topic) {
-      const requestData = { url: `${API.BASE_URL}${API.TOPICS}${topic}` };
+    fetchTopicByName({ commit }, topic) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}`,
+        queries: {
+          name: topic,
+        },
+      };
+      const mutations = {
+        preCommit: 'fetchTopicRequest',
+        successCommit: 'fetchTopicSuccess',
+        errorCommit: 'topicError',
+      };
+      return apiRequest({ requestData, mutations, commit });
+    },
+    fetchTopicById({ commit }, id) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.TOPICS}`,
+        queries: {
+          id,
+        },
+      };
       const mutations = {
         preCommit: 'fetchTopicRequest',
         successCommit: 'fetchTopicSuccess',
@@ -30,7 +50,7 @@ export default {
         url: `${API.BASE_URL}${API.TOPICS}${API.TRENDING}`,
         queries: {
           sinceDaysAgo: 5,
-          limit: 3,
+          limit: 15,
         },
       };
       const mutations = {
@@ -141,7 +161,10 @@ export default {
     },
   },
   getters: {
-    getTrendingTopicTags(state) {
+    homeTopTrendingTags(state) {
+      return state.trendingTopics.map((trendingTopics) => trendingTopics?.tag).slice(0, 3);
+    },
+    suggestFollowingTrendingTags(state) {
       return state.trendingTopics.map((trendingTopics) => trendingTopics?.tag);
     },
   },

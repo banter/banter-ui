@@ -10,8 +10,13 @@ import {
 // Analytics
 import Hotjar from 'vue-hotjar';
 import VueAnalytics from 'vue-analytics';
+import VueSocialSharing from 'vue-social-sharing';
 
 import vSelect from 'vue-select';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faShareAlt, faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 import store from './store/index';
 import router from './router/index';
 import App from './App.vue';
@@ -22,6 +27,11 @@ import Landing from './layouts/Landing.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'vue-select/dist/vue-select.css';
+
+library.add(faShareAlt);
+library.add(faCommentDots);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(Hotjar, {
   id: '1897223',
@@ -37,9 +47,7 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Vuex);
 Vue.use(Carousel3d);
-
-Vue.config.productionTip = false;
-
+Vue.use(VueSocialSharing);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Vuex);

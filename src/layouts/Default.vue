@@ -3,6 +3,7 @@
     <BanterNavBar/>
     <BanterBottomNavBar></BanterBottomNavBar>
     <slot/>
+    <AllModals/>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import { mapActions } from 'vuex';
 import BanterNavBar from '../components/BanterNavBar.vue';
 import BanterBottomNavBar from '../components/BanterBottomNavBar.vue';
+import AllModals from '../components/modals/AllModals.vue';
 
 export default {
   name: 'Banter',
@@ -18,11 +20,11 @@ export default {
     this.$store.dispatch('fetchTrendingTopics');
     this.$store.dispatch('fetchCollections');
     this.$store.dispatch('fetchCurrentUser');
-    this.$store.dispatch('fetchTopicsFollowed');
   },
   components: {
     BanterNavBar,
     BanterBottomNavBar,
+    AllModals,
   },
   mounted() {
     if (this.loginError) {
@@ -52,5 +54,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+#banter-app{
+  padding-bottom: 70px;
 }
 </style>

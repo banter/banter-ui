@@ -8,11 +8,12 @@
 </template>
 
 <script>
+import MODALS from '../../constants/modals';
 import BaseAuthModal from './BaseAuthModal.vue';
 
 export default {
   name: 'AuthModal',
-  data() { return { modalName: 'auth-modal' }; },
+  data() { return { modalName: MODALS.AUTH_MODAL }; },
   components: {
     BaseAuthModal,
   },

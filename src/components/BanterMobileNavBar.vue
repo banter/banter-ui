@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-nav-bar">
-    <nav class="navbar navbar-light navbar-expand-md justify-content-center">
+    <nav class="navbar navbar-light navbar-expand-md justify-content-center mobile-nav-bar-content">
       <b-navbar-brand class="navbar-brand d-flex m-auto">
         <router-link :to="'/home'" class="navbar-brand d-flex m-auto">
           <b-icon icon="house" font-scale="1.2" style="margin:auto">
@@ -9,12 +9,12 @@
         </router-link>
       </b-navbar-brand>
       <b-navbar-brand class="navbar-brand d-flex m-auto">
-        <MyFeedButton></MyFeedButton>
+        <LinkButton v-bind:isMobile="true"></LinkButton>
       </b-navbar-brand>
       <b-navbar-nav class="navbar-brand d-flex m-auto ">
         <router-link :to="'/explore'" class="navbar-brand d-flex m-auto">
           <b-icon icon="search" font-scale="1.2" style="margin:auto"> </b-icon>
-          Search
+          Explore
         </router-link>
       </b-navbar-nav>
 
@@ -24,12 +24,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import MyFeedButton from './commons/MyFeedButton.vue';
+import LinkButton from './commons/LinkButton.vue';
 
 export default {
   name: 'BanterMobileNavBar',
   components: {
-    MyFeedButton,
+    LinkButton,
   },
   computed: {
     ...mapState({
@@ -40,16 +40,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .navbar-brand{
     flex-direction:column
-}
-
-.fixed-bottom {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1030;
 }
 
 .mobile-nav-bar {
@@ -57,12 +50,8 @@ export default {
   background: lightgray;
 }
 
-.mobile-nav-bar-container {
+.mobile-nav-bar-content {
   padding: 0;
-  display: flex;
-}
-
-.mobile-nav-bar-container div {
-  margin: auto;
+  line-height: 1;
 }
 </style>

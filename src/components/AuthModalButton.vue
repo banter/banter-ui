@@ -1,24 +1,33 @@
 <template>
   <div>
-    <b-button v-if="!currentUser.email" v-b-modal.auth-modal size="sm" id="nav-signup"
+    <b-button
+      v-if="!currentUser.email && !isRequesting"
+      v-b-modal.auth-modal
+      size="sm"
+      id="nav-signup"
       type="submit">
       <p id="nav-signup-text">Log In</p>
     </b-button>
     <b-nav>
-      <b-nav-item-dropdown v-if="currentUser.email" :text="currentUser.email">
-        <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
+      <b-nav-item-dropdown v-if="currentUser.email">
+        <template slot="button-content">
+          <b-avatar/>
+        </template>
+        <b-dropdown-item disabled href="#">
+          {{currentUser.email}}
+        </b-dropdown-item>
+        <b-dropdown-item class="mobile-dropdown"
+        :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
           Sign Out
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-nav>
-    <auth-modal ref="modal"></auth-modal>
   </div>
 </template>
 
 <script>
 
 import { mapState } from 'vuex';
-import AuthModal from './modals/AuthModal.vue';
 import API from '../constants/api';
 
 export default {
@@ -26,16 +35,23 @@ export default {
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
+      isRequesting: (state) => state.users.isRequesting,
     }),
   },
   components: {
-    AuthModal,
   },
   data() { return { API }; },
 };
 </script>
 
 <style lang="scss">
+
+@media (max-width: 800px) {
+.dropdown-menu.show {
+  left:-170px
+}
+}
+
 #nav-search-group {
   padding: 0px 6px;
   background: rgba(129, 134, 140, 0.25);
@@ -43,7 +59,9 @@ export default {
   border-radius: 2px;
 }
 
+// this changes all buttons in Repo with this id
 #nav-signup {
+  padding: 0 0;
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;
