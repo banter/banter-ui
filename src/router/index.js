@@ -26,7 +26,10 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home,
-      props: (route) => ({ loginSuccess: route.query.success, loginError: route.query.error }),
+      props: (route) => ({
+        loginSuccess: route.query.success === 'true',
+        loginError: route.query.error,
+      }),
     },
     {
       path: '/topics/:topicName',

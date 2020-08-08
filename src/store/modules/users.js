@@ -117,13 +117,11 @@ export default {
         preCommit: 'followTopicRequest',
         errorCommit: 'followTopicError',
       };
-      const actions = {
-        successDispatch: 'fetchFollowing',
-      };
       await apiRequest({
-        requestData, mutations, actions, dispatch, commit,
+        requestData, mutations, dispatch, commit,
       });
       commit('followTopicSuccess', topic);
+      dispatch('fetchFollowingSilently');
     },
     async unfollowTopic({
       commit, dispatch,
@@ -136,13 +134,11 @@ export default {
         preCommit: 'unfollowTopicRequest',
         errorCommit: 'unfollowTopicError',
       };
-      const actions = {
-        successDispatch: 'fetchFollowing',
-      };
       await apiRequest({
-        requestData, mutations, actions, dispatch, commit,
+        requestData, mutations, dispatch, commit,
       });
       commit('unfollowTopicSuccess', topic);
+      dispatch('fetchFollowingSilently');
     },
   },
   mutations: {

@@ -14,7 +14,7 @@
         <LoadingSpinner variant="secondary" />
       </div>
       <div v-if="!isLoading">
-        <div v-if="playlistExists() > 0 || !showFollowSuggestions">
+        <div v-if="playlistExists() > 0 && !forceRefreshToShowFollowing">
           <div>
             <CustomTopicHeader :topic="activeLink">
               <h3 class="header-card-text-content">{{activeLink.text}}</h3>
@@ -47,7 +47,8 @@ export default {
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
-    this.fetchCurrentStream();
+    await this.fetchCurrentStream();
+    if (!this.playlistExists(this.activeStream)) this.forceRefreshToShowFollowing = true;
   },
   props: {
     stream: {
@@ -68,7 +69,7 @@ export default {
         },
       ],
       activeStream: this.stream,
-      showFollowSuggestions: false,
+      forceRefreshToShowFollowing: false,
     };
   },
   computed: {
@@ -107,7 +108,6 @@ export default {
         case 'following':
           if (this.currentUser.email && !this.playlistExists(this.activeStream)) {
             await this.fetchFollowing();
-            if (!this.playlistExists(this.activeStream)) this.showFollowSuggestions = true;
           }
           break;
         default:

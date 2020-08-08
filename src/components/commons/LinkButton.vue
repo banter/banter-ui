@@ -2,7 +2,7 @@
   <div>
     <div>
       <router-link :to="'/for-you'" class="navbar-brand d-flex m-auto">
-        <div v-if="isMobile" @click="!this.currentUser.email" class="navbar-brand d-flex m-auto">
+        <div v-if="isMobile" @click="triggerAuthModal" class="navbar-brand d-flex m-auto">
           <b-icon icon="collection" font-scale="1.2" style="margin:auto"/>
           {{streamLinkText}}
         </div>
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     triggerAuthModal() {
-      this.$bvModal.show(MODALS.FOR_YOU_AUTH_MODAL);
+      return !this.currentUser.email && this.$bvModal.show(MODALS.FOR_YOU_AUTH_MODAL);
     },
   },
 };

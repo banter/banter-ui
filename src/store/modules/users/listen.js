@@ -26,9 +26,12 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
+    fetchFollowingSilently({ dispatch }) {
+      dispatch('fetchFollowing', true);
+    },
     fetchFollowing({
       commit,
-    }) {
+    }, isSilent) {
       const requestData = {
         url: `${API.BASE_URL}${API.TOPICS}${API.FOLLOWING}`,
         queries: {
@@ -36,7 +39,7 @@ export default {
         },
       };
       const mutations = {
-        preCommit: 'fetchListenRequest',
+        preCommit: !isSilent && 'fetchListenRequest',
         successCommit: 'fetchFollowingSuccess',
         errorCommit: 'fetchListenError',
       };
