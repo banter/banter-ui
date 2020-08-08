@@ -10,6 +10,7 @@ export default {
     isRequesting: false,
     errored: false,
     error: null,
+    toggledFollowTopic: null,
   },
   actions: {
     loginUser({
@@ -114,9 +115,9 @@ export default {
         method: 'POST',
       };
       const mutations = {
-        preCommit: 'followTopicRequest',
         errorCommit: 'followTopicError',
       };
+      commit('followTopicRequest', topic);
       await apiRequest({
         requestData, mutations, dispatch, commit,
       });
@@ -135,6 +136,7 @@ export default {
         preCommit: 'unfollowTopicRequest',
         errorCommit: 'unfollowTopicError',
       };
+      commit('unfollowTopicRequest', topic);
       await apiRequest({
         requestData, mutations, dispatch, commit,
       });
@@ -174,27 +176,33 @@ export default {
       state.error = error;
       state.anonId = window.localStorage.getItem('banter-temporary-login-id');
     },
-    followTopicRequest(state) {
+    followTopicRequest(state, topic) {
+      state.toggledFollowTopic = topic;
       state.followRequesting = true;
     },
     followTopicSuccess(state, topic) {
+      state.toggledFollowTopic = null;
       state.followRequesting = false;
       state.followedTopics.push(topic);
     },
     followTopicError(state, error) {
+      state.toggledFollowTopic = null;
       state.followRequesting = false;
       state.errored = true;
       state.error = error;
     },
-    unfollowTopicRequest(state) {
+    unfollowTopicRequest(state, topic) {
+      state.toggledFollowTopic = topic;
       state.followRequesting = true;
     },
     unfollowTopicSuccess(state, outTopic) {
+      state.toggledFollowTopic = null;
       state.followedTopics = state.followedTopics
         .filter((inTopic) => inTopic.id !== outTopic.id);
       state.followRequesting = false;
     },
     unfollowTopicError(state, error) {
+      state.toggledFollowTopic = null;
       state.followRequesting = false;
       state.errored = true;
       state.error = error;

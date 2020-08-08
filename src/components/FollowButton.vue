@@ -1,9 +1,9 @@
 <template>
 <div>
-  <b-button :disabled="followRequesting"
+  <b-button :disabled="followRequestingThisTopic"
     @click="handleClick"
     :variant="variant">
-      <span v-if="followRequesting"
+      <span v-if="followRequestingThisTopic"
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
       <span v-else
         id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
@@ -34,9 +34,13 @@ export default {
       currentUser: (state) => state.users.currentUser,
       followedTopics: (state) => state.users.followedTopics,
       followRequesting: (state) => state.users.followRequesting,
+      toggledFollowTopic: (state) => state.users.toggledFollowTopic,
     }),
     isFollowing() {
       return !!this.followedTopics?.find((followedTopic) => followedTopic.id === this.topic.id);
+    },
+    followRequestingThisTopic() {
+      return this.followRequesting && this.toggledFollowTopic?.id === this.topic?.id;
     },
   },
   methods: {
