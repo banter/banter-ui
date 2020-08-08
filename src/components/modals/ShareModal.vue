@@ -36,7 +36,7 @@ export default {
       modalName: 'share-modal',
       sharing: {
         url: 'https://banteraudio.com/share',
-        title: 'Say Hi to the New Way to listen to Podcasts. Go checkout Banter!',
+        title: 'The World is Changing. And so are Podcasts.',
         description: 'Say Hi to the New Way to listen Podcasts. Go checkout Banter!',
         quote: 'This has changed how I will listen to podcasts forever.',
         hashtags: 'banter,theNewNormal,podcasts',
