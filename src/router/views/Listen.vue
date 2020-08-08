@@ -47,8 +47,13 @@ export default {
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
-    await this.fetchTopicsFollowed();
-    if (!this.isFollowingTopics) this.forceRefreshToShowFollowing = true;
+    await this.fetchCurrentUser();
+    if (this.currentUser.email) {
+      await this.fetchTopicsFollowed();
+    }
+    if (!this.isFollowingTopics) {
+      this.forceRefreshToShowFollowing = true;
+    }
 
     await this.fetchCurrentStream();
   },
@@ -87,12 +92,14 @@ export default {
     activeLink() {
       return this.sideLinks.find((link) => link.stream === this.activeStream);
     },
-    isFollowingTopics() { return this.followedTopics?.length > 0; },
+    isFollowingTopics() {
+      return this.followedTopics?.length > 0;
+    },
 
     followingCount() { return this.followedTopics?.length; },
   },
   methods: {
-    ...mapActions(['fetchForYou', 'fetchFollowing', 'fetchTopicsFollowed']),
+    ...mapActions(['fetchForYou', 'fetchFollowing', 'fetchTopicsFollowed', 'fetchCurrentUser']),
 
     streamContent(stream) {
       switch (stream) {
