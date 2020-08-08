@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import topics from './modules/topics';
 import audio from './modules/audio';
-import forYou from './modules/users/for-you';
+import listen from './modules/users/listen';
 import users from './modules/users';
 import actions from './modules/actions';
 import sizing from './modules/sizing';
@@ -16,6 +16,6 @@ export default new Vuex.Store({
     users,
     sizing,
     actions,
-    forYou,
+    listen,
   },
 });
