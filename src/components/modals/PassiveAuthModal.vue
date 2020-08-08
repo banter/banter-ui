@@ -32,7 +32,7 @@ export default {
   mounted() {
     setTimeout(() => {
       if (!this.currentUser.email) { this.$bvModal.show(MODALS.PASSIVE_AUTH_MODAL); }
-    }, 40000);
+    }, 100000);
   },
 };
 </script>
