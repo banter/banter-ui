@@ -63,7 +63,7 @@ export default {
 
 <style scoped>
 .landing-home {
-  background-color: #F8ECDC;
+  /* background-color: #F8ECDC; */
   position: absolute;
   top: 0;
   left: 0;

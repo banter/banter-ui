@@ -51,7 +51,9 @@ export default {
   border-radius: 2px;
 }
 
+// this changes all buttons in Repo with this id
 #nav-signup {
+  padding: 0 0;
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;

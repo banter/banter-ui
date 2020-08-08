@@ -6,22 +6,24 @@
     <b-img v-else class="header-card card-img" :src="currentImageUrl" @error="imageLoadError" />
       <b-card-text class="header-card-text">
         <slot>
-         <FollowButton :topic="currentTopic.primaryTag" class="header-follow"/>
          <h3 class="header-card-text-content">{{currentTopic.name}}</h3>
+         <FollowButton :topic="currentTopic.primaryTag" class="header-follow"/>
+         <share-button></share-button>
         </slot>
       </b-card-text>
-
     </b-card>
   </div>
 </template>
 
 <script>
 import FollowButton from './FollowButton.vue';
+import ShareButton from './commons/ShareButton.vue';
 
 export default {
   name: 'TopicHeader',
   components: {
     FollowButton,
+    ShareButton,
   },
   data() {
     return {
@@ -116,5 +118,6 @@ export default {
 
 .header-follow {
   margin-right: 15px;
+  margin-left: 15px;
 }
 </style>
