@@ -6,7 +6,6 @@ export default {
     collections: [],
     tagMatches: [],
     trendingTopics: [],
-    followingTopics: {},
     currentTopic: {},
     isRequesting: false,
     isRequestingFollowing: false,
@@ -81,20 +80,6 @@ export default {
 
       return apiRequest({ requestData, mutations, commit });
     },
-    fetchFollowingTopics({
-      commit,
-    }) {
-      const requestData = {
-        url: `${API.BASE_URL}${API.TOPICS}${API.FOLLOWING}`,
-      };
-      const mutations = {
-        preCommit: 'fetchFollowingTopicsRequest',
-        successCommit: 'fetchFollowingTopicsSuccess',
-        errorCommit: 'followingTopicsError',
-      };
-
-      return apiRequest({ requestData, mutations, commit });
-    },
     queryTopics({
       commit,
     }, tagString) {
@@ -159,18 +144,6 @@ export default {
     },
     trendingTopicsError(state, error) {
       state.isRequestingTrending = false;
-      state.errored = true;
-      state.error = error.message;
-    },
-    fetchFollowingTopicsRequest(state) {
-      state.isRequestingFollowing = true;
-    },
-    fetchFollowingTopicsSuccess(state, payload) {
-      state.followingTopics = payload;
-      state.isRequestingFollowing = false;
-    },
-    followingTopicsError(state, error) {
-      state.isRequestingFollowing = false;
       state.errored = true;
       state.error = error.message;
     },

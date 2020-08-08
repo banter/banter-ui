@@ -10,9 +10,9 @@
               class="rounded-0 for-you-header-image"></b-card-img>
           </b-col>
           <b-col md="6" class="for-you-col">
-            <b-card-body>
-              <b-card-text class="for-you-text">
-               {{topic.text}}
+            <b-card-body class='for-you-body'>
+              <b-card-text :class="`for-you-text`">
+               <b style="margin-right:10px"><slot/></b> {{topic.text}}
               </b-card-text>
             </b-card-body>
           </b-col>
@@ -32,23 +32,36 @@ export default {
       required: true,
       default: () => ({}),
     },
+    type: {
+      type: String,
+      required: false,
+      default: 'for-you',
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.for-you-body {
+  padding: 0;
+}
+
 .for-you-text {
   display: flex;
+  margin-bottom: 0;
+  line-height: 1.15;
   justify-content: center;
   align-items: center;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 52px;
+  font-size: 46px;
   color: #030303;
 }
 
 .for-you-col {
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
