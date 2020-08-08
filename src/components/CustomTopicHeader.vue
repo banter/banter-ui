@@ -2,15 +2,17 @@
   <div class="header-card card-wrapper">
     <div>
       <b-card no-body class="overflow-hidden for-you-header">
-        <b-row no-gutters>
+        <b-row no-gutters class="m-2">
           <b-col md="6">
-            <b-card-img :src="require('../assets/Favicon.png')" alt="Image"
-              class="rounded-0"></b-card-img>
+            <b-card-img
+              :src="require('../assets/Favicon.png')"
+              alt="Image"
+              class="rounded-0 for-you-header-image"></b-card-img>
           </b-col>
           <b-col md="6" class="for-you-col">
             <b-card-body>
               <b-card-text class="for-you-text">
-               For You
+               {{topic.text}}
               </b-card-text>
             </b-card-body>
           </b-col>
@@ -23,50 +25,60 @@
 <script>
 
 export default {
-  name: 'ForYouHeader',
+  name: 'CustomTopicHeader',
+  props: {
+    topic: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-
-.for-you-text{
+.for-you-text {
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 52px;
-    color: #030303;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 52px;
+  color: #030303;
 }
 
-.for-you-col{
-display: flex;
+.for-you-col {
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.for-you-header{
-    margin:auto;
-    max-width: 540px;
-      display: flex;
+.for-you-header {
+  margin: auto;
+  max-width: 540px;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .card {
-    background: none;
-    border: none;
+  background: none;
+  border: none;
 
 }
 
 .card-img {
-    object-fit: contain;
-    max-height: 600px;
+  object-fit: contain;
+  max-height: 600px;
 }
 
 .card-wrapper {
   margin: auto;
   position: relative;
+}
+
+.for-you-header-image {
+    height: 115px;
 }
 </style>

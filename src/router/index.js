@@ -8,7 +8,7 @@ import {
   PrivacyPolicy,
   Landing,
   Explore,
-  ForYou,
+  Listen,
 } from './views/index';
 
 Vue.use(Router);
@@ -32,7 +32,10 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home,
-      props: (route) => ({ loginSuccess: route.query.success, loginError: route.query.error }),
+      props: (route) => ({
+        loginSuccess: route.query.success === 'true',
+        loginError: route.query.error,
+      }),
     },
     {
       path: '/topics/:topicName',
@@ -47,7 +50,14 @@ export default new Router({
     {
       path: '/for-you',
       name: 'ForYou',
-      component: ForYou,
+      component: Listen,
+      props: () => ({ stream: 'for-you' }),
+    },
+    {
+      path: '/following',
+      name: 'Following',
+      component: Listen,
+      props: () => ({ stream: 'following' }),
     },
     {
       path: '/explore',

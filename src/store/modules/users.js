@@ -10,6 +10,7 @@ export default {
     isRequesting: false,
     errored: false,
     error: null,
+    toggledFollowTopic: null,
   },
   actions: {
     loginUser({
@@ -89,6 +90,8 @@ export default {
       if (state?.currentUser && !state?.currentUser?.anonymous) {
         dispatch('fetchTopicsFollowed');
         dispatch('fetchDiscussionsLiked');
+        dispatch('fetchForYou');
+        dispatch('fetchFollowing');
       }
     },
     fetchTopicsFollowed({
@@ -105,21 +108,25 @@ export default {
       return apiRequest({ requestData, mutations, commit });
     },
     async followTopic({
-      commit,
+      commit, dispatch,
     }, topic) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.FOLLOW}`,
         method: 'POST',
       };
       const mutations = {
-        preCommit: 'followTopicRequest',
         errorCommit: 'followTopicError',
       };
-      await apiRequest({ requestData, mutations, commit });
+      commit('followTopicRequest', topic);
+      await apiRequest({
+        requestData, mutations, dispatch, commit,
+      });
       commit('followTopicSuccess', topic);
+      dispatch('fetchForYouSilently');
+      dispatch('fetchFollowingSilently');
     },
     async unfollowTopic({
-      commit,
+      commit, dispatch,
     }, topic) {
       const requestData = {
         url: `${API.BASE_URL}${API.USERS}${API.ME}${API.FOLLOWING}${topic.id}/${API.UNFOLLOW}`,
@@ -129,9 +136,13 @@ export default {
         preCommit: 'unfollowTopicRequest',
         errorCommit: 'unfollowTopicError',
       };
-
-      await apiRequest({ requestData, mutations, commit });
+      commit('unfollowTopicRequest', topic);
+      await apiRequest({
+        requestData, mutations, dispatch, commit,
+      });
       commit('unfollowTopicSuccess', topic);
+      dispatch('fetchForYouSilently');
+      dispatch('fetchFollowingSilently');
     },
   },
   mutations: {
@@ -165,27 +176,33 @@ export default {
       state.error = error;
       state.anonId = window.localStorage.getItem('banter-temporary-login-id');
     },
-    followTopicRequest(state) {
+    followTopicRequest(state, topic) {
+      state.toggledFollowTopic = topic;
       state.followRequesting = true;
     },
     followTopicSuccess(state, topic) {
+      state.toggledFollowTopic = null;
       state.followRequesting = false;
       state.followedTopics.push(topic);
     },
     followTopicError(state, error) {
+      state.toggledFollowTopic = null;
       state.followRequesting = false;
       state.errored = true;
       state.error = error;
     },
-    unfollowTopicRequest(state) {
+    unfollowTopicRequest(state, topic) {
+      state.toggledFollowTopic = topic;
       state.followRequesting = true;
     },
     unfollowTopicSuccess(state, outTopic) {
+      state.toggledFollowTopic = null;
       state.followedTopics = state.followedTopics
         .filter((inTopic) => inTopic.id !== outTopic.id);
       state.followRequesting = false;
     },
     unfollowTopicError(state, error) {
+      state.toggledFollowTopic = null;
       state.followRequesting = false;
       state.errored = true;
       state.error = error;

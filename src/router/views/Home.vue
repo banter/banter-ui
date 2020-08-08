@@ -1,8 +1,8 @@
 <template>
   <div class="main-content">
     <TopicHero
-      v-if="!isRequestingTrending && getTrendingTopicTags.length > 0"
-      :topics="getTrendingTopicTags" :heroSize="heroSize"/>
+      v-if="!isRequestingTrending && homeTopTrendingTags.length > 0"
+      :topics="homeTopTrendingTags" :heroSize="heroSize"/>
     <div v-for="(collection, index) in collections" :key="`carousel-${index}`">
       <TopicCarouselScroll :collection="collection" :isMobile="isMobile"/>
     </div>
@@ -44,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTrendingTopicTags']),
+    ...mapGetters(['homeTopTrendingTags']),
     ...mapState({
       isRequestingTrending: (state) => state.topics.isRequesting,
       collections: (state) => state.topics.collections,
