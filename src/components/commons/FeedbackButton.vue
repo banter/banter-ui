@@ -1,7 +1,11 @@
 <template>
   <div class="feedback-location">
       <font-awesome-icon
-       @click="handleClick" icon="comment-dots" size="2x" color="#1da1f2" />
+        @click="handleClick"
+        icon="comment-dots"
+        size="2x"
+        color="#1da1f2"
+        class="feedback-icon"/>
   </div>
 </template>
 
@@ -24,5 +28,9 @@ export default {
     position: relative;
     left: 90%;
     margin-bottom: 10px;
+}
+
+.feedback-icon {
+  cursor: pointer;
 }
 </style>
