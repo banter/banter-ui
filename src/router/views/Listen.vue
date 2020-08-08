@@ -15,12 +15,12 @@
       </div>
       <div v-if="!isLoading">
         <div v-if="forceRefreshToShowFollowing && this.activeStream === 'following'">
-          <follow-suggestion-cards/>
+          <follow-cards v-bind:isSuggestions="true"/>
         </div>
         <div v-else>
           <div>
             <CustomTopicHeader :topic="activeLink">
-              <h3 class="header-card-text-content">{{activeLink.text}}</h3>
+              {{activeStream == 'following' && isFollowingTopics ? followingCount : ''}}
             </CustomTopicHeader>
             <discussion-playlist :collection="streamContent(activeLink.stream)"/>
           </div>
@@ -34,7 +34,7 @@
 import { mapActions, mapState } from 'vuex';
 import LoadingSpinner from '../../components/LoadingSpinner.vue';
 import CustomTopicHeader from '../../components/CustomTopicHeader.vue';
-import FollowSuggestionCards from '../../components/FollowSuggestionCards.vue';
+import FollowCards from '../../components/FollowCards.vue';
 import DiscussionPlaylist from '../../containers/DiscussionPlaylist.vue';
 
 export default {
@@ -43,12 +43,12 @@ export default {
     LoadingSpinner,
     CustomTopicHeader,
     DiscussionPlaylist,
-    FollowSuggestionCards,
+    FollowCards,
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
     await this.fetchTopicsFollowed();
-    if (this.followedTopics?.length < 1) this.forceRefreshToShowFollowing = true;
+    if (!this.isFollowingTopics) this.forceRefreshToShowFollowing = true;
 
     await this.fetchCurrentStream();
   },
@@ -87,9 +87,13 @@ export default {
     activeLink() {
       return this.sideLinks.find((link) => link.stream === this.activeStream);
     },
+    isFollowingTopics() { return this.followedTopics?.length > 0; },
+
+    followingCount() { return this.followedTopics?.length; },
   },
   methods: {
     ...mapActions(['fetchForYou', 'fetchFollowing', 'fetchTopicsFollowed']),
+
     streamContent(stream) {
       switch (stream) {
         case 'for-you':

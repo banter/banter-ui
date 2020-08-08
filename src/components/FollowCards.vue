@@ -4,7 +4,7 @@
       <b-card
         style="border: none"
         class="mb-4"
-        v-for="(topic, index) in suggestFollowingTrendingTags"
+        v-for="(topic, index) in isSuggestions ? suggestFollowingTrendingTags : followingTopics"
         :key="`follow-suggestion-${index}`">
         <div>
           <TopicCard type="carousel-card" allowFollow :topic="topic" :index="index" />
@@ -20,14 +20,23 @@ import TopicCard from './TopicCard.vue';
 
 export default {
 
-  name: 'FollowSuggestionCards',
+  name: 'FollowCards',
   components: {
     TopicCard,
+  },
+  props: {
+    isSuggestions: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   computed: {
     ...mapGetters(['suggestFollowingTrendingTags']),
     ...mapState({
       isMobile: (state) => state.sizing.isMobile,
+      followingTopics: (state) => state.users.followedTopics,
+
     }),
   },
 };
@@ -40,7 +49,7 @@ export default {
 
 @media (min-width: 600px) {
     .card-columns {
-        column-count: 1;
+        column-count: 4;
     }
 }
 
