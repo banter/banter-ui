@@ -10,9 +10,12 @@ export default {
     error: null,
   },
   actions: {
+    fetchForYouSilently({ dispatch }) {
+      dispatch('fetchForYou', true);
+    },
     fetchForYou({
       commit,
-    }) {
+    }, isSilent) {
       const requestData = {
         url: `${API.BASE_URL}${API.TOPICS}${API.FORYOU}`,
         queries: {
@@ -20,7 +23,7 @@ export default {
         },
       };
       const mutations = {
-        preCommit: 'fetchListenRequest',
+        preCommit: !isSilent && 'fetchListenRequest',
         successCommit: 'fetchForYouSuccess',
         errorCommit: 'fetchListenError',
       };

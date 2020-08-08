@@ -121,6 +121,7 @@ export default {
         requestData, mutations, dispatch, commit,
       });
       commit('followTopicSuccess', topic);
+      dispatch('fetchForYouSilently');
       dispatch('fetchFollowingSilently');
     },
     async unfollowTopic({
@@ -138,6 +139,7 @@ export default {
         requestData, mutations, dispatch, commit,
       });
       commit('unfollowTopicSuccess', topic);
+      dispatch('fetchForYouSilently');
       dispatch('fetchFollowingSilently');
     },
   },

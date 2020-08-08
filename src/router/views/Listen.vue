@@ -14,16 +14,16 @@
         <LoadingSpinner variant="secondary" />
       </div>
       <div v-if="!isLoading">
-        <div v-if="playlistExists() > 0 && !forceRefreshToShowFollowing">
+        <div v-if="forceRefreshToShowFollowing && this.activeStream === 'following'">
+          <follow-suggestion-cards/>
+        </div>
+        <div v-else>
           <div>
             <CustomTopicHeader :topic="activeLink">
               <h3 class="header-card-text-content">{{activeLink.text}}</h3>
             </CustomTopicHeader>
             <discussion-playlist :collection="streamContent(activeLink.stream)"/>
           </div>
-        </div>
-        <div v-else>
-          <follow-suggestion-cards/>
         </div>
       </div>
     </div>
@@ -47,8 +47,10 @@ export default {
   },
   async mounted() {
     // TODO Discuss if this should be ran every time we visit the page?
+    await this.fetchTopicsFollowed();
+    if (this.followedTopics?.length < 1) this.forceRefreshToShowFollowing = true;
+
     await this.fetchCurrentStream();
-    if (!this.playlistExists(this.activeStream)) this.forceRefreshToShowFollowing = true;
   },
   props: {
     stream: {
@@ -76,6 +78,7 @@ export default {
     ...mapState({
       currentDiscussion: (state) => state.audio.currentDiscussion,
       currentUser: (state) => state.users.currentUser,
+      followedTopics: (state) => state.users.followedTopics,
       isLoading: (state) => state.listen.isRequestingListen,
       forYou: (state) => state.listen.forYou,
       following: (state) => state.listen.following,
@@ -86,7 +89,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchForYou', 'fetchFollowing']),
+    ...mapActions(['fetchForYou', 'fetchFollowing', 'fetchTopicsFollowed']),
     streamContent(stream) {
       switch (stream) {
         case 'for-you':
