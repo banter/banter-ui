@@ -63,7 +63,7 @@ export default {
     return {
       sideLinks: [
         {
-          text: 'For You', stream: 'for-you', inactiveIcon: 'house', activeIcon: 'house-fill', content: this.forYou,
+          text: 'For You', stream: 'for-you', inactiveIcon: 'shop', activeIcon: 'shop', content: this.forYou,
         },
         // { text: 'Discover', inactiveIcon: 'soundwave', activeIcon: 'soundwave' },
         {
@@ -171,4 +171,30 @@ export default {
     width: 50%;
   }
 }
+
+@media (max-width: 600px) {
+.for-you-nav {
+  font-size: 22px;
+  z-index: 1;
+  .nav-link.active {
+    color: #fe2c55;
+  }
+  .nav-link {
+    color: black;
+    padding-left: 20px;
+    padding-right: 0px;
+    span.nav-text {
+      padding-left: 20px;
+      font-weight: bolder;
+    }
+    &:hover {
+      background: rgba(22,24,35,0.03);
+    }
+  }
+  .nav-item.mobile-nav-item {
+    width: 50%;
+  }
+}
+}
+
 </style>

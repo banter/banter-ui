@@ -1,22 +1,24 @@
 <template>
   <div>
-    <div v-if="!isMobile"  class="desktop-nav">
+    <div v-if="!isMobile" class="desktop-nav">
       <b-navbar toggleable="lg" type="light" variant="faded">
         <b-navbar-brand>
           <router-link :to="'/home'">
-            <b-img height="60" :src="require('../assets/Banter_logo_dark.png')" alt="Banter Logo">
+            <b-img height="49" :src="require('../assets/Banter_logo_dark.png')" alt="Banter Logo">
             </b-img>
           </router-link>
         </b-navbar-brand>
         <LinkButton v-bind:isMobile="false"></LinkButton>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-collapse id="nav-collapse" is-nav>
-          <ul class="navbar-nav mr-auto">
-          </ul>
+        <b-navbar-nav class="navbar-brand d-flex ml-auto ">
           <div class="form-inline my-2 my-lg-0">
-          <share-button></share-button>
+            <share-button></share-button>
             <AuthModalButton></AuthModalButton>
           </div>
+        </b-navbar-nav>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-collapse style="flex-grow:0" id="nav-collapse" is-nav>
+          <ul class="navbar-nav mr-auto">
+          </ul>
           <SearchBar></SearchBar>
         </b-collapse>
       </b-navbar>
@@ -61,6 +63,10 @@ export default {
 };
 </script>
 <style>
+.banter-nav-bar {
+  flex-grow: 0;
+}
+
 .desktop-nav {
     z-index: 2;
     background: white;
