@@ -42,7 +42,7 @@ export default {
       this.imageLoadingError = true;
     },
     goToTopic(topic) {
-      this.$router.push({ name: `/topics/${topic.value}/${topic.id}` });
+      this.$router.push(`/topics/${topic.value}/${topic.id}`);
     },
   },
   props: {

@@ -16,7 +16,8 @@
         <b-dropdown-item disabled href="#">
           {{currentUser.email}}
         </b-dropdown-item>
-        <b-dropdown-item :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
+        <b-dropdown-item class="mobile-dropdown"
+        :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
           Sign Out
         </b-dropdown-item>
       </b-nav-item-dropdown>
@@ -44,6 +45,13 @@ export default {
 </script>
 
 <style lang="scss">
+
+@media (max-width: 800px) {
+.dropdown-menu.show {
+  left:-170px
+}
+}
+
 #nav-search-group {
   padding: 0px 6px;
   background: rgba(129, 134, 140, 0.25);
