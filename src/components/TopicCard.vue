@@ -147,10 +147,11 @@ export default {
   min-width: 250px;
 
   .topic-descriptor {
+    padding: 5px;
     position: absolute;
     background-color: black;
     color: white;
-    width: 50%;
+    width: fit-content;
     height: 65px;
     left: 0;
     bottom: 20px;
