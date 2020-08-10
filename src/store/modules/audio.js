@@ -80,6 +80,9 @@ export default {
         dispatch('resetPlaylist');
         state.audioConfig = generateHowl(state.currentDiscussion);
       }
+      dispatch('playDiscussion');
+    },
+    async playDiscussion({ commit, dispatch, state }) {
       state.currentAudio = await state.audioConfig.play('clip');
       state.audioConfig.rate(state.audioRate);
 
@@ -99,10 +102,14 @@ export default {
     goBack15Seconds({ commit }) {
       commit('back15SecondsRequest');
     },
-    goToNextDiscussion({ commit }) {
-      // current configruation goes to "end" and then creates
-      // New Audio. Therefore the switch to a new discussion handles audioListenUpdate
-      commit('nextDiscussionRequest');
+    async goToNextDiscussion({ commit, state, dispatch }) {
+      if (!state?.nextDiscussion?.howl) await dispatch('prepareNextItem');
+
+      dispatch('audioListenUpdate', { markListened: true });
+      await commit('killAudio');
+      await commit('nextDiscussionRequest');
+
+      dispatch('playDiscussion');
     },
 
     audioListenUpdate({
@@ -120,13 +127,8 @@ export default {
           markListened: listened,
         },
       };
-      const mutations = {
-        preCommit: 'audioListenUpdateRequest',
-        successCommit: 'audioListenUpdateSuccess',
-        errorCommit: 'audioListenUpdateError',
-      };
 
-      return apiRequest({ requestData, mutations, commit });
+      return apiRequest({ requestData, commit });
     },
     getRemainingTimeRequest({ commit, state }) {
       commit('getRemainingTime');
@@ -137,13 +139,6 @@ export default {
   },
   // Edits the data
   mutations: {
-
-    audioListenUpdateRequest() {
-    },
-    audioListenUpdateSuccess() {
-    },
-    audioListenUpdateError() {
-    },
     setPlaylist(state, playlist) {
       state.playlist = playlist;
     },
@@ -184,7 +179,8 @@ export default {
       state.audioConfig.seek(0, state.currentAudio);
     },
     nextDiscussionRequest(state) {
-      state.audioConfig.seek(state.currentDiscussion.endTimeMillis, state.currentAudio);
+      state.currentDiscussion = state.nextDiscussion.discussion;
+      state.audioConfig = state.nextDiscussion.howl;
     },
     adjustRate(state, newRate) {
       state.audioRate = newRate;
