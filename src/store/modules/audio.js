@@ -18,6 +18,7 @@ export default {
     currentAudio: null,
     currentDiscussion: null,
     audioConfig: null,
+    playlist: null,
     nextDiscussion: null,
     isRequesting: false,
     loadingNewAudio: false,
@@ -42,14 +43,20 @@ export default {
     resumeAudio({ commit }) {
       commit('resumeAudioRequest');
     },
-    prepareNextItem({
-      commit, rootState, state,
-    }) {
+    async resetPlaylist({ commit, rootState }) {
       const { playlist } = rootState.topics.currentTopic;
-      const startPoint = playlist.findIndex(
+      await commit('setPlaylist', playlist);
+    },
+    async prepareNextItem({
+      commit, dispatch, state,
+    }) {
+      if (!state.playlist) {
+        dispatch('resetPlaylist');
+      }
+      const startPoint = state.playlist.findIndex(
         (playlistItem) => playlistItem.discussionId === state.currentDiscussion.discussionId,
       ) || 0;
-      commit('queueNextItem', playlist[startPoint + 1]);
+      commit('queueNextItem', state.playlist[startPoint + 1]);
     },
     async createAudio({
       commit, state, dispatch,
@@ -66,9 +73,11 @@ export default {
       // Send new update after it has been started
       dispatch('audioListenUpdate', { markListened: false, progressMillis: 0 });
 
+      // Natural progression (i.e. - next item)
       if (state.nextDiscussion?.discussion?.discussionId === discussion.discussionId) {
         state.audioConfig = state.nextDiscussion.howl;
-      } else {
+      } else { // Skipped around
+        dispatch('resetPlaylist');
         state.audioConfig = generateHowl(state.currentDiscussion);
       }
       state.currentAudio = await state.audioConfig.play('clip');
@@ -135,7 +144,9 @@ export default {
     },
     audioListenUpdateError() {
     },
-
+    setPlaylist(state, playlist) {
+      state.playlist = playlist;
+    },
     queueNextItem(state, nextItem) {
       state.nextDiscussion = {
         howl: generateHowl(nextItem),
