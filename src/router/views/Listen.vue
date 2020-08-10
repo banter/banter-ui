@@ -20,7 +20,7 @@
         <div v-else>
           <div>
             <CustomTopicHeader :topic="activeLink">
-              {{activeStream == 'following' && isFollowingTopics ? followingCount : ''}}
+                {{activeStream == 'following' && isFollowingTopics ? followingCount : ''}}
             </CustomTopicHeader>
             <discussion-playlist :collection="streamContent(activeLink.stream)"/>
           </div>

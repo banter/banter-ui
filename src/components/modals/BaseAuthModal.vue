@@ -25,7 +25,7 @@
       <a @click="() => showEmailLogin = true"
         class="btn btn-outline-dark social-login use-email-button" role="button">
         <b-icon :icon="'person-fill'" class="use-email-icon" />
-        <span class="use-email-text">Use Email</span>
+        <span class="use-email-text">{{returningUser ? 'Log in' : 'Sign up'}} with Email</span>
       </a>
       <slot name="footer"/>
     </div>
