@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
       <SearchBar></SearchBar>
-      <follow-cards v-bind:isSuggestions="true"/>/>
+      <follow-cards v-bind:isSuggestions="true"/>
   </div>
 
 </template>

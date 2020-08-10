@@ -43,6 +43,13 @@ export default {
 
 <style>
 
+.VueCarousel-dot-container {
+  margin-top: 5px !important
+}
+.VueCarousel-dot {
+  margin-top: 0px !important
+}
+
 .topic-card-container {
   display: flex;
   flex-direction: row;
@@ -56,7 +63,7 @@ export default {
 
 .carousel-header-container {
   width: 25%;
-  height: 70px;
+  height: 60px;
   font-family: Roboto;
   font-size: 24px;
   letter-spacing: 0.25px;

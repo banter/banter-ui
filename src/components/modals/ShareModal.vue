@@ -1,10 +1,11 @@
 <template>
   <div>
-    <b-modal :id="modalName" hide-footer hide-header title="Share Modal">
+    <b-modal @show="onShow" :id="modalName" hide-footer hide-header title="Share Modal">
       <h2 class="share-header">Share</h2>
       <div class="share-network-list">
         <ShareNetwork v-for="network in NETWORKS" :network="network.network" :key="network.network"
-          :url="sharing.url" :title="sharing.title" :description="sharing.description"
+          :url="`${shareUrlNetwork}${network.network}`"
+          :title="sharing.title" :description="sharing.description"
           :quote="sharing.quote" :hashtags="sharing.hashtags" :twitterUser="sharing.twitterUser">
           <a class="share-network" role="button" :style="{backgroundColor: network.color}">
             <!-- Leaving for now if we want to switch to more Vue style
@@ -15,10 +16,9 @@
             <span>{{ network.name }}</span>
           </a>
         </ShareNetwork>
-        <a class="share-network" v-clipboard="'https://banteraudio.com/share'"
-          v-clipboard:success="clipboardSuccessHandler" v-clipboard:error="clipboardErrorHandler"
+        <a class="share-network" @click="copy()"
           role="button"
-          :style="isClipboardSelected
+          :style="clipboardSelected
           ? {backgroundColor: '#008000'} : {backgroundColor: '#808080'}">
           <i class="far fah fa-lg fa-clipboard"></i>
           <span>Copy to Clipboard</span>
@@ -42,7 +42,6 @@ export default {
       returningUser: true,
       NETWORKS,
       clipboardSelected: false,
-      windowLocation: window.location.href,
       modalName: 'share-modal',
       sharing: {
         url: 'https://banteraudio.com/share',
@@ -56,11 +55,24 @@ export default {
     };
   },
   computed: {
-    isClipboardSelected() {
-      return this.clipboardSelected;
+    shareUrlNetwork() {
+      return `${this.sharing.url}?source=`;
+    },
+    shareUrlClipboard() {
+      return `${this.sharing.url}?source=clipboard`;
     },
   },
   methods: {
+
+    onShow() {
+      this.clipboardSelected = false;
+      this.sharing.url = `${window.location.href}`;
+    },
+
+    async copy() {
+      await navigator.clipboard.writeText(this.shareUrlClipboard);
+      this.clipboardSuccessHandler();
+    },
 
     clipboardSuccessHandler() {
       this.clipboardSelected = true;
