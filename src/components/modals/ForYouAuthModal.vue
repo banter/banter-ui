@@ -3,7 +3,7 @@
     <b-modal :id="modalName" hide-footer hide-header title="My Feed Modal">
       <base-auth-modal
       :modalName="modalName"
-      loginHeader="Login to customize your feed!"
+      loginHeader="Log In to customize your feed!"
       signUpHeader="Sign up to create your feed">
       </base-auth-modal>
     </b-modal>

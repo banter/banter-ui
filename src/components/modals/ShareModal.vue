@@ -15,6 +15,14 @@
             <span>{{ network.name }}</span>
           </a>
         </ShareNetwork>
+        <a class="share-network" v-clipboard="'https://banteraudio.com/share'"
+          v-clipboard:success="clipboardSuccessHandler" v-clipboard:error="clipboardErrorHandler"
+          role="button"
+          :style="isClipboardSelected
+          ? {backgroundColor: '#008000'} : {backgroundColor: '#808080'}">
+          <i class="far fah fa-lg fa-clipboard"></i>
+          <span>Copy to Clipboard</span>
+        </a>
       </div>
     </b-modal>
 
@@ -33,17 +41,34 @@ export default {
     return {
       returningUser: true,
       NETWORKS,
+      clipboardSelected: false,
+      windowLocation: window.location.href,
       modalName: 'share-modal',
       sharing: {
         url: 'https://banteraudio.com/share',
         title: 'The World is Changing. And so are Podcasts.',
-        description: 'Say Hi to the New Way to listen Podcasts. Go checkout Banter!',
+        description: 'Say Hi to the New Way to listen to Podcasts. Go checkout Banter!',
         quote: 'This has changed how I will listen to podcasts forever.',
         hashtags: 'banter,theNewNormal,podcasts',
         twitterUser: 'banteraudio',
       },
 
     };
+  },
+  computed: {
+    isClipboardSelected() {
+      return this.clipboardSelected;
+    },
+  },
+  methods: {
+
+    clipboardSuccessHandler() {
+      this.clipboardSelected = true;
+    },
+
+    clipboardErrorHandler() {
+      this.clipboardSelected = false;
+    },
   },
 };
 </script>
