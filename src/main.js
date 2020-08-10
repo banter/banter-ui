@@ -11,7 +11,6 @@ import {
 import Hotjar from 'vue-hotjar';
 import VueAnalytics from 'vue-analytics';
 import VueSocialSharing from 'vue-social-sharing';
-import VueClipboard from 'vue-clipboard2';
 
 import vSelect from 'vue-select';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -31,8 +30,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'vue-select/dist/vue-select.css';
 
 Vue.use(Clipboard);
-VueClipboard.config.autoSetContainer = true; // add this line
-Vue.use(VueClipboard);
 library.add(faShareAlt);
 library.add(faClipboard);
 library.add(faCommentDots);

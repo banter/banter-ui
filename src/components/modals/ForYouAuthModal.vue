@@ -4,7 +4,7 @@
       <base-auth-modal
       :modalName="modalName"
       loginHeader="Log In to customize your feed!"
-      signUpHeader="Sign up to create your feed">
+      signUpHeader="Sign up to create your feed!">
       </base-auth-modal>
     </b-modal>
   </div>
