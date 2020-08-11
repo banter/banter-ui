@@ -229,8 +229,8 @@ export default {
 .discussion-timestamp {
   position: absolute;
   top: 75%;
-  transform: translate(-75%, -75%);
-  left: 75%;
+  transform: translate(-75%, -67%);
+  left: 67%;
   opacity: .80;
   opacity: .95;
   border-radius: 5px;
