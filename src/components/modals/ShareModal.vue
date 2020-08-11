@@ -46,10 +46,10 @@ export default {
       NETWORKS,
       modalName: 'share-modal',
       sharing: {
-        url: 'https://banteraudio.com/share',
-        title: 'The World is Changing. And so are Podcasts.',
+        url: 'https://banteraudio.com ',
+        title: 'The New Way to Listen to Sports Talk.',
         description: 'Say Hi to the New Way to listen to Podcasts. Go checkout Banter!',
-        quote: 'This has changed how I will listen to podcasts forever.',
+        quote: 'Sports radio will never be the same.',
         hashtags: 'banter,theNewNormal,podcasts',
         twitterUser: 'banteraudio',
       },

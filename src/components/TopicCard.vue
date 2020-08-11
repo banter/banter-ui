@@ -26,6 +26,7 @@
 
 <script>
 import FollowButton from './FollowButton.vue';
+import topicUrlGenerator from '../store/helpers/topic-url-generator';
 
 export default {
   name: 'TopicCard',
@@ -42,7 +43,7 @@ export default {
       this.imageLoadingError = true;
     },
     goToTopic(topic) {
-      this.$router.push(`/topics/${topic.value}/${topic.id}`);
+      this.$router.push(topicUrlGenerator(topic));
     },
   },
   props: {
