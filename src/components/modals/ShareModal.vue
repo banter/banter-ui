@@ -4,9 +4,9 @@
       <h2 class="share-header">Share</h2>
       <div class="share-network-list">
         <ShareNetwork v-for="network in NETWORKS" :network="network.network" :key="network.network"
-          :url="`${shareUrlNetwork}${network.network}`"
-          :title="sharing.title" :description="sharing.description"
-          :quote="sharing.quote" :hashtags="sharing.hashtags" :twitterUser="sharing.twitterUser">
+          :url="`${shareUrlNetwork}${network.network}`" :title="sharing.title"
+          :description="sharing.description" :quote="sharing.quote" :hashtags="sharing.hashtags"
+          :twitterUser="sharing.twitterUser">
           <a class="share-network" role="button" :style="{backgroundColor: network.color}">
             <!-- Leaving for now if we want to switch to more Vue style
             Reference: https://medium.com/front-end-weekly/
@@ -16,13 +16,16 @@
             <span>{{ network.name }}</span>
           </a>
         </ShareNetwork>
-        <a class="share-network" @click="copy()"
-          role="button"
-          :style="clipboardSelected
-          ? {backgroundColor: '#008000'} : {backgroundColor: '#808080'}">
+        <a class="share-network" @click="copy()" role="button">
           <i class="far fah fa-lg fa-clipboard"></i>
           <span>Copy to Clipboard</span>
         </a>
+        <b-toast id="clipboard-toast" no-close-button=true static auto-hide-delay="1000">
+          Copied to Clipboard
+        </b-toast>
+        <b-toast id="clipboard-toast=error" no-close-button=true static auto-hide-delay="1000">
+          Unable to copy to clipboard
+        </b-toast>
       </div>
     </b-modal>
 
@@ -41,7 +44,6 @@ export default {
     return {
       returningUser: true,
       NETWORKS,
-      clipboardSelected: false,
       modalName: 'share-modal',
       sharing: {
         url: 'https://banteraudio.com/share',
@@ -70,16 +72,12 @@ export default {
     },
 
     async copy() {
-      await navigator.clipboard.writeText(this.shareUrlClipboard);
-      this.clipboardSuccessHandler();
-    },
-
-    clipboardSuccessHandler() {
-      this.clipboardSelected = true;
-    },
-
-    clipboardErrorHandler() {
-      this.clipboardSelected = false;
+      try {
+        await navigator.clipboard.writeText(this.shareUrlClipboard);
+        this.$bvToast.show('clipboard-toast');
+      } catch (error) {
+        this.$bvToast.show('clipboard-toast-error');
+      }
     },
   },
 };
