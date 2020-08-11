@@ -24,8 +24,8 @@ export default {
   .carousel-header-container {
     display: flex;
     flex-direction: row;
-    margin-top: 35px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .carousel-header-label {
     display: flex;

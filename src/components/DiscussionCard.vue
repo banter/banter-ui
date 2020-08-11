@@ -45,7 +45,7 @@
                 <b-badge v-for="tag in discussion.tags" :key="tag.id" variant="light">
                   <router-link
                     @click.native="$event.stopImmediatePropagation()"
-                    :to="`/topics/${tag.value}/${tag.id}`">
+                    :to="goToTopic(tag)">
                     {{tag.value}}
                   </router-link>
                 </b-badge>
@@ -70,6 +70,7 @@
 import { mapState } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 import LikeButton from './commons/LikeButton.vue';
+import topicUrlGenerator from '../store/helpers/topic-url-generator';
 
 export default {
   name: 'DiscussionCard',
@@ -133,6 +134,10 @@ export default {
     discussionTime(discussion) {
       const duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss');
       return duration === '0:00' ? '' : duration;
+    },
+
+    goToTopic(tag) {
+      return topicUrlGenerator(tag);
     },
   },
 };

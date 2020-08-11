@@ -18,7 +18,7 @@
             oauthProvider.name === 'twitter' ? '1' : '2'
           }/authorization/${oauthProvider.name}?redirect_uri=${windowLocation}`">
         <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
-        <span class="login-text">{{returningUser ? 'Log in' : 'Sign up'}} with <span
+        <span class="login-text">Continue with <span
             class="brand-name">{{oauthProvider.name}}</span></span>
       </a>
       <div class="login-divider">Or</div>
@@ -241,7 +241,7 @@ export default {
 }
 
 span.login-text {
-    margin: 0px 50px;
+    margin: 0px 40px;
 }
 
 .use-email-button {

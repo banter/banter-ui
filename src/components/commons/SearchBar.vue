@@ -27,6 +27,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import _ from 'lodash';
+import topicUrlGenerator from '../../store/helpers/topic-url-generator';
 
 export default {
   name: 'SearchBar',
@@ -62,7 +63,7 @@ export default {
       }
     }, 100),
     selectItem(tag) {
-      this.$router.push(`/topics/${tag?.label}/${tag?.id}`);
+      this.$router.push(topicUrlGenerator(tag, true));
     },
   },
   data() {
