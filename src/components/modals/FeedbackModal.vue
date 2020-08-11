@@ -23,12 +23,18 @@
 
 export default {
   name: 'BaseAuthModal',
-  components: {
-  },
+  components: {},
   data() {
     return {
       modalName: 'feedback-modal',
       networks: [{
+        network: 'survey',
+        name: 'Survey',
+        icon: 'fas fa-poll-h',
+        color: '#15aabf',
+        link: 'hhttps://docs.google.com/forms/d/1kCH9dEkz09pxVmzdhc3Uj6PiUylMa9aAbUMFQgIzp34',
+      },
+      {
         network: 'twitter',
         name: 'Twitter',
         icon: 'fab fah fa-lg fa-twitter',
@@ -42,9 +48,7 @@ export default {
         color: '#E1306C',
         link: 'https://www.instagram.com/banteraudio/',
       },
-      ]
-
-      ,
+      ],
     };
   },
 };
@@ -54,5 +58,4 @@ export default {
 .feedback-header {
   text-align: center;
 }
-
 </style>
