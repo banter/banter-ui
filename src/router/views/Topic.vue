@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content">
+  <div :class="isMobile ? 'main-content-mobile':'main-content'">
     <div v-if="isLoading" class="loading-body">
       <LoadingSpinner :variant="'secondary'"/>
     </div>
@@ -44,6 +44,7 @@ export default {
     ...mapState({
       currentDiscussion: (state) => state.audio.currentDiscussion,
       isLoading: (state) => state.topics.isRequesting,
+      isMobile: (state) => state.sizing.isMobile,
       chosenTopic: (state) => state.topics.currentTopic,
     }),
     currentTopic() {
@@ -71,6 +72,13 @@ export default {
   width: 80%;
   margin-bottom: 100px;
 }
+
+.main-content-mobile {
+  margin: auto;
+  width: 90%;
+  margin-bottom: 100px;
+}
+
 .loading-body {
     position: relative;
     margin-left: 50%;
