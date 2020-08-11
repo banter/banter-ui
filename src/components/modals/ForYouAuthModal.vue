@@ -1,10 +1,13 @@
 <template>
   <div>
-    <b-modal :id="modalName" hide-footer hide-header title="My Feed Modal">
+    <b-modal :id="modalName" hide-header hide-footer>
       <base-auth-modal
       :modalName="modalName"
       loginHeader="Log In to customize your feed!"
       signUpHeader="Sign up to create your feed!">
+        <template slot="footer">
+          <a href="#" class="auth-link" @click="$bvModal.hide(modalName)">Continue as Guest</a>
+        </template>
       </base-auth-modal>
     </b-modal>
   </div>
@@ -22,3 +25,11 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+#modalName {
+  .modal-header {
+    border-bottom: none;
+  }
+}
+</style>
