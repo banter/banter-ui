@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal :id="modalName" hide-footer hide-header title="Login Modal">
+    <b-modal :id="modalName" hide-footer hide-header title="Log In Modal">
       <base-auth-modal :modalName="modalName">
       </base-auth-modal>
     </b-modal>

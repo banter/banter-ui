@@ -18,6 +18,7 @@ export default {
     currentAudio: null,
     currentDiscussion: null,
     audioConfig: null,
+    playlist: null,
     nextDiscussion: null,
     isRequesting: false,
     loadingNewAudio: false,
@@ -42,14 +43,20 @@ export default {
     resumeAudio({ commit }) {
       commit('resumeAudioRequest');
     },
-    prepareNextItem({
-      commit, rootState, state,
-    }) {
+    async resetPlaylist({ commit, rootState }) {
       const { playlist } = rootState.topics.currentTopic;
-      const startPoint = playlist.findIndex(
+      await commit('setPlaylist', playlist);
+    },
+    async prepareNextItem({
+      commit, dispatch, state,
+    }) {
+      if (!state.playlist) {
+        dispatch('resetPlaylist');
+      }
+      const startPoint = state.playlist.findIndex(
         (playlistItem) => playlistItem.discussionId === state.currentDiscussion.discussionId,
       ) || 0;
-      commit('queueNextItem', playlist[startPoint + 1]);
+      commit('queueNextItem', state.playlist[startPoint + 1]);
     },
     async createAudio({
       commit, state, dispatch,
@@ -66,11 +73,16 @@ export default {
       // Send new update after it has been started
       dispatch('audioListenUpdate', { markListened: false, progressMillis: 0 });
 
+      // Natural progression (i.e. - next item)
       if (state.nextDiscussion?.discussion?.discussionId === discussion.discussionId) {
         state.audioConfig = state.nextDiscussion.howl;
-      } else {
+      } else { // Skipped around
+        dispatch('resetPlaylist');
         state.audioConfig = generateHowl(state.currentDiscussion);
       }
+      dispatch('playDiscussion');
+    },
+    async playDiscussion({ commit, dispatch, state }) {
       state.currentAudio = await state.audioConfig.play('clip');
       state.audioConfig.rate(state.audioRate);
 
@@ -90,10 +102,14 @@ export default {
     goBack15Seconds({ commit }) {
       commit('back15SecondsRequest');
     },
-    goToNextDiscussion({ commit }) {
-      // current configruation goes to "end" and then creates
-      // New Audio. Therefore the switch to a new discussion handles audioListenUpdate
-      commit('nextDiscussionRequest');
+    async goToNextDiscussion({ commit, state, dispatch }) {
+      if (!state?.nextDiscussion?.howl) await dispatch('prepareNextItem');
+
+      dispatch('audioListenUpdate', { markListened: true });
+      await commit('killAudio');
+      await commit('nextDiscussionRequest');
+
+      dispatch('playDiscussion');
     },
 
     audioListenUpdate({
@@ -111,13 +127,8 @@ export default {
           markListened: listened,
         },
       };
-      const mutations = {
-        preCommit: 'audioListenUpdateRequest',
-        successCommit: 'audioListenUpdateSuccess',
-        errorCommit: 'audioListenUpdateError',
-      };
 
-      return apiRequest({ requestData, mutations, commit });
+      return apiRequest({ requestData, commit });
     },
     getRemainingTimeRequest({ commit, state }) {
       commit('getRemainingTime');
@@ -128,14 +139,9 @@ export default {
   },
   // Edits the data
   mutations: {
-
-    audioListenUpdateRequest() {
+    setPlaylist(state, playlist) {
+      state.playlist = playlist;
     },
-    audioListenUpdateSuccess() {
-    },
-    audioListenUpdateError() {
-    },
-
     queueNextItem(state, nextItem) {
       state.nextDiscussion = {
         howl: generateHowl(nextItem),
@@ -173,7 +179,8 @@ export default {
       state.audioConfig.seek(0, state.currentAudio);
     },
     nextDiscussionRequest(state) {
-      state.audioConfig.seek(state.currentDiscussion.endTimeMillis, state.currentAudio);
+      state.currentDiscussion = state.nextDiscussion.discussion;
+      state.audioConfig = state.nextDiscussion.howl;
     },
     adjustRate(state, newRate) {
       state.audioRate = newRate;

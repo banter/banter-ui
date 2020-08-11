@@ -18,14 +18,14 @@
             oauthProvider.name === 'twitter' ? '1' : '2'
           }/authorization/${oauthProvider.name}?redirect_uri=${windowLocation}`">
         <img class="provider-logo" alt="Provider sign-in" :src="oauthProvider.logo" />
-        <span class="login-text">{{returningUser ? 'Log in' : 'Sign up'}} with <span
+        <span class="login-text">Continue with <span
             class="brand-name">{{oauthProvider.name}}</span></span>
       </a>
       <div class="login-divider">Or</div>
       <a @click="() => showEmailLogin = true"
         class="btn btn-outline-dark social-login use-email-button" role="button">
         <b-icon :icon="'person-fill'" class="use-email-icon" />
-        <span class="use-email-text">Use Email</span>
+        <span class="use-email-text">{{returningUser ? 'Log in' : 'Sign up'}} with Email</span>
       </a>
       <slot name="footer"/>
     </div>
@@ -241,7 +241,7 @@ export default {
 }
 
 span.login-text {
-    margin: 0px 50px;
+    margin: 0px 40px;
 }
 
 .use-email-button {

@@ -3,7 +3,7 @@
     <b-modal :id="modalName" hide-footer hide-header title="Passive Auth Modal">
       <base-auth-modal
       :modalName="modalName"
-       loginHeader="Login"
+       loginHeader="Log In"
       signUpHeader="Enjoying Banter? Sign up!">
                     <template slot="footer">
           <a href="#" class="auth-link" @click="$bvModal.hide(modalName)">Continue as Guest</a>

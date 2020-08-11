@@ -31,11 +31,12 @@ export default {
     EmptyPageHandler,
   },
   async mounted() {
-    if (this.$route.params.topicName !== this.currentTopic.name) {
+    const formattedTopicName = this.formatUrlParam(this.$route.params.topicName);
+    if (formattedTopicName !== this.currentTopic.name) {
       if (this?.$route?.params?.topicId) {
         await this.fetchTopicById(this.$route.params.topicId);
       } else {
-        await this.fetchTopicByName(this.$route.params.topicName);
+        await this.fetchTopicByName(formattedTopicName);
       }
     }
   },
@@ -54,6 +55,13 @@ export default {
   },
   methods: {
     ...mapActions(['fetchTopicByName', 'fetchTopicById']),
+    formatUrlParam(topicName) {
+      const words = topicName.match(/([^-]+)/g) || [];
+      words.forEach((word, i) => {
+        words[i] = word[0].toUpperCase() + word.slice(1);
+      });
+      return words.join(' ');
+    },
   },
 };
 </script>
@@ -61,7 +69,6 @@ export default {
 .main-content {
   margin: auto;
   width: 80%;
-  margin-top: 50px;
   margin-bottom: 100px;
 }
 .loading-body {

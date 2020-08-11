@@ -75,6 +75,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  width:70%
+  width:70%;
+  margin-bottom:30px;
 }
 </style>
