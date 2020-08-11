@@ -32,7 +32,7 @@ export default {
         name: 'Survey',
         icon: 'fas fa-poll-h',
         color: '#15aabf',
-        link: 'hhttps://docs.google.com/forms/d/1kCH9dEkz09pxVmzdhc3Uj6PiUylMa9aAbUMFQgIzp34',
+        link: 'https://docs.google.com/forms/d/1kCH9dEkz09pxVmzdhc3Uj6PiUylMa9aAbUMFQgIzp34',
       },
       {
         network: 'twitter',
