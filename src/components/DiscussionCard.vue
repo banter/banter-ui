@@ -36,7 +36,7 @@
             <b-row>
               <b-card-text class="podcast-name-text">
                 {{`${discussion.podcastTitle}`}} •
-                {{`${discussionAge(discussion)}`}}
+                {{`${discussionAge(discussion.episodePublishDate)}`}}
               </b-card-text>
             </b-row>
             <b-row>
@@ -71,6 +71,7 @@ import { mapState } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 import LikeButton from './commons/LikeButton.vue';
 import topicUrlGenerator from '../store/helpers/topic-url-generator';
+import howLongAgo from '../helpers/date-format';
 
 export default {
   name: 'DiscussionCard',
@@ -117,19 +118,8 @@ export default {
     },
   },
   methods: {
-    discussionAge(discussion) {
-      if (discussion?.episodePublishDate) {
-        const dateObject = new Date(
-          `${discussion.episodePublishDate.year}/${discussion.episodePublishDate.monthValue}/${discussion.episodePublishDate.dayOfMonth}`,
-        );
-        const dateString = dateObject.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        });
-        return this.$moment(dateString).fromNow();
-      }
-      return null;
+    discussionAge({ year, monthValue: month, dayOfMonth: day }) {
+      return howLongAgo({ year, month, day }, this.$moment);
     },
     discussionTime(discussion) {
       const duration = this.$moment.utc(this.$moment.duration(discussion.duration).as('milliseconds')).format('m:ss');
