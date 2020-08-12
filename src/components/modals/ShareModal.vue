@@ -58,10 +58,10 @@ export default {
   },
   computed: {
     shareUrlNetwork() {
-      return `${this.sharing.url}?source=`;
+      return `${this.sharing.url}?utm_source=`;
     },
     shareUrlClipboard() {
-      return `${this.sharing.url}?source=clipboard`;
+      return `${this.sharing.url}?utm_source=clipboard`;
     },
   },
   methods: {
