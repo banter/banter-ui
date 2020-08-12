@@ -94,7 +94,6 @@ export default {
   justify-content: center;
   align-items: center;
   background: black;
-  opacity: .6;
   color: white;
   width: fit-content;
   position: absolute;

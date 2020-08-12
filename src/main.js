@@ -17,7 +17,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faShareAlt, faCommentDots, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-import Clipboard from 'v-clipboard';
 import store from './store/index';
 import router from './router/index';
 import App from './App.vue';
@@ -29,7 +28,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'vue-select/dist/vue-select.css';
 
-Vue.use(Clipboard);
 library.add(faShareAlt);
 library.add(faClipboard);
 library.add(faCommentDots);
