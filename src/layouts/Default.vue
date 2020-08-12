@@ -57,6 +57,6 @@ export default {
 }
 
 #banter-app{
-  padding-bottom: 70px;
+  padding-bottom: 140px;
 }
 </style>
