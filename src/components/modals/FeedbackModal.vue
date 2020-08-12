@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal :id="modalName" hide-footer hide-header title="Feedback Modal">
-      <h5 class="feedback-header">Please DM us your feedback. We would love to chat!</h5>
+      <h5 class="feedback-header">Please send us your feedback. We would love to chat!</h5>
       <div class="social-logins">
         <div class="share-network-list">
           <div v-for="network in networks" :key="network.network">
