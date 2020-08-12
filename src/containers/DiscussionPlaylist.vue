@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-list-group-item style="border: none" v-for="(discussion, index) in collection.playlist"
+    <b-list-group-item style="border: none; padding: 0.75rem;"
+    v-for="(discussion, index) in collection.playlist"
       :key="`discussion-${index}`">
       <div>
         <DiscussionCard v-on:click.native="audioAction(discussion)" :discussion="discussion"
@@ -11,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import DiscussionCard from '../components/DiscussionCard.vue';
 
 export default {
@@ -47,6 +48,7 @@ export default {
   },
   methods: {
     ...mapActions(['pauseAudio', 'resumeAudio', 'createAudio']),
+    ...mapMutations(['alterTopic']),
     audioAction(discussion) {
       if (this.currentDiscussion?.discussionId === discussion?.discussionId) {
         if (this.audioConfig.playing()) {
@@ -55,6 +57,7 @@ export default {
           this.resumeAudio();
         }
       } else {
+        this.alterTopic(this.collection);
         this.createAudio(discussion);
       }
     },
