@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import DiscussionCard from '../components/DiscussionCard.vue';
 
 export default {
@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     ...mapActions(['pauseAudio', 'resumeAudio', 'createAudio']),
+    ...mapMutations(['alterTopic']),
     audioAction(discussion) {
       if (this.currentDiscussion?.discussionId === discussion?.discussionId) {
         if (this.audioConfig.playing()) {
@@ -55,6 +56,7 @@ export default {
           this.resumeAudio();
         }
       } else {
+        this.alterTopic(this.collection);
         this.createAudio(discussion);
       }
     },
