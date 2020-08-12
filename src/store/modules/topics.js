@@ -115,6 +115,9 @@ export default {
       state.currentTopic = payload;
       state.isRequesting = false;
     },
+    alterTopic(state, topic) {
+      state.currentTopic = topic;
+    },
     topicError(state, error) {
       state.isRequesting = false;
       state.errored = true;

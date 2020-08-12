@@ -47,7 +47,7 @@
           </b-nav-item>
           <b-nav-item>
             <span class="now-playing-title" v-if="discussion">
-              {{`${discussion.podcastTitle} (${episodeDate.format("MMM DD, YYYY")})`}}
+              {{`${discussion.podcastTitle} (${discussionAge(discussion.episodePublishDate)})`}}
             </span>
             <span class="now-playing-description"
               v-if="discussion">{{discussion.description}}</span>
@@ -63,6 +63,7 @@
 import { mapActions, mapState, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 import LikeButton from './commons/LikeButton.vue';
+import howLongAgo from '../helpers/date-format';
 
 export default {
   name: 'AudioPlayer',
@@ -107,12 +108,6 @@ export default {
       // in pauseAudio/resumeAudio?
       return this.isPlaying ? this.pauseAudio : this.resumeAudio;
     },
-    episodeDate() {
-      if (this?.discussion?.episodePublishDate) {
-        return this.$moment(`${this.discussion.episodePublishDate.monthValue}-${this.discussion.episodePublishDate.dayOfMonth}-${this.discussion.episodePublishDate.year}`);
-      }
-      return null;
-    },
     isPlaying() {
       return !!(this.audioConfig && this.audioConfig.playing
         && this.audioConfig.playing(this.currentAudio));
@@ -137,6 +132,9 @@ export default {
     leaveBanterHandler() {
       // API Request on Page Leave
       this.audioListenUpdate({});
+    },
+    discussionAge({ year, monthValue: month, dayOfMonth: day }) {
+      return howLongAgo({ year, month, day }, this.$moment);
     },
   },
 };

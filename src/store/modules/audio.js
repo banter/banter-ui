@@ -211,7 +211,7 @@ export default {
       state.timestampRemaining = remainingMillis;
     },
     fadeOut(state) {
-      state.audioConfig.fade(1, 0, state.timestampRemaining);
+      state.audioConfig.fade(1, 0.25, state.timestampRemaining);
       state.fadingOut = true;
     },
   },
