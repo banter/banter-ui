@@ -10,6 +10,7 @@
       <ul class="navbar-nav mr-auto">
       </ul>
       <div class="form-inline my-2 my-lg-0">
+        <AuthModalButton returningUser hideBorders></AuthModalButton>
         <AuthModalButton :returningUser="false"></AuthModalButton>
       </div>
     </b-navbar>

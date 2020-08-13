@@ -163,7 +163,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 #nav-search-group {
   padding: 0px 6px;
   background: rgba(129, 134, 140, 0.25);
@@ -183,41 +183,6 @@ export default {
 #nav-signup:hover {
   color: white;
   background: black;
-}
-
-#nav-signup-text {
-  height: 25px;
-  left: 17px;
-  right: 15.9px;
-  top: calc(50% - 25px/2 + 0.31px);
-
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 7px 20px;
-}
-
-.social-logins {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.email-login {
-  margin: auto;
-}
-
-.social-login {
-  margin: 5px;
-  width: 300px;
-  display: flex;
-  justify-content: space-between;
 }
 
 .brand-name {

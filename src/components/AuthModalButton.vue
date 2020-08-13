@@ -6,6 +6,7 @@
       size="sm"
       id="nav-signup"
       type="submit"
+      :class="hideBorders ? 'no-borders' : ''"
     >
       <p id="nav-signup-text">{{returningUser ? 'Log In' : 'Sign Up'}}</p>
     </b-button>
@@ -37,6 +38,11 @@ export default {
       required: false,
       default: true,
     },
+    hideBorders: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   computed: {
     ...mapState({
@@ -57,7 +63,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @media (max-width: 800px) {
   .dropdown-menu.show {
     left: -170px;
@@ -72,6 +78,18 @@ export default {
 }
 
 // this changes all buttons in Repo with this id
+#nav-signup.no-borders{
+  border: none;
+
+  &:hover {
+      color: black;
+      background: initial;
+      #nav-signup-text {
+        font-weight: bold;
+      }
+  }
+}
+
 #nav-signup {
   padding: 0 0;
   border: 1px solid #000000;
@@ -104,101 +122,4 @@ export default {
   margin: 7px 20px;
 }
 
-.social-logins {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.email-login {
-  margin: auto;
-}
-
-.social-login {
-  margin: 5px;
-  width: 300px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.brand-name {
-  text-transform: capitalize;
-}
-
-.provider-logo {
-  width: 20px;
-  margin-bottom: 3px;
-  margin-right: 5px;
-  height: 20px;
-  width: 20px;
-}
-
-.signin-header {
-  text-align: center;
-  margin: 30px;
-}
-
-.sign-up-form {
-  margin-top: 25px;
-}
-
-span.login-text {
-  margin: 0px 50px;
-}
-
-.use-email-button {
-  .use-email-icon {
-    margin-left: 7px;
-    float: left;
-    margin-top: 3px;
-  }
-  &:hover {
-    .use-email-icon {
-      color: white;
-    }
-  }
-
-  &:hover {
-    .use-email-text {
-      color: white;
-    }
-  }
-
-  .use-email-text {
-    margin: auto;
-  }
-}
-
-a.auth-link:hover {
-  color: #00a8ff;
-  text-decoration: none;
-}
-
-.user-auth-switch {
-  text-align: center;
-}
-
-.login-divider {
-  padding: 10px 0;
-  font-weight: bolder;
-}
-
-.auth-button {
-  margin: auto;
-  width: 35%;
-  min-width: 150px;
-
-  .auth-button-text {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    margin: auto;
-  }
-}
-
-.error-display {
-  text-align: center;
-  font-weight: bold;
-}
 </style>
