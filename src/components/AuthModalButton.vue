@@ -2,54 +2,66 @@
   <div>
     <b-button
       v-if="!currentUser.email && !isRequesting"
-      v-b-modal.auth-modal
+      @click="showAuthModal"
       size="sm"
       id="nav-signup"
-      type="submit">
-      <p id="nav-signup-text">Log In</p>
+      type="submit"
+    >
+      <p id="nav-signup-text">{{returningUser ? 'Log In' : 'Sign Up'}}</p>
     </b-button>
     <b-nav>
       <b-nav-item-dropdown v-if="currentUser.email">
         <template slot="button-content">
-          <b-avatar/>
+          <b-avatar />
         </template>
-        <b-dropdown-item disabled href="#">
-          {{currentUser.email}}
-        </b-dropdown-item>
-        <b-dropdown-item class="mobile-dropdown"
-        :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`">
-          Sign Out
-        </b-dropdown-item>
+        <b-dropdown-item disabled href="#">{{currentUser.email}}</b-dropdown-item>
+        <b-dropdown-item
+          class="mobile-dropdown"
+          :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`"
+        >Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-nav>
   </div>
 </template>
 
 <script>
-
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import API from '../constants/api';
+import MODALS from '../constants/modals';
 
 export default {
   name: 'AuthModalButton',
+  props: {
+    returningUser: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+  },
   computed: {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
       isRequesting: (state) => state.users.isRequesting,
     }),
   },
-  components: {
+  methods: {
+    ...mapMutations(['authingUserHasAccount']),
+    showAuthModal() {
+      this.authingUserHasAccount(this.returningUser);
+      this.$bvModal.show(MODALS.AUTH_MODAL);
+    },
   },
-  data() { return { API }; },
+  data() {
+    return { API };
+  },
 };
 </script>
 
 <style lang="scss">
-
 @media (max-width: 800px) {
-.dropdown-menu.show {
-  left:-170px
-}
+  .dropdown-menu.show {
+    left: -170px;
+  }
 }
 
 #nav-search-group {
@@ -65,7 +77,7 @@ export default {
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;
-  margin-right:5px;
+  margin-right: 5px;
   background: none;
   color: black;
 }
@@ -79,7 +91,7 @@ export default {
   height: 25px;
   left: 17px;
   right: 15.9px;
-  top: calc(50% - 25px/2 + 0.31px);
+  top: calc(50% - 25px / 2 + 0.31px);
 
   font-family: Roboto;
   font-style: normal;
@@ -132,7 +144,7 @@ export default {
 }
 
 span.login-text {
-    margin: 0px 50px;
+  margin: 0px 50px;
 }
 
 .use-email-button {
@@ -164,7 +176,7 @@ a.auth-link:hover {
 }
 
 .user-auth-switch {
-    text-align: center;
+  text-align: center;
 }
 
 .login-divider {
@@ -173,9 +185,9 @@ a.auth-link:hover {
 }
 
 .auth-button {
-margin: auto;
-width: 35%;
-min-width: 150px;
+  margin: auto;
+  width: 35%;
+  min-width: 150px;
 
   .auth-button-text {
     font-family: Roboto;
@@ -189,5 +201,4 @@ min-width: 150px;
   text-align: center;
   font-weight: bold;
 }
-
 </style>

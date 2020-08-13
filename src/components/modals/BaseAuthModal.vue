@@ -3,12 +3,9 @@
     <h2 class="signin-header">{{returningUser ? loginHeader : signUpHeader}}</h2>
 
     <div class="user-auth-switch">
-      <p v-if="returningUser">Don't have an account?
-        <a href="#" class="auth-link" @click="() => returningUser = false">Sign Up
-        </a>
-      </p>
-      <p v-if="!returningUser">Already have an account?
-        <a href="#" class="auth-link" @click="() => returningUser = true">Log In
+      <p>{{returningUser ? 'Don\'t have an account?' : 'Already have an account?'}}
+        <a href="#" class="auth-link" @click="toggleUserReturning">
+          {{returningUser ? 'Sign up' : 'Log in'}}
         </a>
       </p>
     </div>
@@ -66,7 +63,7 @@
 
 <script>
 
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import OAUTH from '../../constants/oauth-providers';
 import API from '../../constants/api';
 import REGEX from '../../constants/regex';
@@ -78,6 +75,7 @@ export default {
     ...mapState({
       error: (state) => state.users.error,
       isRequesting: (state) => state.users.isRequesting,
+      returningUser: (state) => state.modals.userHasAccount,
     }),
     formInvalid() {
       if (!this.authPassword || !this.authEmail) return true;
@@ -109,8 +107,12 @@ export default {
   },
   methods: {
     ...mapActions(['loginUser', 'signupUser']),
+    ...mapMutations(['authingUserHasAccount']),
     clearTopicList() {
       this.clearTopicQuery();
+    },
+    toggleUserReturning() {
+      return this.authingUserHasAccount(!this.returningUser);
     },
     async authAction(evt) {
       evt.preventDefault();
@@ -147,7 +149,6 @@ export default {
   },
   data() {
     return {
-      returningUser: false,
       loginAttempted: false,
       showEmailLogin: false,
       authEmail: '',
