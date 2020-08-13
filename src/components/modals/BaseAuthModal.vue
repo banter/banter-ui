@@ -28,7 +28,7 @@
     </div>
     <b-form @submit="authAction" v-if="showEmailLogin" class="sign-up-form">
       <div v-if="!returningUser" class="input-group form-group">
-        <b-input type="text" v-model="authName" class="form-control auth-form-field"
+        <b-input type="text" data-hj-allow v-model="authName" class="form-control auth-form-field"
           placeholder="Name" />
       </div>
       <div class="input-group form-group">
