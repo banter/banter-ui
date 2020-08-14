@@ -3,12 +3,9 @@
     <h2 class="signin-header">{{returningUser ? loginHeader : signUpHeader}}</h2>
 
     <div class="user-auth-switch">
-      <p v-if="returningUser">Don't have an account?
-        <a href="#" class="auth-link" @click="() => returningUser = false">Sign Up
-        </a>
-      </p>
-      <p v-if="!returningUser">Already have an account?
-        <a href="#" class="auth-link" @click="() => returningUser = true">Log In
+      <p>{{returningUser ? 'Don\'t have an account?' : 'Already have an account?'}}
+        <a href="#" class="auth-link" @click="toggleUserReturning">
+          {{returningUser ? 'Sign up' : 'Log in'}}
         </a>
       </p>
     </div>
@@ -31,7 +28,7 @@
     </div>
     <b-form @submit="authAction" v-if="showEmailLogin" class="sign-up-form">
       <div v-if="!returningUser" class="input-group form-group">
-        <b-input type="text" v-model="authName" class="form-control auth-form-field"
+        <b-input type="text" data-hj-allow v-model="authName" class="form-control auth-form-field"
           placeholder="Name" />
       </div>
       <div class="input-group form-group">
@@ -66,7 +63,7 @@
 
 <script>
 
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import OAUTH from '../../constants/oauth-providers';
 import API from '../../constants/api';
 import REGEX from '../../constants/regex';
@@ -78,6 +75,7 @@ export default {
     ...mapState({
       error: (state) => state.users.error,
       isRequesting: (state) => state.users.isRequesting,
+      returningUser: (state) => state.modals.userHasAccount,
     }),
     formInvalid() {
       if (!this.authPassword || !this.authEmail) return true;
@@ -109,8 +107,12 @@ export default {
   },
   methods: {
     ...mapActions(['loginUser', 'signupUser']),
+    ...mapMutations(['authingUserHasAccount']),
     clearTopicList() {
       this.clearTopicQuery();
+    },
+    toggleUserReturning() {
+      return this.authingUserHasAccount(!this.returningUser);
     },
     async authAction(evt) {
       evt.preventDefault();
@@ -147,7 +149,6 @@ export default {
   },
   data() {
     return {
-      returningUser: false,
       loginAttempted: false,
       showEmailLogin: false,
       authEmail: '',
@@ -162,7 +163,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 #nav-search-group {
   padding: 0px 6px;
   background: rgba(129, 134, 140, 0.25);
@@ -182,41 +183,6 @@ export default {
 #nav-signup:hover {
   color: white;
   background: black;
-}
-
-#nav-signup-text {
-  height: 25px;
-  left: 17px;
-  right: 15.9px;
-  top: calc(50% - 25px/2 + 0.31px);
-
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 7px 20px;
-}
-
-.social-logins {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.email-login {
-  margin: auto;
-}
-
-.social-login {
-  margin: 5px;
-  width: 300px;
-  display: flex;
-  justify-content: space-between;
 }
 
 .brand-name {
