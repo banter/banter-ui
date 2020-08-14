@@ -56,7 +56,8 @@ export default {
       const startPoint = state.playlist.findIndex(
         (playlistItem) => playlistItem.discussionId === state.currentDiscussion.discussionId,
       ) || 0;
-      commit('queueNextItem', state.playlist[startPoint + 1]);
+      const nextItem = state.playlist[startPoint + 1];
+      if (nextItem) commit('queueNextItem', nextItem);
     },
     async createAudio({
       commit, state, dispatch,
@@ -83,6 +84,8 @@ export default {
       dispatch('playDiscussion');
     },
     async playDiscussion({ commit, dispatch, state }) {
+      if (!state.audioConfig) return;
+
       state.currentAudio = await state.audioConfig.play('clip');
       state.audioConfig.rate(state.audioRate);
 
@@ -179,8 +182,10 @@ export default {
       state.audioConfig.seek(0, state.currentAudio);
     },
     nextDiscussionRequest(state) {
-      state.currentDiscussion = state.nextDiscussion.discussion;
-      state.audioConfig = state.nextDiscussion.howl;
+      if (state?.nextDiscussion?.discussion) {
+        state.currentDiscussion = state?.nextDiscussion?.discussion;
+        state.audioConfig = state.nextDiscussion.howl;
+      }
     },
     adjustRate(state, newRate) {
       state.audioRate = newRate;

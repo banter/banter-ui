@@ -6,6 +6,7 @@ import listen from './modules/users/listen';
 import users from './modules/users';
 import actions from './modules/actions';
 import sizing from './modules/sizing';
+import modals from './modules/modals';
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
     sizing,
     actions,
     listen,
+    modals,
   },
 });
