@@ -7,11 +7,23 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   computed: {
     layout() {
       return `${this.$route.meta.layout || 'default'}-layout`;
     },
+  },
+  mounted() {
+    window.addEventListener('resize', this.resizeWindow);
+    this.resizeWindow();
+  },
+  methods: {
+    ...mapActions(['resizeWindow']),
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeWindow);
   },
 };
 </script>

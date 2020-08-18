@@ -10,7 +10,7 @@
       <ul class="navbar-nav mr-auto">
       </ul>
       <div class="form-inline my-2 my-lg-0">
-        <AuthModalButton returningUser hideBorders></AuthModalButton>
+        <AuthModalButton v-if="!isMobile" returningUser hideBorders></AuthModalButton>
         <AuthModalButton :returningUser="false"></AuthModalButton>
       </div>
     </b-navbar>
@@ -41,6 +41,7 @@ export default {
     ...mapState({
       currentUser: (state) => state.users.currentUser,
       anonId: (state) => state.users.anonId,
+      isMobile: (state) => state.sizing.isMobile,
     }),
     currentTopic() {
       return this.chosenTopic;
