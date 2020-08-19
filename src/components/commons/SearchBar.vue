@@ -11,6 +11,7 @@
               class="search-select"
               :filterable="false"
               :options="foundTags"
+              data-hj-allow
               placeholder="Search">
               <template #open-indicator="{ attributes }">
                 <span v-bind="attributes"></span>
@@ -56,6 +57,7 @@ export default {
     },
     updateAutocomplete: _.debounce(async (search, loading, vm) => {
       if (search.length > 0) {
+        window.ga('send', 'pageview', `/?q=${search}`);
         await vm.queryTopics(search);
       } else {
         vm.clearTopicList();
