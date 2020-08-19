@@ -8,8 +8,6 @@
 </template>
 
 <script>
-
-import { mapActions } from 'vuex';
 import BanterNavBar from '../components/BanterNavBar.vue';
 import BanterBottomNavBar from '../components/BanterBottomNavBar.vue';
 import AllModals from '../components/modals/AllModals.vue';
@@ -34,14 +32,6 @@ export default {
         autoHideDelay: 5000,
       });
     }
-    window.addEventListener('resize', this.resizeWindow);
-    this.resizeWindow();
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.resizeWindow);
-  },
-  methods: {
-    ...mapActions(['resizeWindow']),
   },
 };
 </script>
