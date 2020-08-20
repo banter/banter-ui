@@ -1,13 +1,18 @@
 <template>
-<div>
-  <b-button :disabled="followRequestingThisTopic"
-    @click="handleClick"
-    :variant="variant">
+  <div>
+    <b-button v-if="!isOnboardingButton" :disabled="followRequestingThisTopic" @click="handleClick"
+      :variant="variant">
       <span v-if="followRequestingThisTopic"
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
-      <span v-else
-        id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
-  </b-button>
+      <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
+    </b-button>
+    <a v-else class="share-network" :disabled="followRequestingThisTopic"
+    @click="handleClick" role="button">
+            <span v-if="followRequestingThisTopic"
+        id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
+      <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
+    </a>
+
   </div>
 </template>
 
@@ -18,9 +23,16 @@ import MODALS from '../constants/modals';
 export default {
   name: 'FollowButton',
   props: {
+
+    isOnboardingButton: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
     topic: {
       type: Object,
-      required: true,
+      required: false,
       default: () => ({}),
     },
     variant: {
