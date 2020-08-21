@@ -19,6 +19,8 @@ const API = {
   FORYOU: 'for-you',
   LIKES: 'likes/',
   LISTENS: 'listens/',
+  LEAGUES: 'leagues/',
+  TEAMS: 'teams/',
   UPDATE: 'update',
   FOLLOW: 'follow',
   UNFOLLOW: 'unfollow',

@@ -17,48 +17,37 @@
         </button>
       </div>
       <div class="modal-header">
-        <input class="form-control mr-sm-2" type="search"
-        v-model="searchText"
-        @input="test()"
-        :placeholder="isTeamSelectionVisible ?
-        'Search your interests' : 'Search your favorite teams'"
-        aria-label="Search">
+        <input class="form-control mr-sm-2" type="search" v-model="searchText" @input="test()"
+          :placeholder="isTeamSelectionVisible ?
+        'Search your favorite teams': 'Search your interests'" aria-label="Search">
       </div>
       <div class="row">
-        <b-card v-if="isTeamSelectionVisible" no-body>
-          <b-tabs pills nav-class="side-button"
-
-          content-class="side-button"
-          nav-wrapper-class="side-button"
-            active-nav-item-class="font-weight-bold text-uppercase text-submit side-button"
- card vertical>
-            <b-tab title="Tab 1" submit>
-              <b-card-text>
-                <div v-for="(networks, index) in groupedArticles" class="row" :key="index">
-                  <div v-for="network in networks" class="col-md-auto" :key="network.network">
-                    <follow-button v-bind:isOnboardingButton="true"></follow-button>
-                  </div>
-                </div>
-              </b-card-text>
-            </b-tab>
-            <b-tab title="Tab 2">
-              <b-card-text>Tab contents 2</b-card-text>
-            </b-tab>
-            <b-tab title="Tab 3">
-              <b-card-text>Tab contents 3</b-card-text>
-            </b-tab>
-          </b-tabs>
-        </b-card>
-        <div v-else>
-          <div class="col tab-content" id="nav-tabContent">
-            <div v-for="networks in groupedArticles" :key="networks.id" class="row">
-              <div v-for="network in networks" class="col-md-auto" :key="network.network">
-                <follow-button v-bind:isOnboardingButton="true"></follow-button>
-
-              </div>
+        <div v-if="!isTeamSelectionVisible" class="col tab-content" id="nav-tabContent">
+          <div v-for="networks in groupedArticles" :key="networks.id"
+            class="row justify-content-center">
+            <div v-for="network in networks" class="col justify-content-center"
+              style="text-align: center" :key="network.network">
+              <follow-button v-bind:isOnboardingButton="true" :topic="network"></follow-button>
             </div>
           </div>
         </div>
+        <b-card v-else no-body>
+          <b-tabs pills nav-class="side-button" content-class="side-button"
+            nav-wrapper-class="side-button"
+            active-nav-item-class="font-weight-bold text-uppercase text-submit side-button" card
+            vertical>
+            <b-tab title="NFL" submit>
+              <team-selection-scroll :teams="getNFLTeams"></team-selection-scroll>
+            </b-tab>
+            <b-tab title="NBA">
+              <team-selection-scroll :teams="getNBATeams"></team-selection-scroll>
+            </b-tab>
+            <b-tab title="NHL">
+              <team-selection-scroll :teams="getNFLTeams"></team-selection-scroll>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+
       </div>
     </b-modal>
   </div>
@@ -66,24 +55,25 @@
 
 <script>
 
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import _ from 'lodash';
 import MODALS from '../../constants/modals';
 import API from '../../constants/api';
-import NETWORKS from '../../constants/banter-networks';
 import FollowButton from '../FollowButton.vue';
+import TeamSelectionScroll from '../../containers/TeamSelectionScroll.vue';
 
 export default {
   name: 'BaseOnboardingModal',
   computed: {
+    ...mapGetters(['getNFLTeams', 'getNBATeams', 'getLeagues']),
     ...mapState({
       returningUser: (state) => state.modals.userHasAccount,
     }),
-    groupedArticles() {
-      return _.chunk(this.NETWORKS, 3);
-    },
     toggleVisibleContent() {
       return !this.isTeamSelectionVisible;
+    },
+    groupedArticles() {
+      return _.chunk(this.getLeagues, 3);
     },
   },
   mounted() {
@@ -100,6 +90,7 @@ export default {
 
   components: {
     FollowButton,
+    TeamSelectionScroll,
   },
   methods: {
     closeModal(modal) {
@@ -119,7 +110,6 @@ export default {
 
       windowLocation: window.location.href,
       API,
-      NETWORKS,
       modalName: MODALS.BASE_ONBOARDING_MODAL,
       isTeamSelectionVisible: false,
       searchText: '',

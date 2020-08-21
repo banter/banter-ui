@@ -6,13 +6,13 @@
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
       <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
     </b-button>
-    <a v-else class="share-network" :disabled="followRequestingThisTopic"
-    @click="handleClick" role="button">
-            <span v-if="followRequestingThisTopic"
-        id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
-      <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
-    </a>
 
+    <b-button v-else
+   :variant="isFollowing ? 'primary' : 'outline-primary'"
+     :disabled="followRequestingThisTopic" @click="handleClick"
+      role="button">
+      <span id="follow-button-text">{{topic.value}}</span>
+    </b-button>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
 
     topic: {
       type: Object,
-      required: false,
+      required: true,
       default: () => ({}),
     },
     variant: {
@@ -70,4 +70,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.following-button{
+
+}
+
+.not-following-button{
+
+}
+
+</style>
