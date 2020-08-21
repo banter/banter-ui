@@ -73,5 +73,9 @@ export default {
     getLeagues(state) {
       return state.teams;
     },
+    searchTeams(state) {
+      // eslint-disable-next-line max-len
+      return (keyword) => state.teams.filter((item) => item.value.toLowerCase().indexOf(keyword.toLowerCase()) !== -1);
+    },
   },
 };

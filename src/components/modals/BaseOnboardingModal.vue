@@ -17,18 +17,17 @@
         </button>
       </div>
       <div class="modal-header">
-        <input class="form-control mr-sm-2" type="search" v-model="searchText" @input="test()"
-          :placeholder="isTeamSelectionVisible ?
+        <input class="form-control mr-sm-2" type="search"
+        v-model="searchText" :placeholder="isTeamSelectionVisible ?
         'Search your favorite teams': 'Search your interests'" aria-label="Search">
       </div>
       <div class="row">
         <div v-if="!isTeamSelectionVisible" class="col tab-content" id="nav-tabContent">
-          <div v-for="networks in groupedArticles" :key="networks.id"
-            class="row justify-content-center">
-            <div v-for="network in networks" class="col justify-content-center"
-              style="text-align: center" :key="network.network">
-              <follow-button v-bind:isOnboardingButton="true" :topic="network"></follow-button>
-            </div>
+          <div v-if="searchText ==''">
+            <team-selection-scroll :teams="getLeagues"></team-selection-scroll>
+          </div>
+          <div v-else>
+            <team-selection-scroll :teams="searchTeams(this.searchText)"></team-selection-scroll>
           </div>
         </div>
         <b-card v-else no-body>
@@ -59,13 +58,12 @@ import { mapState, mapGetters } from 'vuex';
 import _ from 'lodash';
 import MODALS from '../../constants/modals';
 import API from '../../constants/api';
-import FollowButton from '../FollowButton.vue';
 import TeamSelectionScroll from '../../containers/TeamSelectionScroll.vue';
 
 export default {
   name: 'BaseOnboardingModal',
   computed: {
-    ...mapGetters(['getNFLTeams', 'getNBATeams', 'getLeagues']),
+    ...mapGetters(['getNFLTeams', 'getNBATeams', 'getLeagues', 'searchTeams']),
     ...mapState({
       returningUser: (state) => state.modals.userHasAccount,
     }),
@@ -89,9 +87,9 @@ export default {
   },
 
   components: {
-    FollowButton,
     TeamSelectionScroll,
   },
+
   methods: {
     closeModal(modal) {
       if (this.isRequesting) return;
@@ -100,9 +98,6 @@ export default {
     },
     toggleTeamSelection() {
       this.isTeamSelectionVisible = !this.isTeamSelectionVisible;
-    },
-    test() {
-      console.log(this.searchText);
     },
   },
   data() {
