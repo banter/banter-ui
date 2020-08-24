@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal :id="modalName" hide-footer hide-header title="Follow Modal">
+    <b-modal :id="modalName" scrollable hide-footer hide-header title="Follow Modal">
       <div class="modal-header">
         <b-icon v-if="isTeamSelectionVisible" @click="toggleTeamSelection()" font-scale="1"
           class="back-button" icon="arrow-left" />
@@ -24,29 +24,36 @@
       <div class="row">
         <div v-if="!isTeamSelectionVisible" class="col tab-content" id="nav-tabContent">
           <div v-if="searchText ==''">
-            <team-selection-scroll :teams="getLeagues"></team-selection-scroll>
+            <team-selection-scroll :teams="getInterestOptions"></team-selection-scroll>
           </div>
           <div v-else>
-            <team-selection-scroll :teams="searchTeams(this.searchText)"></team-selection-scroll>
+            <team-selection-scroll
+            :teams="searchInterests(this.searchText)"></team-selection-scroll>
           </div>
         </div>
-        <b-card v-else no-body>
-          <b-tabs pills nav-class="side-button" content-class="side-button"
+        <div v-else class="col tab-content" id="nav-tabContent">
+<div v-if="searchText ==''">
+                <b-card no-body>
+                          <b-tabs pills nav-class="side-button" content-class="side-button"
             nav-wrapper-class="side-button"
             active-nav-item-class="font-weight-bold text-uppercase text-submit side-button" card
             vertical>
-            <b-tab title="NFL" submit>
-              <team-selection-scroll :teams="getNFLTeams"></team-selection-scroll>
+                <b-tab title="NFL" submit>
+              <team-selection-scroll :teams="getNFLTeams" :teamsPerRow=2></team-selection-scroll>
             </b-tab>
             <b-tab title="NBA">
-              <team-selection-scroll :teams="getNBATeams"></team-selection-scroll>
+              <team-selection-scroll :teams="getNBATeams" :teamsPerRow=2></team-selection-scroll>
             </b-tab>
             <b-tab title="NHL">
-              <team-selection-scroll :teams="getNFLTeams"></team-selection-scroll>
+              <team-selection-scroll :teams="getNFLTeams" :teamsPerRow=2></team-selection-scroll>
             </b-tab>
           </b-tabs>
         </b-card>
-
+          </div>
+          <div v-else class="col tab-content" id="nav-tabContent">
+            <team-selection-scroll :teams="searchTeams(this.searchText)"></team-selection-scroll>
+          </div>
+        </div>
       </div>
     </b-modal>
   </div>
@@ -63,10 +70,15 @@ import TeamSelectionScroll from '../../containers/TeamSelectionScroll.vue';
 export default {
   name: 'BaseOnboardingModal',
   computed: {
-    ...mapGetters(['getNFLTeams', 'getNBATeams', 'getLeagues', 'searchTeams']),
+    ...mapGetters(['getIfUserShouldOnboard', 'getInterestOptions', 'getNFLTeams',
+      'getNBATeams', 'getLeagues', 'searchTeams', 'searchInterests']),
     ...mapState({
       returningUser: (state) => state.modals.userHasAccount,
     }),
+    ifUserShouldOnboard() {
+      return this.getIfUserShouldOnboard;
+    },
+
     toggleVisibleContent() {
       return !this.isTeamSelectionVisible;
     },
@@ -74,8 +86,17 @@ export default {
       return _.chunk(this.getLeagues, 3);
     },
   },
+  watch: {
+    ifUserShouldOnboard() {
+      if (this.getIfUserShouldOnboard) {
+        this.$bvModal.show(MODALS.BASE_ONBOARDING_MODAL);
+      }
+    },
+  },
   mounted() {
+    // if (this.getIfUserShouldOnboard) {
     this.$bvModal.show(MODALS.BASE_ONBOARDING_MODAL);
+    // }
   },
 
   props: {
@@ -97,6 +118,7 @@ export default {
       this.$root.$emit('bv::hide::modal', modal);
     },
     toggleTeamSelection() {
+      this.searchText = '';
       this.isTeamSelectionVisible = !this.isTeamSelectionVisible;
     },
   },

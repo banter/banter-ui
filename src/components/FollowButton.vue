@@ -11,7 +11,9 @@
    :variant="isFollowing ? 'primary' : 'outline-primary'"
      :disabled="followRequestingThisTopic" @click="handleClick"
       role="button">
-      <span id="follow-button-text">{{topic.value}}</span>
+              <b-img  class="img-thumbnail d-flex m-auto"
+          :src="require('../assets/giants.png')" />
+      <span id="follow-button-text d-flex m-auto">{{topic.value}}</span>
     </b-button>
   </div>
 </template>
@@ -72,12 +74,9 @@ export default {
 
 <style lang="scss" scoped>
 
-.following-button{
-
-}
-
-.not-following-button{
-
+.img-thumbnail {
+  max-width: 50px;
+  max-height: 50px;
 }
 
 </style>

@@ -218,4 +218,10 @@ export default {
       state.isRequesting = false;
     },
   },
+  getters: {
+    getIfUserShouldOnboard(state) {
+      return state.currentUser?.anonymous === false
+      && state.currentUser?.followingTagsCount === 0;
+    },
+  },
 };

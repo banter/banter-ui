@@ -28,10 +28,15 @@ export default {
       required: true,
       default: () => [],
     },
+    teamsPerRow: {
+      type: Number,
+      required: false,
+      default: 3,
+    },
   },
   computed: {
     groupedTeams() {
-      return _.chunk(this.teams, 3);
+      return _.chunk(this.teams, this.teamsPerRow);
     },
   },
 };
@@ -39,8 +44,12 @@ export default {
 
 <style lang="scss">
 
+.row {
+    padding-bottom: 10px;
+}
+
 .scroll {
-    max-height: 300px;
-    overflow-y: auto;
+    // max-height: 300px;
+    // overflow-y: auto;
 }
 </style>

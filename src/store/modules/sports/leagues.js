@@ -6,7 +6,8 @@ import apiRequest from '../../helpers/api-request';
 export default {
   state: {
     teams: MOCKTEAMS,
-    leagues: [],
+    interests: MOCKTEAMS,
+    leagues: MOCKTEAMS,
     isRequestingTeams: false,
     isRequestingLeagues: false,
     errored: false,
@@ -73,9 +74,16 @@ export default {
     getLeagues(state) {
       return state.teams;
     },
+    getInterestOptions(state) {
+      return state.interests.concat(state.leagues);
+    },
     searchTeams(state) {
       // eslint-disable-next-line max-len
       return (keyword) => state.teams.filter((item) => item.value.toLowerCase().indexOf(keyword.toLowerCase()) !== -1);
+    },
+    searchInterests(state, getters) {
+      // eslint-disable-next-line max-len
+      return (keyword) => getters.getInterestOptions.filter((item) => item.value.toLowerCase().indexOf(keyword.toLowerCase()) !== -1);
     },
   },
 };
