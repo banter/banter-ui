@@ -71,6 +71,12 @@ export default {
     getNBATeams(state) {
       return state.teams.filter((team) => team.type === 'team');
     },
+    getMLBTeams(state) {
+      return state.teams.filter((team) => team.type === 'team');
+    },
+    getNHLTeams(state) {
+      return state.teams.filter((team) => team.type === 'team');
+    },
     getLeagues(state) {
       return state.teams;
     },

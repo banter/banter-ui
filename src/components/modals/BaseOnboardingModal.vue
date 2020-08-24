@@ -44,8 +44,11 @@
             <b-tab title="NBA">
               <team-selection-scroll :teams="getNBATeams" :teamsPerRow=2></team-selection-scroll>
             </b-tab>
+            <b-tab title="MLB">
+              <team-selection-scroll :teams="getMLBTeams" :teamsPerRow=2></team-selection-scroll>
+            </b-tab>
             <b-tab title="NHL">
-              <team-selection-scroll :teams="getNFLTeams" :teamsPerRow=2></team-selection-scroll>
+              <team-selection-scroll :teams="getNHLTeams" :teamsPerRow=2></team-selection-scroll>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -70,7 +73,7 @@ import TeamSelectionScroll from '../../containers/TeamSelectionScroll.vue';
 export default {
   name: 'BaseOnboardingModal',
   computed: {
-    ...mapGetters(['getIfUserShouldOnboard', 'getInterestOptions', 'getNFLTeams',
+    ...mapGetters(['getIfUserShouldOnboard', 'getInterestOptions', 'getNFLTeams', 'getMLBTeams', 'getNHLTeams',
       'getNBATeams', 'getLeagues', 'searchTeams', 'searchInterests']),
     ...mapState({
       returningUser: (state) => state.modals.userHasAccount,
