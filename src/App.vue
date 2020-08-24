@@ -25,17 +25,17 @@ export default {
       title: 'Banter',
       meta: [
         // Twitter Card
-        { name: 'twitter:card', content: 'summary' },
-        { name: 'twitter:title', content: 'Banter' },
-        { name: 'twitter:description', content: 'Vue sample site showing off Twitter and Facebook Cards.' },
+        { name: 'twitter:card', content: 'Banter' },
+        { name: 'twitter:title', content: 'Welcome to Banter' },
+        { name: 'twitter:description', content: 'The new way to listen to sports talk' },
         // image must be an absolute path
         { name: 'twitter:image', content: this.logo },
         // Facebook OpenGraph
-        { property: 'og:title', content: 'Vue Social Cards Example' },
-        { property: 'og:site_name', content: 'Vue Example' },
+        { property: 'og:title', content: 'Welcome to Banter' },
+        { property: 'og:site_name', content: 'Banter' },
         { property: 'og:type', content: 'website' },
         { property: 'og:image', content: this.logo },
-        { property: 'og:description', content: 'Vue sample site showing off Twitter and Facebook Cards.' },
+        { property: 'og:description', content: 'The new way to listen to sports talk.' },
       ],
     };
   },
