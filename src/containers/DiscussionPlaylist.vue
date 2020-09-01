@@ -52,9 +52,9 @@ export default {
     }),
   },
   mounted() {
-    if (this.isAutoPlayEnabled) {
-      this.audioAction(this.collection?.playlist[0]);
-    }
+    setTimeout(() => {
+      if (this.isAutoPlayEnabled) { this.audioAction(this.collection?.playlist[0]); }
+    }, 600);
   },
   methods: {
     ...mapActions(['pauseAudio', 'resumeAudio', 'createAudio']),
