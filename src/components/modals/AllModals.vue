@@ -6,6 +6,7 @@
     <for-you-auth-modal :ref="MODALS.FOR_YOU_AUTH_MODAL"/>
     <feedback-modal :ref="MODALS.FEEDBACK_MODAL"/>
     <passive-auth-modal :ref="MODALS.PASSIVE_AUTH_MODAL"/>
+    <base-onboarding-modal :ref="MODALS.BASE_ONBOARDING_MODAL"/>
     <share-modal></share-modal>
   </div>
 </template>
@@ -20,6 +21,7 @@ import ForYouAuthModal from './ForYouAuthModal.vue';
 import PassiveAuthModal from './PassiveAuthModal.vue';
 import FeedbackModal from './FeedbackModal.vue';
 import ShareModal from './ShareModal.vue';
+import BaseOnboardingModal from './BaseOnboardingModal.vue';
 
 export default {
   name: 'AllModals',
@@ -36,6 +38,7 @@ export default {
     FeedbackModal,
     PassiveAuthModal,
     ShareModal,
+    BaseOnboardingModal,
   },
 };
 </script>

@@ -20,10 +20,10 @@
           <i class="far fah fa-lg fa-clipboard"></i>
           <span>Copy to Clipboard</span>
         </a>
-        <b-toast id="clipboard-toast" no-close-button=true static auto-hide-delay="1000">
+        <b-toast id="clipboard-toast" :no-close-button="true" static auto-hide-delay="1000">
           Copied to Clipboard
         </b-toast>
-        <b-toast id="clipboard-toast=error" no-close-button=true static auto-hide-delay="1000">
+        <b-toast id="clipboard-toast=error" :no-close-button="true" static auto-hide-delay="1000">
           Unable to copy to clipboard
         </b-toast>
       </div>
@@ -34,7 +34,9 @@
 
 <script>
 
+import { mapState, mapMutations } from 'vuex';
 import NETWORKS from '../../constants/banter-networks';
+import API from '../../constants/api';
 
 export default {
   name: 'ShareModal',
@@ -57,6 +59,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      shareDiscussionId: (state) => state.audio.shareDiscussionId,
+    }),
     shareUrlNetwork() {
       return `${this.sharing.url}?utm_source=`;
     },
@@ -65,10 +70,12 @@ export default {
     },
   },
   methods: {
-
+    ...mapMutations(['setShareDiscussionId']),
     onShow() {
       this.clipboardSelected = false;
-      this.sharing.url = `${window.location.href}`;
+      this.sharing.url = this.shareDiscussionId !== '' && this.shareDiscussionId !== null
+        ? `${window.location.origin}/${API.DISCUSSIONS}${this.shareDiscussionId}` : `${window.location.href}`;
+      this.setShareDiscussionId('');
     },
 
     async copy() {

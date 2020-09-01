@@ -5,3 +5,4 @@ export { default as Explore } from './Explore.vue';
 export { default as Listen } from './Listen.vue';
 export { default as PrivacyPolicy } from './PrivacyPolicy.vue';
 export { default as TermsAndConditions } from './TermsAndConditions.vue';
+export { default as Discussion } from './Discussion.vue';

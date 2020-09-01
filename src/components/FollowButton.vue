@@ -1,13 +1,20 @@
 <template>
-<div>
-  <b-button :disabled="followRequestingThisTopic"
-    @click="handleClick"
-    :variant="variant">
+  <div>
+    <b-button v-if="!isOnboardingButton" :disabled="followRequestingThisTopic" @click="handleClick"
+      :variant="variant">
       <span v-if="followRequestingThisTopic"
         id="follow-button-text">{{isFollowing ? 'Follow' : 'Unfollow'}}</span>
-      <span v-else
-        id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
-  </b-button>
+      <span v-else id="follow-button-text">{{isFollowing ? 'Unfollow' : 'Follow'}}</span>
+    </b-button>
+
+    <b-button v-else
+   :variant="isFollowing ? 'primary' : 'outline-primary'"
+     :disabled="followRequestingThisTopic" @click="handleClick"
+      role="button">
+              <b-img  class="img-thumbnail d-flex m-auto"
+          :src="require('../assets/giants.png')" />
+      <span id="follow-button-text d-flex m-auto">{{topic.value}}</span>
+    </b-button>
   </div>
 </template>
 
@@ -18,6 +25,13 @@ import MODALS from '../constants/modals';
 export default {
   name: 'FollowButton',
   props: {
+
+    isOnboardingButton: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
     topic: {
       type: Object,
       required: true,
@@ -58,4 +72,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.img-thumbnail {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+</style>

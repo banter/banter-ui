@@ -3,6 +3,7 @@ const MODALS = {
   FOLLOW_AUTH_MODAL: 'follow-modal',
   AUTH_MODAL: 'auth-modal',
   PASSIVE_AUTH_MODAL: 'passive-auth-modal',
+  BASE_ONBOARDING_MODAL: 'base-onboarding-modal',
   FOR_YOU_AUTH_MODAL: 'for-you-auth-modal',
   FEEDBACK_MODAL: 'feedback-modal',
   SHARE_MODAL: 'share-modal',

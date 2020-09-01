@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import topics from './modules/topics';
 import audio from './modules/audio';
 import listen from './modules/users/listen';
+import leagues from './modules/sports/leagues';
 import users from './modules/users';
 import actions from './modules/actions';
 import sizing from './modules/sizing';
@@ -19,5 +20,6 @@ export default new Vuex.Store({
     actions,
     listen,
     modals,
+    leagues,
   },
 });

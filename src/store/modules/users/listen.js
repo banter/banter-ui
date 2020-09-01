@@ -5,7 +5,9 @@ export default {
   state: {
     forYou: { playlist: [] },
     following: { playlist: [] },
+    discussion: { playlist: [] },
     isRequestingListen: false,
+    isRequesting: false,
     errored: false,
     error: null,
   },
@@ -48,6 +50,17 @@ export default {
       };
       return apiRequest({ requestData, mutations, commit });
     },
+    fetchDiscussionById({ commit }, id) {
+      const requestData = {
+        url: `${API.BASE_URL}${API.DISCUSSIONS}${id}`,
+      };
+      const mutations = {
+        preCommit: 'fetchDiscussionRequest',
+        successCommit: 'fetchDiscussionSuccess',
+        errorCommit: 'discussionError',
+      };
+      return apiRequest({ requestData, mutations, commit });
+    },
   },
   mutations: {
     fetchListenRequest(state) {
@@ -65,6 +78,18 @@ export default {
       state.isRequestingListen = false;
       state.errored = true;
       state.error = error;
+    },
+    fetchDiscussionRequest(state) {
+      state.isRequesting = true;
+    },
+    fetchDiscussionSuccess(state, payload) {
+      state.discussion.playlist = [payload];
+      state.isRequesting = false;
+    },
+    discussionError(state, error) {
+      state.isRequesting = false;
+      state.errored = true;
+      state.error = error.message;
     },
 
   },

@@ -17,6 +17,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faShareAlt, faCommentDots, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+import Meta from 'vue-meta';
 import store from './store/index';
 import router from './router/index';
 import App from './App.vue';
@@ -58,7 +59,7 @@ moment.locale('en-us');
 Object.defineProperty(Vue.prototype, '$moment', {
   value: moment,
 });
-
+Vue.use(Meta);
 Vue.component('default-layout', Default);
 Vue.component('landing-layout', Landing);
 Vue.component('v-select', vSelect);

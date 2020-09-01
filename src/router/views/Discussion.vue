@@ -5,8 +5,7 @@
     </div>
     <div v-if="!isLoading">
       <div v-if="playlistExists > 0">
-      <TopicHeader :currentTopic="currentTopic"/>
-      <discussion-playlist :collection="currentTopic"></discussion-playlist>
+      <discussion-playlist :collection="discussion"></discussion-playlist>
       </div>
       <div v-else>
         <empty-page-handler></empty-page-handler>
@@ -18,15 +17,13 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import LoadingSpinner from '../../components/LoadingSpinner.vue';
-import TopicHeader from '../../components/TopicHeader.vue';
 import DiscussionPlaylist from '../../containers/DiscussionPlaylist.vue';
 import EmptyPageHandler from '../../components/commons/EmptyPageHandler.vue';
 
 export default {
-  name: 'Topic',
+  name: 'Discussion',
   components: {
     LoadingSpinner,
-    TopicHeader,
     DiscussionPlaylist,
     EmptyPageHandler,
   },
@@ -42,12 +39,12 @@ export default {
       meta: [
         // Twitter Card
         { name: 'twitter:card', content: 'Banter' },
-        { name: 'twitter:title', content: `Banter Topic Page - ${this.formatUrlParam(this.$route.params.topicName)}` },
+        { name: 'twitter:title', content: 'Banter Discussion Page' },
         { name: 'twitter:description', content: 'The new way to listen to sports talk' },
         // image must be an absolute path
         { name: 'twitter:image', content: this.logo },
         // Facebook OpenGraph
-        { property: 'og:title', content: `Banter Topic Page - ${this.formatUrlParam(this.$route.params.topicName)}` },
+        { property: 'og:title', content: 'Banter Discussion Page' },
         { property: 'og:site_name', content: 'Banter' },
         { property: 'og:type', content: 'website' },
         { property: 'og:image', content: this.logo },
@@ -56,38 +53,21 @@ export default {
     };
   },
   async mounted() {
-    const formattedTopicName = this.formatUrlParam(this.$route.params.topicName);
-    if (formattedTopicName !== this.currentTopic.name) {
-      if (this?.$route?.params?.topicId) {
-        await this.fetchTopicById(this.$route.params.topicId);
-      } else {
-        await this.fetchTopicByName(formattedTopicName);
-      }
-    }
+    await this.fetchDiscussionById(this.$route.params.discussionId);
   },
   computed: {
     ...mapState({
       currentDiscussion: (state) => state.audio.currentDiscussion,
-      isLoading: (state) => state.topics.isRequesting,
+      isLoading: (state) => state.listen.isRequesting,
       isMobile: (state) => state.sizing.isMobile,
-      chosenTopic: (state) => state.topics.currentTopic,
+      discussion: (state) => state.listen.discussion,
     }),
-    currentTopic() {
-      return this.chosenTopic;
-    },
     playlistExists() {
-      return !!this.currentTopic?.playlist?.length;
+      return !!this.discussion?.playlist?.length;
     },
   },
   methods: {
-    ...mapActions(['fetchTopicByName', 'fetchTopicById']),
-    formatUrlParam(topicName) {
-      const words = topicName.match(/([^-]+)/g) || [];
-      words.forEach((word, i) => {
-        words[i] = word[0].toUpperCase() + word.slice(1);
-      });
-      return words.join(' ');
-    },
+    ...mapActions(['fetchDiscussionById']),
   },
 };
 </script>

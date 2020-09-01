@@ -15,6 +15,32 @@ export default {
       return `${this.$route.meta.layout || 'default'}-layout`;
     },
   },
+  data() {
+    return {
+      // eslint-disable-next-line global-require
+      logo: window.location.origin + require('./assets/Banter_logo_dark.png'),
+    };
+  },
+  metaInfo() {
+    return {
+
+      title: 'Banter',
+      meta: [
+        // Twitter Card
+        { name: 'twitter:card', content: 'Banter' },
+        { name: 'twitter:title', content: 'Welcome to Banter' },
+        { name: 'twitter:description', content: 'The new way to listen to sports talk' },
+        // image must be an absolute path
+        { name: 'twitter:image', content: this.logo },
+        // Facebook OpenGraph
+        { property: 'og:title', content: 'Welcome to Banter' },
+        { property: 'og:site_name', content: 'Banter' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:image', content: this.logo },
+        { property: 'og:description', content: 'The new way to listen to sports talk.' },
+      ],
+    };
+  },
   mounted() {
     window.addEventListener('resize', this.resizeWindow);
     this.resizeWindow();

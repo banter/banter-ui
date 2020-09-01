@@ -53,9 +53,11 @@
       <div v-if="error && loginAttempted" class="error-display">
         <p>{{error}}</p>
       </div>
-      <div v-if="localError && loginAttempted" class="error-display">
+      <!-- Removing so second error message isnt there....not sure if this is needed for certain
+      situation -->
+      <!-- <div v-if="localError && loginAttempted" class="error-display">
         <p>{{localError}}</p>
-      </div>
+      </div> -->
     </b-form>
 
   </div>
@@ -63,8 +65,11 @@
 
 <script>
 
-import { mapActions, mapState, mapMutations } from 'vuex';
+import {
+  mapActions, mapState, mapMutations, mapGetters,
+} from 'vuex';
 import OAUTH from '../../constants/oauth-providers';
+import MODALS from '../../constants/modals';
 import API from '../../constants/api';
 import REGEX from '../../constants/regex';
 import LoadingSpinner from '../LoadingSpinner.vue';
@@ -106,6 +111,7 @@ export default {
     LoadingSpinner,
   },
   methods: {
+    ...mapGetters(['getIfUserShouldOnboard']),
     ...mapActions(['loginUser', 'signupUser']),
     ...mapMutations(['authingUserHasAccount']),
     clearTopicList() {
@@ -130,6 +136,9 @@ export default {
           await this.loginUser({ authEmail, authPassword });
         } else {
           await this.signupUser({ authName, authEmail, authPassword });
+        }
+        if (this.getIfUserShouldOnboard) {
+          this.$bvModal.show(MODALS.BASE_ONBOARDING_MODAL);
         }
 
         this.closeModal(this.modalName);

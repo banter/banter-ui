@@ -57,6 +57,9 @@
                   showLikes
                   @click.native="$event.stopImmediatePropagation();"
                   :discussion='discussion' />
+                  <share-button style="margin-left:20px" v-bind:isDiscussionCard="true"
+                  :discussionId="this.discussion.discussionId"
+                  @click.native="$event.stopImmediatePropagation();"></share-button>
               </div>
             </b-row>
           </b-card-body>
@@ -70,6 +73,7 @@
 import { mapState } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 import LikeButton from './commons/LikeButton.vue';
+import ShareButton from './commons/ShareButton.vue';
 import topicUrlGenerator from '../store/helpers/topic-url-generator';
 import howLongAgo from '../helpers/date-format';
 
@@ -78,6 +82,7 @@ export default {
   components: {
     LoadingSpinner,
     LikeButton,
+    ShareButton,
   },
   props: {
     isActiveDiscussion: {
