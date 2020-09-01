@@ -31,6 +31,11 @@ export default {
       required: false,
       default: false,
     },
+    isAutoPlayEnabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
@@ -45,6 +50,11 @@ export default {
       isLoading: (state) => state.topics.isRequesting,
       audioConfig: (state) => state.audio.audioConfig,
     }),
+  },
+  mounted() {
+    if (this.isAutoPlayEnabled) {
+      this.audioAction(this.collection?.playlist[0]);
+    }
   },
   methods: {
     ...mapActions(['pauseAudio', 'resumeAudio', 'createAudio']),

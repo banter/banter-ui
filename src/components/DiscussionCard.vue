@@ -57,7 +57,7 @@
                   showLikes
                   @click.native="$event.stopImmediatePropagation();"
                   :discussion='discussion' />
-                  <share-button v-bind:isDiscussionCard="true"
+                  <share-button style="margin-left:20px" v-bind:isDiscussionCard="true"
                   :discussionId="this.discussion.discussionId"
                   @click.native="$event.stopImmediatePropagation();"></share-button>
               </div>

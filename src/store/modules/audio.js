@@ -220,7 +220,7 @@ export default {
       state.audioConfig.fade(1, 0.25, state.timestampRemaining);
       state.fadingOut = true;
     },
-    setShareAudio(state, discussionId) {
+    setShareDiscussionId(state, discussionId) {
       state.shareDiscussionId = discussionId;
     },
   },

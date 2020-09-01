@@ -36,6 +36,11 @@
       <b-navbar-toggle target="audio-collapse"></b-navbar-toggle>
 
       <b-collapse id="audio-collapse" is-nav>
+                <b-navbar-nav>
+                  <share-button style="margin-left:20px" v-bind:isDiscussionCard="true"
+                  :discussionId="discussion.discussionId"
+                  @click.native="$event.stopImmediatePropagation();"></share-button>
+        </b-navbar-nav>
 
         <b-navbar-nav class="navbar-nav w-100 justify-content-center">
           <span v-if="isPlaying">({{remainingTime ? remainingTime   : ''}})</span>
@@ -63,6 +68,7 @@
 import { mapActions, mapState, mapMutations } from 'vuex';
 import LoadingSpinner from './LoadingSpinner.vue';
 import LikeButton from './commons/LikeButton.vue';
+import ShareButton from './commons/ShareButton.vue';
 import howLongAgo from '../helpers/date-format';
 
 export default {
@@ -70,6 +76,7 @@ export default {
   components: {
     LoadingSpinner,
     LikeButton,
+    ShareButton,
   },
   beforeMount() {
     window.addEventListener('beforeunload', this.leaveBanterHandler);

@@ -11,6 +11,7 @@ const API = {
   OAUTH_BASE_URL: CONSTANTS.API_BASE_URLS[ENV],
   BASE_URL: `${CONSTANTS.API_BASE_URLS[ENV]}/v1/`,
   TOPICS: 'topics/',
+  DISCUSSIONS: 'discussions/',
   TRENDING: 'trending/',
   COLLECTIONS: 'collections/',
   USERS: 'users/',

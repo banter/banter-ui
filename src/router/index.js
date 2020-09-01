@@ -9,6 +9,7 @@ import {
   Landing,
   Explore,
   Listen,
+  Discussion,
 } from './views/index';
 
 Vue.use(Router);
@@ -40,6 +41,11 @@ export default new Router({
       path: '/topics/:topicName/:topicId',
       name: 'Topic',
       component: Topic,
+    },
+    {
+      path: '/discussions/:discussionId',
+      name: 'Discussion',
+      component: Discussion,
     },
     {
       path: '/for-you',

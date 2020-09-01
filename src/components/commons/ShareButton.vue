@@ -14,10 +14,10 @@ import MODALS from '../../constants/modals';
 export default {
   name: 'ShareButton',
   methods: {
-    ...mapMutations(['setShareAudio']),
+    ...mapMutations(['setShareDiscussionId']),
 
     handleClick() {
-      if (this.isDiscussionCard) { this.setShareAudio(this.discussionId); }
+      if (this.isDiscussionCard) { this.setShareDiscussionId(this.discussionId); }
       this.$bvModal.show(MODALS.SHARE_MODAL);
     },
   },

@@ -36,6 +36,7 @@
 
 import { mapState, mapMutations } from 'vuex';
 import NETWORKS from '../../constants/banter-networks';
+import API from '../../constants/api';
 
 export default {
   name: 'ShareModal',
@@ -69,14 +70,12 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['setShareAudio']),
+    ...mapMutations(['setShareDiscussionId']),
     onShow() {
       this.clipboardSelected = false;
-      this.sharing.url = `${window.location.href}`;
-      if (this.shareDiscussionId !== '') {
-        this.sharing.url = `${this.sharing.url}?discussionId=${this.shareDiscussionId}`;
-        this.setShareAudio('');
-      }
+      this.sharing.url = this.shareDiscussionId !== '' && this.shareDiscussionId !== null
+        ? `${window.location.origin}/${API.DISCUSSIONS}${this.shareDiscussionId}` : `${window.location.href}`;
+      this.setShareDiscussionId('');
     },
 
     async copy() {
