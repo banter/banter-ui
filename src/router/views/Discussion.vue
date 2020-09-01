@@ -5,7 +5,7 @@
     </div>
     <div v-if="!isLoading">
       <div v-if="playlistExists > 0">
-      <discussion-playlist :isAutoPlayEnabled="true" :collection="discussion"></discussion-playlist>
+      <discussion-playlist :collection="discussion"></discussion-playlist>
       </div>
       <div v-else>
         <empty-page-handler></empty-page-handler>
