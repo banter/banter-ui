@@ -40,6 +40,7 @@ export default {
         { property: 'og:description', content: 'The new way to listen to sports talk.' },
       ],
     };
+  },
   mounted() {
     window.addEventListener('resize', this.resizeWindow);
     this.resizeWindow();
@@ -49,7 +50,6 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeWindow);
-
   },
 };
 </script>

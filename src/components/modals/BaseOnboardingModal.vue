@@ -98,7 +98,7 @@ export default {
   },
   mounted() {
     // if (this.getIfUserShouldOnboard) {
-    this.$bvModal.show(MODALS.BASE_ONBOARDING_MODAL);
+    // this.$bvModal.show(MODALS.BASE_ONBOARDING_MODAL);
     // }
   },
 
