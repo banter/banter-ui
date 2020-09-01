@@ -8,13 +8,29 @@
 
 <script>
 
+import { mapMutations } from 'vuex';
 import MODALS from '../../constants/modals';
 
 export default {
   name: 'ShareButton',
   methods: {
+    ...mapMutations(['setShareAudio']),
+
     handleClick() {
+      if (this.isDiscussionCard) { this.setShareAudio(this.discussionId); }
       this.$bvModal.show(MODALS.SHARE_MODAL);
+    },
+  },
+  props: {
+    isDiscussionCard: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    discussionId: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
 };

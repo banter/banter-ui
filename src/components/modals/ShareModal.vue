@@ -20,10 +20,10 @@
           <i class="far fah fa-lg fa-clipboard"></i>
           <span>Copy to Clipboard</span>
         </a>
-        <b-toast id="clipboard-toast" no-close-button=true static auto-hide-delay="1000">
+        <b-toast id="clipboard-toast" :no-close-button="true" static auto-hide-delay="1000">
           Copied to Clipboard
         </b-toast>
-        <b-toast id="clipboard-toast=error" no-close-button=true static auto-hide-delay="1000">
+        <b-toast id="clipboard-toast=error" :no-close-button="true" static auto-hide-delay="1000">
           Unable to copy to clipboard
         </b-toast>
       </div>
@@ -34,6 +34,7 @@
 
 <script>
 
+import { mapState, mapMutations } from 'vuex';
 import NETWORKS from '../../constants/banter-networks';
 
 export default {
@@ -57,6 +58,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      shareDiscussionId: (state) => state.audio.shareDiscussionId,
+    }),
     shareUrlNetwork() {
       return `${this.sharing.url}?utm_source=`;
     },
@@ -65,10 +69,14 @@ export default {
     },
   },
   methods: {
-
+    ...mapMutations(['setShareAudio']),
     onShow() {
       this.clipboardSelected = false;
       this.sharing.url = `${window.location.href}`;
+      if (this.shareDiscussionId !== '') {
+        this.sharing.url = `${this.sharing.url}?discussionId=${this.shareDiscussionId}`;
+        this.setShareAudio('');
+      }
     },
 
     async copy() {

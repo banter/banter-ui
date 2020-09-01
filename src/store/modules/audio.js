@@ -24,6 +24,7 @@ export default {
     loadingNewAudio: false,
     fadingOut: false,
     timestampRemaining: 0,
+    shareDiscussionId: null,
     audioRate: 1,
     audioIcon: 'play',
   },
@@ -218,6 +219,9 @@ export default {
     fadeOut(state) {
       state.audioConfig.fade(1, 0.25, state.timestampRemaining);
       state.fadingOut = true;
+    },
+    setShareAudio(state, discussionId) {
+      state.shareDiscussionId = discussionId;
     },
   },
 };
