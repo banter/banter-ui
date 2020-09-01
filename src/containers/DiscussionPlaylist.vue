@@ -54,7 +54,7 @@ export default {
   mounted() {
     setTimeout(() => {
       if (this.isAutoPlayEnabled) { this.audioAction(this.collection?.playlist[0]); }
-    }, 600);
+    }, 1200);
   },
   methods: {
     ...mapActions(['pauseAudio', 'resumeAudio', 'createAudio']),
