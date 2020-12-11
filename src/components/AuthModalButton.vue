@@ -18,6 +18,7 @@
         <b-dropdown-item disabled href="#">{{currentUser.email}}</b-dropdown-item>
         <b-dropdown-item
           class="mobile-dropdown"
+          @click="clearAuthToken"
           :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`"
         >Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
@@ -29,6 +30,7 @@
 import { mapState, mapMutations } from 'vuex';
 import API from '../constants/api';
 import MODALS from '../constants/modals';
+import AUTH from '../constants/auth';
 
 export default {
   name: 'AuthModalButton',
@@ -55,6 +57,9 @@ export default {
     showAuthModal() {
       this.authingUserHasAccount(this.returningUser);
       this.$bvModal.show(MODALS.AUTH_MODAL);
+    },
+    clearAuthToken() {
+      window.localStorage.setItem(AUTH.BANTER_ACCESS_TOKEN, null);
     },
   },
   data() {

@@ -28,6 +28,7 @@ export default new Router({
       component: Home,
       props: (route) => ({
         loginSuccess: route.query.success === 'true',
+        accessToken: route.query.token,
         loginError: route.query.error,
       }),
     },
