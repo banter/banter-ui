@@ -14,12 +14,12 @@ export default {
   },
   actions: {
     loginUser({ dispatch }, { authEmail, authPassword }) {
-      dispatch('coreAuth', {
+      return dispatch('coreAuth', {
         authEmail, authPassword, isNewUser: false,
       });
     },
     signupUser({ dispatch }, { authName, authEmail, authPassword }) {
-      dispatch('coreAuth', {
+      return dispatch('coreAuth', {
         authName, authEmail, authPassword, isNewUser: true,
       });
     },
@@ -148,8 +148,8 @@ export default {
       state.isRequesting = true;
       state.error = null;
     },
-    authUserSuccess(state, payload) {
-      window.localStorage.setItem('banter-token', payload.accessToken);
+    authUserSuccess(state, { accessToken }) {
+      if (accessToken) window.localStorage.setItem('banter-token', accessToken);
       state.isRequesting = false;
       state.error = null;
     },

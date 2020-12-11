@@ -142,7 +142,6 @@ export default {
       }
     },
     closeModal(modal) {
-      if (this.isRequesting) return;
       Object.assign(this, { authEmail: null, authPassword: null, authName: null });
       this.$root.$emit('bv::hide::modal', modal);
     },
