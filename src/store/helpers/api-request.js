@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AUTH from '../../constants/auth';
 
 axios.defaults.withCredentials = true;
 
@@ -13,7 +14,7 @@ export default async function apiRequest({
 
   const queryParams = Object.keys(queries).map((key) => `${key}=${encodeURIComponent(queries[key])}`).join('&');
 
-  const banterToken = window.localStorage.getItem('banter-token');
+  const banterToken = window.localStorage.getItem(AUTH.BANTER_ACCESS_TOKEN);
   if (banterToken) headers.Authorization = `Bearer ${banterToken}`;
 
   return new Promise((resolve, reject) => {

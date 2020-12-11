@@ -30,6 +30,7 @@
 import { mapState, mapMutations } from 'vuex';
 import API from '../constants/api';
 import MODALS from '../constants/modals';
+import AUTH from '../constants/auth';
 
 export default {
   name: 'AuthModalButton',
@@ -58,7 +59,7 @@ export default {
       this.$bvModal.show(MODALS.AUTH_MODAL);
     },
     clearAuthToken() {
-      window.localStorage.setItem('banter-token', null);
+      window.localStorage.setItem(AUTH.BANTER_ACCESS_TOKEN, null);
     },
   },
   data() {

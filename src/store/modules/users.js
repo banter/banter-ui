@@ -1,4 +1,6 @@
 import API from '../../constants/api';
+import AUTH from '../../constants/auth';
+
 import apiRequest from '../helpers/api-request';
 
 export default {
@@ -149,7 +151,7 @@ export default {
       state.error = null;
     },
     authUserSuccess(state, { accessToken }) {
-      if (accessToken) window.localStorage.setItem('banter-token', accessToken);
+      if (accessToken) window.localStorage.setItem(AUTH.BANTER_ACCESS_TOKEN, accessToken);
       state.isRequesting = false;
       state.error = null;
     },

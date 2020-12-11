@@ -1,0 +1,5 @@
+const AUTH = {
+  BANTER_ACCESS_TOKEN: 'AUTH.BANTER_ACCESS_TOKEN',
+};
+
+export default AUTH;
