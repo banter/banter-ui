@@ -13,25 +13,38 @@ export default {
     toggledFollowTopic: null,
   },
   actions: {
-    loginUser({
+    loginUser({ dispatch }, { authEmail, authPassword }) {
+      dispatch('coreAuth', {
+        authEmail, authPassword, isNewUser: false,
+      });
+    },
+    signupUser({ dispatch }, { authName, authEmail, authPassword }) {
+      dispatch('coreAuth', {
+        authName, authEmail, authPassword, isNewUser: true,
+      });
+    },
+    coreAuth({
       commit, dispatch,
-    }, { authEmail, authPassword }) {
+    }, {
+      authName, authEmail, authPassword, isNewUser,
+    }) {
+      const endpoint = isNewUser ? API.REGISTER : API.LOGIN;
       const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.LOGIN}`,
+        url: `${API.BASE_URL}${API.USERS}${endpoint}`,
         method: 'POST',
-        data: { email: authEmail, password: authPassword },
+        data: { name: authName, email: authEmail, password: authPassword },
       };
       const mutations = {
         preCommit: 'fetchCurrentUserRequest',
-        successCommit: 'fetchCurrentUserSuccess',
+        successCommit: 'authUserSuccess',
         errorCommit: 'authUserError',
       };
       const actions = {
-        successDispatch: 'fetchUserPastActions',
+        successDispatch: 'fetchCurrentUser',
         errorDispatch: 'loginAnonUser',
       };
       return apiRequest({
-        requestData, mutations, commit, actions, dispatch,
+        requestData, mutations, actions, commit, dispatch,
       });
     },
     loginAnonUser({
@@ -51,21 +64,6 @@ export default {
       return apiRequest({
         requestData, mutations, commit,
       });
-    },
-    signupUser({
-      commit,
-    }, { authName, authEmail, authPassword }) {
-      const requestData = {
-        url: `${API.BASE_URL}${API.USERS}${API.REGISTER}`,
-        method: 'POST',
-        data: { name: authName, email: authEmail, password: authPassword },
-      };
-      const mutations = {
-        preCommit: 'fetchCurrentUserRequest',
-        successCommit: 'fetchCurrentUserSuccess',
-        errorCommit: 'authUserError',
-      };
-      return apiRequest({ requestData, mutations, commit });
     },
     fetchCurrentUser({
       commit, dispatch,
@@ -148,6 +146,11 @@ export default {
   mutations: {
     fetchCurrentUserRequest(state) {
       state.isRequesting = true;
+      state.error = null;
+    },
+    authUserSuccess(state, payload) {
+      window.localStorage.setItem('banter-token', payload.accessToken);
+      state.isRequesting = false;
       state.error = null;
     },
     fetchCurrentUserSuccess(state, payload) {

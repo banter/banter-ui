@@ -6,12 +6,15 @@ export default async function apiRequest({
   requestData, actions = {}, mutations = {}, commit, dispatch,
 }) {
   const {
-    url, queries = {}, method = 'GET', data = {},
+    url, queries = {}, method = 'GET', data = {}, headers = {},
   } = requestData;
   const { preCommit, successCommit, errorCommit } = mutations;
   const { successDispatch, errorDispatch } = actions;
 
   const queryParams = Object.keys(queries).map((key) => `${key}=${encodeURIComponent(queries[key])}`).join('&');
+
+  const banterToken = window.localStorage.getItem('banter-token');
+  if (banterToken) headers.Authorization = `Bearer ${banterToken}`;
 
   return new Promise((resolve, reject) => {
     if (preCommit) commit(preCommit);
@@ -20,6 +23,7 @@ export default async function apiRequest({
       url: `${url}${queryParams ? `?${queryParams}` : ''}`,
       method,
       data,
+      headers,
     }).then((response) => {
       if (response.status >= 200 && response.status < 300) {
         if (commit && successCommit) commit(successCommit, response?.data);
