@@ -1,5 +1,5 @@
 const AUTH = {
-  BANTER_ACCESS_TOKEN: 'AUTH.BANTER_ACCESS_TOKEN',
+  BANTER_ACCESS_TOKEN: 'banter-access-token',
 };
 
 export default AUTH;

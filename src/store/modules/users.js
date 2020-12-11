@@ -1,5 +1,6 @@
 import API from '../../constants/api';
 import AUTH from '../../constants/auth';
+import router from '../../router';
 
 import apiRequest from '../helpers/api-request';
 
@@ -147,6 +148,9 @@ export default {
   },
   mutations: {
     fetchCurrentUserRequest(state) {
+      const { token } = router.currentRoute?.query;
+      if (token) window.localStorage.setItem(AUTH.BANTER_ACCESS_TOKEN, token);
+
       state.isRequesting = true;
       state.error = null;
     },
