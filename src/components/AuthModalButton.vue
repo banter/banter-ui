@@ -18,6 +18,7 @@
         <b-dropdown-item disabled href="#">{{currentUser.email}}</b-dropdown-item>
         <b-dropdown-item
           class="mobile-dropdown"
+          @click="clearAuthToken"
           :href="`${API.BASE_URL}${API.USERS}${API.LOGOUT}`"
         >Sign Out</b-dropdown-item>
       </b-nav-item-dropdown>
@@ -55,6 +56,9 @@ export default {
     showAuthModal() {
       this.authingUserHasAccount(this.returningUser);
       this.$bvModal.show(MODALS.AUTH_MODAL);
+    },
+    clearAuthToken() {
+      window.localStorage.setItem('banter-token', null);
     },
   },
   data() {
