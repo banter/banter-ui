@@ -1,6 +1,6 @@
 <template>
   <div class="carousel-header-container">
-    <router-link class="carousel-header-label" :to="`/topics/${topic.value}`">
+    <router-link class="carousel-header-label" :to="`/topics/${topic.value}/${topic.id}`">
       <img svg-inline class="icon" src='../assets/play-button.svg' alt="example" />
       <p>{{topic.value}}</p>
     </router-link>
